@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1>Josh's Daggerheart Monte Carlo Simulator</h1>
+        <h1>Daggerheart Monte Carlo Simulator</h1>
         <div class="sim-controls">
             <label for="visualize-checkbox">
                 <input type="checkbox" id="visualize-checkbox">
@@ -116,24 +116,21 @@
 
         <div class="layout-column" id="scene-column">
             <h3><span class="col-number">3</span> Active Scene (for Sim)</h3>
+            
+            
             <div class="pool-container">
                 <h4>Active Party</h4>
                 <div id="active-party-list" class="agent-list"></div>
             </div>
-            <div class="pool-container">
-                <h4>Active Adversaries <span id="battlepoint-display">(Spent: 0 / Budget: 0)</span></h4>
-                <div id="active-adversary-list" class="agent-list"></div>
-                <div class="modifier-input-container">
-                    <label for="bp-modifier-input">BP Adjustment:</label>
-                    <input type="number" id="bp-modifier-input" value="0">
-                </div>
+
+            
+            <div id="encounter-list" class="agent-list">
+                
             </div>
-            <div class="pool-container">
-                <div class="pool-header">
-                    <h4>Active Environment</h4>
-                </div>
-                <div id="active-environment" class="agent-list"></div>
-            </div>
+
+            
+            <button id="add-encounter-button" class="action-button">Add Encounter</button>
+
         </div>
     </div>
 
