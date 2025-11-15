@@ -115,7 +115,7 @@
         </div>
 
         <div class="layout-column" id="scene-column">
-            <h3><span class="col-number">3</span> Active Scene (for Sim)</h3>
+            <h3><span class="col-number">3</span> Encounter Planner</h3>
             
             
             <div class="pool-container">
@@ -124,14 +124,14 @@
             </div>
 
             
-            <div id="encounter-list" class="agent-list">
-                
+            <div class="scene-controls-header">
+                <button id="add-encounter-button" class="action-button" disabled>Add Encounter</button>
+                <button id="clear-all-encounters-button" class="action-button">Clear All Encounters</button>
             </div>
 
             
-            <div class="scene-controls-footer">
-                <button id="add-encounter-button" class="action-button">Add Encounter</button>
-                <button id="clear-all-encounters-button" class="action-button">Clear All Encounters</button>
+            <div id="encounter-list" class="agent-list">
+                
             </div>
 
         </div>
@@ -166,6 +166,32 @@
             </div>
             <div id="battlemap-grid">
                 </div>
+        </div>
+    </div>
+
+    <div id="encounter-modal-overlay" class="modal-overlay hidden">
+        <div id="encounter-modal-content" class="modal-content">
+            <div class="modal-header">
+                <h3 id="encounter-modal-title">Editing: Encounter X</h3>
+                <button id="encounter-modal-close" class="move-button remove-encounter-btn">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="pool-container">
+                    <h4>Active Adversaries</h4>
+                    <div id="modal-adversary-list" class="agent-list"></div>
+                </div>
+                <div class="pool-container">
+                    <h4>Active Environment</h4>
+                    <div id="modal-environment-list" class="agent-list"></div>
+                </div>
+                <div class="encounter-controls">
+                    <div class="modifier-input-container">
+                        <label for="modal-bp-modifier-input">BP Adjustment:</label>
+                        <input type="number" id="modal-bp-modifier-input" value="0">
+                    </div>
+                    <button id="modal-clear-encounter-btn" class="clear-encounter-btn">Clear Encounter</button>
+                </div>
+            </div>
         </div>
     </div>
 
