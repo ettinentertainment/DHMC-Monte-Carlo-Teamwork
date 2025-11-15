@@ -48,61 +48,12 @@
             <div class="pool-container">
                 <div class="pool-header">
                     <h4>Player Pool</h4>
-                    <div class="pool-filters">
-                        <select id="pc-pool-class-filter">
-                            <option value="all">All Classes</option>
-                            <option value="Bard">Bard</option>
-                            <option value="Druid">Druid</option>
-                            <option value="Guardian">Guardian</option>
-                            <option value="Ranger">Ranger</option>
-                            <option value="Rogue">Rogue</option>
-                            <option value="Seraph">Seraph</option>
-                            <option value="Sorcerer">Sorcerer</option>
-                            <option value="Warrior">Warrior</option>
-                            <option value="Wizard">Wizard</option>
-                        </select>
-                        <select id="pc-pool-level-filter">
-                            <option value="all">All Levels</option>
-                            <option value="1">Lvl 1</option>
-                            <option value="2">Lvl 2</option>
-                            <option value="3">Lvl 3</option>
-                            <option value="4">Lvl 4</option>
-                            <option value="5">Lvl 5</option>
-                            <option value="6">Lvl 6</option>
-                            <option value="7">Lvl 7</option>
-                            <option value="8">Lvl 8</option>
-                            <option value="9">Lvl 9</option>
-                            <option value="10">Lvl 10</option>
-                        </select>
-                    </div>
                 </div>
                 <div id="player-pool-list" class="agent-list"></div>
             </div>
             <div class="pool-container">
                 <div class="pool-header">
                     <h4>Adversary Pool</h4>
-                    <div class="pool-filters">
-                        <select id="adv-pool-tier-filter">
-                            <option value="all">All Tiers</option>
-                            <option value="1">Tier 1</option>
-                            <option value="2">Tier 2</option>
-                            <option value="3">Tier 3</option>
-                            <option value="4">Tier 4</option>
-                        </select>
-                        <select id="adv-pool-type-filter">
-                            <option value="all">All Types</option>
-                            <option value="Bruiser">Bruiser</option>
-                            <option value="Horde">Horde</option>
-                            <option value="Leader">Leader</option>
-                            <option value="Minion">Minion</option>
-                            <option value="Ranged">Ranged</option>
-                            <option value="Skulk">Skulk</option>
-                            <option value="Social">Social</option>
-                            <option value="Solo">Solo</option>
-                            <option value="Standard">Standard</option>
-                            <option value="Support">Support</option>
-                        </select>
-                    </div>
                 </div>
                 <div id="adversary-pool-list" class="agent-list"></div>
             </div>
@@ -133,7 +84,6 @@
             <div id="encounter-list" class="agent-list">
                 
             </div>
-
         </div>
     </div>
 
@@ -177,11 +127,17 @@
             </div>
             <div class="modal-body">
                 <div class="pool-container">
-                    <h4>Active Adversaries</h4>
+                    <div class="pool-header">
+                        <h4>Active Adversaries</h4>
+                        <button id="modal-add-adversary-btn" class="add-button">Add Adversary</button>
+                    </div>
                     <div id="modal-adversary-list" class="agent-list"></div>
                 </div>
                 <div class="pool-container">
-                    <h4>Active Environment</h4>
+                    <div class="pool-header">
+                        <h4>Active Environment</h4>
+                        <button id="modal-add-environment-btn" class="add-button">Add Environment</button>
+                    </div>
                     <div id="modal-environment-list" class="agent-list"></div>
                 </div>
                 <div class="encounter-controls">
@@ -191,6 +147,22 @@
                     </div>
                     <button id="modal-clear-encounter-btn" class="clear-encounter-btn">Clear Encounter</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="agent-picker-overlay" class="modal-overlay hidden">
+        <div id="agent-picker-content" class="modal-content">
+            <div class="modal-header">
+                <h3 id="agent-picker-title">Select Agent</h3>
+                <button id="agent-picker-close" class="move-button remove-encounter-btn">X</button>
+            </div>
+            <div class="modal-body">
+                
+                <div id="agent-picker-filters"></div>
+                
+                <div id="agent-picker-list" class="agent-list"></div>
             </div>
         </div>
     </div>
