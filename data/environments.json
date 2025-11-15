@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Placeholder: Tier 1",
+    "difficulty": 11,
+    "tier": 1,
+    "simId": "env-placeholder-1"
+  },
+  {
+    "name": "Placeholder: Tier 2",
+    "difficulty": 14,
+    "tier": 2,
+    "simId": "env-placeholder-2"
+  },
+  {
+    "name": "Placeholder: Tier 3",
+    "difficulty": 17,
+    "tier": 3,
+    "simId": "env-placeholder-3"
+  },
+  {
+    "name": "Placeholder: Tier 4",
+    "difficulty": 20,
+    "tier": 4,
+    "simId": "env-placeholder-4"
+  }
+]
