@@ -485,7 +485,7 @@ header h1 {
 }
 
 #add-encounter-button {
-    width: 100%;
+    flex-basis: 50%; /* Modified from 100% */
     flex-shrink: 0; /* Prevent button from shrinking */
     padding: 10px 15px;
     background-color: #4a6;
@@ -495,4 +495,82 @@ header h1 {
 
 #add-encounter-button:hover {
     background-color: #5b7;
+}
+
+.scene-controls-footer {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-shrink: 0;
+}
+
+#clear-all-encounters-button {
+    flex-basis: 50%;
+    padding: 10px 15px;
+    background-color: #c94a4a; /* Red color like run buttons */
+    color: #fff;
+    border-color: #e76b6b;
+}
+
+#clear-all-encounters-button:hover {
+    background-color: #e05f5f;
+}
+
+.encounter-summary.editing {
+    border: 2px solid #f0c04a; /* Gold highlight */
+    box-shadow: 0 0 5px #f0c04a;
+}
+
+.encounter-summary-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.encounter-summary-controls .move-button {
+    font-size: 0.9em;
+    width: 28px;
+    height: 28px;
+    line-height: 24px;
+}
+
+.edit-encounter-btn {
+    border-color: #f0c04a; /* Gold */
+    color: #f0c04a;
+}
+.edit-encounter-btn:hover {
+    background-color: #f0c04a;
+    color: #fff;
+}
+
+.remove-encounter-btn {
+    border-color: #a64; /* Red */
+    color: #a64;
+}
+.remove-encounter-btn:hover {
+    background-color: #a64;
+    color: #fff;
+}
+
+.encounter-controls {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #444;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.clear-encounter-btn {
+    width: 100%;
+    padding: 8px;
+    background-color: #a64;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.clear-encounter-btn:hover {
+    background-color: #c85;
 }
