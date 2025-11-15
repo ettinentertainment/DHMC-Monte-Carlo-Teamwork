@@ -3,16 +3,11 @@ let playerPool = [];
 let adversaryPool = [];
 let environmentPool = []; // NEW
 let activeParty = [];
+
 // NEW STATE: Replaces activeAdversaries and activeEnvironment
-let activeEncounters = [
-   { 
-       id: `enc-${Date.now()}`,
-       adversaries: [], 
-       environment: null, 
-       bpModifier: 0 
-   }
-];
-let currentlyEditingEncounterId = activeEncounters[0] ? activeEncounters[0].id : null;
+let activeEncounters = []; // Starts empty
+let currentlyEditingEncounterId = null; // No encounter selected by default
+
 let SRD_ADVERSARIES = [];
 let PREMADE_CHARACTERS = [];
 let PLACEHOLDER_ENVIRONMENTS = []; // NEW
@@ -83,11 +78,16 @@ document.addEventListener('DOMContentLoaded', () => {
    // NEW: Listener for clearing all encounters
    document.getElementById('clear-all-encounters-button').addEventListener('click', handleClearAllEncounters);
 
-   // NEW: Delegated listener for all encounter modifier inputs
-   document.getElementById('scene-column').addEventListener('input', handleEncounterInput);
+   // REVISED: Now listens for clicks on the main scene column (for edit/remove)
+   document.getElementById('scene-column').addEventListener('click', handleSceneColumnClick);
 
-   // NEW: Delegated listener for encounter buttons (edit, remove, clear)
-   document.getElementById('scene-column').addEventListener('click', handleEncounterClick);
+   // NEW: Listeners for modal controls
+   document.getElementById('encounter-modal-close').addEventListener('click', closeEncounterModal);
+   document.getElementById('encounter-modal-overlay').addEventListener('click', (e) => {
+       if (e.target.id === 'encounter-modal-overlay') closeEncounterModal();
+   });
+   document.getElementById('modal-clear-encounter-btn').addEventListener('click', handleModalClearEncounter);
+   document.getElementById('modal-bp-modifier-input').addEventListener('input', handleEncounterInput);
     // Hide old visualize checkbox
     const visualizeToggle = document.getElementById('visualize-checkbox');
     if(visualizeToggle) visualizeToggle.style.display = 'none';
@@ -245,10 +245,8 @@ function addEnvironmentToPool() {
 function handlePoolClick(event) {
     const target = event.target;
     if (!target.closest('button.move-button')) return; 
-    
     const agentItem = target.closest('.pool-item');
     if (!agentItem) return;
-    
     const agentId = agentItem.dataset.id;
     if (!agentId) return; 
 
@@ -258,85 +256,90 @@ function handlePoolClick(event) {
         const newPlayerInstance = JSON.parse(JSON.stringify(player));
         newPlayerInstance.simId = `player-instance-${Date.now()}-${Math.random()}`;
         activeParty.push(newPlayerInstance);
-        printToLog(`Copied ${newPlayerInstance.name} to Active Scene.`);
-        renderActiveParty();
+        printToLog(`Copied ${newPlayerInstance.name} to Active Party.`);
+        renderActiveParty(); // This will also re-render encounter list
         return;
     }
 
-    // --- NEW Encounter-Aware Logic ---
-        const targetEncounter = activeEncounters.find(e => e.id === currentlyEditingEncounterId);
-        if (!targetEncounter) {
-            printToLog("--- ERROR --- No encounter is selected for editing. Please click an encounter's 'Edit' button first.");
-            return;
-        }
+    // --- NEW Modal-Aware Logic ---\n       if (!currentlyEditingEncounterId) {
+       if (!currentlyEditingEncounterId) {
+           printToLog("--- ERROR --- Please select an encounter to 'Edit' before adding agents.");
+           return;
+       }
+       const targetEncounter = activeEncounters.find(e => e.id === currentlyEditingEncounterId);
+       if (!targetEncounter) {
+           printToLog(`--- ERROR --- Could not find encounter ${currentlyEditingEncounterId}.`);
+           return;
+       }
 
-        let agentTemplate = adversaryPool.find(a => a.simId === agentId);
-        if (agentTemplate) {
-            const newAgentInstance = JSON.parse(JSON.stringify(agentTemplate));
-            newAgentInstance.simId = `adv-instance-${Date.now()}-${Math.random()}`; 
-            targetEncounter.adversaries.push(newAgentInstance);
-            printToLog(`Copied ${newAgentInstance.name} to Encounter ${activeEncounters.length}.`);
-            renderEncounterList(); // Re-render encounters
-            return;
-        }
+       let agentTemplate = adversaryPool.find(a => a.simId === agentId);
+       if (agentTemplate) {
+           const newAgentInstance = JSON.parse(JSON.stringify(agentTemplate));
+           newAgentInstance.simId = `adv-instance-${Date.now()}-${Math.random()}`; 
+           targetEncounter.adversaries.push(newAgentInstance);
+           printToLog(`Copied ${newAgentInstance.name} to Encounter ${activeEncounters.findIndex(e => e.id === currentlyEditingEncounterId) + 1}.`);
+           renderModalContent(); // Re-render modal
+           renderEncounterList(); // Re-render summary list
+           return;
+       }
 
-        // Environment Pool
-        let envTemplate = environmentPool.find(e => e.simId === agentId);
-        if (envTemplate) {
-            const newEnvInstance = JSON.parse(JSON.stringify(envTemplate));
-            newEnvInstance.simId = `env-instance-${Date.now()}-${Math.random()}`;
-            targetEncounter.environment = newEnvInstance; // Set as active (singular) for this encounter
-            printToLog(`Set Environment for Encounter ${activeEncounters.length} to: ${newEnvInstance.name}.`);
-            renderEncounterList(); // Re-render encounters
-            return;
-        }
-        // --- End NEW Logic ---
-}
+       // Environment Pool
+       let envTemplate = environmentPool.find(e => e.simId === agentId);
+       if (envTemplate) {
+           const newEnvInstance = JSON.parse(JSON.stringify(envTemplate));
+           newEnvInstance.simId = `env-instance-${Date.now()}-${Math.random()}`;
+           targetEncounter.environment = newEnvInstance; 
+           printToLog(`Set Environment for Encounter ${activeEncounters.findIndex(e => e.id === currentlyEditingEncounterId) + 1} to: ${newEnvInstance.name}.`);
+           renderModalContent(); // Re-render modal
+           renderEncounterList(); // Re-render summary list
+           return;
+       }
+   }
 
 function handleSceneClick(event) {
-            const target = event.target;
-            if (!target.classList.contains('move-button')) return; 
-            const sceneItem = target.closest('.scene-item');
-            if (!sceneItem) return;
-            
-            const agentId = sceneItem.dataset.id;
-            if (!agentId) return;
-        
-            // Check Party (remains at top level)
-            let playerIndex = activeParty.findIndex(p => p.simId === agentId);
-            if (playerIndex > -1) {
-                const agent = activeParty.splice(playerIndex, 1)[0];
-                printToLog(`Removed ${agent.name} instance from Active Party.`);
-                renderActiveParty(); // Re-render party list
-                renderEncounterList(); // Re-render encounters (budget changed)
-                return;
-            }
-        
-            // Check Encounters (Adversaries and Environments)
-            const encounterBlock = target.closest('.encounter-block');
-            if (encounterBlock) {
-                const encounterId = encounterBlock.dataset.id;
-                const encounter = activeEncounters.find(e => e.id === encounterId);
-                if (!encounter) return;
+    const target = event.target;
+    if (!target.classList.contains('move-button')) return; 
+    const sceneItem = target.closest('.scene-item');
+    if (!sceneItem) return;
+    const agentId = sceneItem.dataset.id;
+    if (!agentId) return;
 
-                // Check Adversaries in this encounter
-                let adversaryIndex = encounter.adversaries.findIndex(a => a.simId === agentId);
-                if (adversaryIndex > -1) {
-                    const agent = encounter.adversaries.splice(adversaryIndex, 1)[0];
-                    printToLog(`Removed ${agent.name} from ${encounterBlock.querySelector('summary').innerText.split('(')[0]}.`);
-                    renderEncounterList();
-                    return;
-                }
-
-                // Check Environment in this encounter
-                if (encounter.environment && encounter.environment.simId === agentId) {
-                    printToLog(`Removed ${encounter.environment.name} from ${encounterBlock.querySelector('summary').innerText.split('(')[0]}.`);
-                    encounter.environment = null;
-                    renderEncounterList();
-                    return;
-                }
-            }
+    // Check Party (top level)
+    if (target.closest('#active-party-list')) {
+        let playerIndex = activeParty.findIndex(p => p.simId === agentId);
+        if (playerIndex > -1) {
+            const agent = activeParty.splice(playerIndex, 1)[0];
+            printToLog(`Removed ${agent.name} instance from Active Party.`);
+            renderActiveParty(); // This re-renders party AND encounters
+            return;
         }
+    }
+
+    // Check Modal Lists (Adversaries and Environments)
+    if (target.closest('#encounter-modal-content')) {
+        const encounter = activeEncounters.find(e => e.id === currentlyEditingEncounterId);
+        if (!encounter) return;
+
+        // Check Adversaries in this encounter
+        let adversaryIndex = encounter.adversaries.findIndex(a => a.simId === agentId);
+        if (adversaryIndex > -1) {
+            const agent = encounter.adversaries.splice(adversaryIndex, 1)[0];
+            printToLog(`Removed ${agent.name} from encounter.`);
+            renderModalContent();
+            renderEncounterList();
+            return;
+        }
+
+        // Check Environment in this encounter
+        if (encounter.environment && encounter.environment.simId === agentId) {
+            printToLog(`Removed ${encounter.environment.name} from encounter.`);
+            encounter.environment = null;
+            renderModalContent();
+            renderEncounterList();
+            return;
+        }
+    }
+}
 
 // --- DYNAMIC UI RENDERING ---
 
@@ -445,37 +448,39 @@ function renderActiveParty() {
            </div>
            `;
        });
+
+       // NEW: Enable/disable encounter button based on party size
+       const addEncounterBtn = document.getElementById('add-encounter-button');
+       if (activeParty.length > 0) {
+           addEncounterBtn.disabled = false;
+       } else {
+           addEncounterBtn.disabled = true;
+       }
+
+       // Re-render encounter list to update budgets and message
+       renderEncounterList();
    }
 
    function renderEncounterList() {
        const encounterListDiv = document.getElementById('encounter-list');
        encounterListDiv.innerHTML = '';
 
-       const numPCs = activeParty.length;
-       let cumulativeBudget = (numPCs > 0) ? (3 * numPCs) + 2 : 0;
-
-       if (activeEncounters.length === 0) {
-           addEncounter(); // Ensure there is always at least one encounter
+       if (activeParty.length === 0) {
+           encounterListDiv.innerHTML = `<div class="empty-list-message">Add players to the Active Party to begin planning encounters.</div>`;
            return;
        }
 
-       if (!currentlyEditingEncounterId || !activeEncounters.find(e => e.id === currentlyEditingEncounterId)) {
-           currentlyEditingEncounterId = activeEncounters[activeEncounters.length - 1].id;
+       if (activeEncounters.length === 0) {
+           encounterListDiv.innerHTML = `<div class="empty-list-message">Click 'Add Encounter' to start.</div>`;
        }
+
+       const numPCs = activeParty.length;
+       let cumulativeBudget = (numPCs > 0) ? (3 * numPCs) + 2 : 0;
 
        activeEncounters.forEach((encounter, index) => {
            let adversaryBP = 0;
-           let adversaryHTML = '';
-           let environmentHTML = '';
 
            encounter.adversaries.forEach(adv => {
-               adversaryHTML += `
-               <div class="scene-item" data-id="${adv.simId}">
-                   <button class="move-button" title="Remove from Scene">&lt;</button>
-                   <span class="agent-name">${adv.name} (Diff ${adv.difficulty})</span>
-               </div>
-               `;
-               // Add battlepoints based on SRD rules
                switch (adv.type) {
                    case 'Solo': adversaryBP += 5; break;
                    case 'Bruiser': adversaryBP += 4; break;
@@ -486,56 +491,42 @@ function renderActiveParty() {
                }
            });
 
-           if (encounter.environment) {
-               environmentHTML = `
-               <div class="scene-item" data-id="${encounter.environment.simId}">
-                   <button class="move-button" title="Remove from Scene">&lt;</button>
-                   <span class="agent-name">${encounter.environment.name} (Diff ${encounter.environment.difficulty})</span>
-               </div>
-               `;
-           }
-
            const modifierBP = encounter.bpModifier;
            const totalSpentBP = adversaryBP + modifierBP;
            const currentBudget = (index === 0) ? cumulativeBudget : cumulativeBudget;
            const remainingBudget = currentBudget - totalSpentBP;
-           const isEditingClass = (encounter.id === currentlyEditingEncounterId) ? 'editing' : '';
 
-           const encounterBlockHTML = `
+           // NEW: BP Color logic
+           let bpClass = 'bp-under'; // Yellow (default)
+           if (totalSpentBP > currentBudget) {
+               bpClass = 'bp-over'; // Red
+           } else if (totalSpentBP === currentBudget && totalSpentBP > 0) {
+               bpClass = 'bp-on'; // Green
+           }
+
+           const encounterRowHTML = `
            <details class="encounter-block" data-id="${encounter.id}" open>
-               <summary class="encounter-summary ${isEditingClass}">
+               <summary class="encounter-summary">
                    <span>Encounter ${index + 1}</span>
                    <div class="encounter-summary-controls">
-                       <span class="battlepoint-display">(Spent: ${totalSpentBP} / Budget: ${currentBudget})</span>
+                       <span class="battlepoint-display ${bpClass}">(Spent: ${totalSpentBP} / Budget: ${currentBudget})</span>
                        <button class="move-button edit-encounter-btn" title="Edit Encounter">✎</button>
                        <button class="move-button remove-encounter-btn" title="Remove Encounter">X</button>
                    </div>
                </summary>
-               <div class="encounter-content">
-                   <div class="pool-container">
-                       <h4>Active Adversaries</h4>
-                       <div class="agent-list">${adversaryHTML}</div>
-                   </div>
-                   <div class="pool-container">
-                       <h4>Active Environment</h4>
-                       <div class="agent-list">${environmentHTML}</div>
-                   </div>
-                   <div class="encounter-controls">
-                       <div class="modifier-input-container">
-                           <label for="bp-modifier-${encounter.id}">BP Adjustment:</label>
-                           <input type="number" class="bp-modifier-input" id="bp-modifier-${encounter.id}" data-encounter-id="${encounter.id}" value="${modifierBP}">
-                       </div>
-                       <button class="clear-encounter-btn">Clear Encounter</button>
-                   </div>
-               </div>
+               
            </details>
            `;
-           encounterListDiv.innerHTML += encounterBlockHTML;
+           encounterListDiv.innerHTML += encounterRowHTML;
            cumulativeBudget = remainingBudget; // Carry over remaining budget
        });
    }
 
    function addEncounter() {
+       if (activeParty.length === 0) {
+           printToLog("--- ERROR --- Cannot add encounter without an Active Party.");
+           return;
+       }
        const newId = `enc-${Date.now()}`;
        const newEncounter = {
            id: newId,
@@ -544,9 +535,10 @@ function renderActiveParty() {
            bpModifier: 0
        };
        activeEncounters.push(newEncounter);
-       currentlyEditingEncounterId = newId; // NEW: Set new encounter as active
+       currentlyEditingEncounterId = newId; // Set new encounter as active
        printToLog(`Added Encounter ${activeEncounters.length}.`);
        renderEncounterList();
+       openEncounterModal(newId); // NEW: Open modal for the new encounter
    }
 
 
@@ -743,9 +735,8 @@ function runSimulation(count) {
     const sceneDifficulty = (firstEncounter && firstEncounter.environment) ? firstEncounter.environment.difficulty : 10;
     simLog(`Active Environment Difficulty set to: ${sceneDifficulty}`);
 
-
     if (activeParty.length === 0) { 
-        simLog('--- ERROR --- \nAdd a player to the Active Scene.');
+        simLog('--- ERROR --- \nAdd a player to the Active Party.');
         printToLog(BATCH_LOG.join('\n'));
         BATCH_LOG = [];
         return; 
@@ -754,15 +745,17 @@ function runSimulation(count) {
     let playerAgents, adversaryAgents;
     try {
         playerAgents = activeParty.map(instantiatePlayerAgent);
+
         // TODO: Simulation must be updated to handle multiple encounters.
-    // For now, just run simulation on the *first* encounter.
-    if (activeEncounters.length === 0 || activeEncounters[0].adversaries.length === 0) {
-        simLog('--- ERROR --- \nAdd an adversary to Encounter 1 to run the simulation.'); 
-        printToLog(BATCH_LOG.join('\n'));
-        BATCH_LOG = [];
-        return; 
-    }
-    adversaryAgents = activeEncounters[0].adversaries.map(instantiateAdversaryAgent);
+        // For now, just run simulation on the *first* encounter.
+        if (activeEncounters.length === 0 || activeEncounters[0].adversaries.length === 0) {
+            simLog('--- ERROR --- \nAdd an adversary to Encounter 1 to run the simulation.'); 
+            printToLog(BATCH_LOG.join('\n'));
+            BATCH_LOG = [];
+            return; 
+        }
+        adversaryAgents = activeEncounters[0].adversaries.map(instantiateAdversaryAgent);
+
     } catch (e) {
         simLog(`--- ERROR --- \nFailed to parse agent JSON. \n${e.message}`);
         console.error("Error during instantiation:", e);
@@ -2257,11 +2250,12 @@ function renderBattlemap(gameState) {
 }
 
 
-// --- NEW: Event handler for modifier inputs ---
+// --- NEW: Modal and Encounter Click Handlers ---
+
     function handleEncounterInput(event) {
-        if (event.target.classList.contains('bp-modifier-input')) {
-            const encounterId = event.target.dataset.encounterId;
-            const encounter = activeEncounters.find(e => e.id === encounterId);
+        // This now only listens to the *modal's* input
+        if (event.target.id === 'modal-bp-modifier-input') {
+            const encounter = activeEncounters.find(e => e.id === currentlyEditingEncounterId);
             if (encounter) {
                 encounter.bpModifier = parseInt(event.target.value) || 0;
                 renderEncounterList(); // Recalculate and render all encounters
@@ -2269,56 +2263,103 @@ function renderBattlemap(gameState) {
         }
     }
 
-function handleEncounterClick(event) {
-       const editButton = event.target.closest('.edit-encounter-btn');
-       const removeButton = event.target.closest('.remove-encounter-btn');
-       const clearButton = event.target.closest('.clear-encounter-btn');
+    function handleSceneColumnClick(event) {
+        const editButton = event.target.closest('.edit-encounter-btn');
+        const removeButton = event.target.closest('.remove-encounter-btn');
 
-       if (editButton) {
-           const encounterId = editButton.closest('.encounter-block').dataset.id;
-           currentlyEditingEncounterId = encounterId;
-           printToLog(`Editing Encounter ${activeEncounters.findIndex(e => e.id === encounterId) + 1}.`);
-           renderEncounterList();
-           return;
-       }
+        if (editButton) {
+            const encounterId = editButton.closest('.encounter-block').dataset.id;
+            openEncounterModal(encounterId);
+            return;
+        }
 
-       if (removeButton) {
-           const encounterId = removeButton.closest('.encounter-block').dataset.id;
-           const encounterIndex = activeEncounters.findIndex(e => e.id === encounterId);
-           if (encounterIndex === -1) return;
+        if (removeButton) {
+            const encounterId = removeButton.closest('.encounter-block').dataset.id;
+            const encounterIndex = activeEncounters.findIndex(e => e.id === encounterId);
+            if (encounterIndex === -1) return;
 
-           if (activeEncounters.length === 1) {
-               printToLog("Cannot remove the last encounter. Clear it instead.");
-               return;
-           }
+            if (activeEncounters.length === 1 && activeParty.length > 0) {
+                printToLog("Cannot remove the last encounter. Clear it instead.");
+                return;
+            }
 
-           activeEncounters.splice(encounterIndex, 1);
-           printToLog(`Removed Encounter ${encounterIndex + 1}.`);
+            activeEncounters.splice(encounterIndex, 1);
+            printToLog(`Removed Encounter ${encounterIndex + 1}.`);
 
-           // If we removed the actively edited encounter, set the new active one to the last in the list
-           if (currentlyEditingEncounterId === encounterId) {
-               currentlyEditingEncounterId = activeEncounters[activeEncounters.length - 1].id;
-           }
-           renderEncounterList();
-           return;
-       }
+            if (currentlyEditingEncounterId === encounterId) {
+                currentlyEditingEncounterId = null;
+            }
+            renderEncounterList();
+            return;
+        }
+    }
 
-       if (clearButton) {
-           const encounterId = clearButton.closest('.encounter-block').dataset.id;
-           const encounter = activeEncounters.find(e => e.id === encounterId);
-           if (!encounter) return;
+    function handleModalClearEncounter() {
+        const encounter = activeEncounters.find(e => e.id === currentlyEditingEncounterId);
+        if (!encounter) return;
 
-           encounter.adversaries = [];
-           encounter.environment = null;
-           encounter.bpModifier = 0;
-           printToLog(`Cleared Encounter ${activeEncounters.findIndex(e => e.id === encounterId) + 1}.`);
-           renderEncounterList();
-           return;
-       }
-   }
+        encounter.adversaries = [];
+        encounter.environment = null;
+        encounter.bpModifier = 0;
+        printToLog(`Cleared Encounter ${activeEncounters.findIndex(e => e.id === currentlyEditingEncounterId) + 1}.`);
+        renderModalContent();
+        renderEncounterList();
+    }
 
-   function handleClearAllEncounters() {
-       activeEncounters = [];
-       addEncounter(); // Adds a fresh 'Encounter 1' and sets it as active
-       printToLog("All encounters cleared.");
-   }
+    function handleClearAllEncounters() {
+        activeEncounters = [];
+        currentlyEditingEncounterId = null;
+        printToLog("All encounters cleared.");
+        renderEncounterList();
+    }
+
+    // --- NEW: Modal Display Functions ---
+
+    function openEncounterModal(encounterId) {
+        const encounter = activeEncounters.find(e => e.id === encounterId);
+        if (!encounter) {
+            printToLog(`--- ERROR --- Cannot find encounter ${encounterId}`);
+            return;
+        }
+
+        currentlyEditingEncounterId = encounterId;
+        document.getElementById('encounter-modal-title').innerText = `Editing: Encounter ${activeEncounters.findIndex(e => e.id === encounterId) + 1}`;
+        document.getElementById('modal-bp-modifier-input').value = encounter.bpModifier;
+
+        renderModalContent();
+
+        document.getElementById('encounter-modal-overlay').classList.remove('hidden');
+    }
+
+    function closeEncounterModal() {
+        currentlyEditingEncounterId = null;
+        document.getElementById('encounter-modal-overlay').classList.add('hidden');
+    }
+
+    function renderModalContent() {
+        const encounter = activeEncounters.find(e => e.id === currentlyEditingEncounterId);
+        const advListDiv = document.getElementById('modal-adversary-list');
+        const envListDiv = document.getElementById('modal-environment-list');
+        advListDiv.innerHTML = '';
+        envListDiv.innerHTML = '';
+
+        if (!encounter) return; // Should not happen if modal is open
+
+        encounter.adversaries.forEach(adv => {
+            advListDiv.innerHTML += `
+            <div class="scene-item" data-id="${adv.simId}">
+                <button class="move-button" title="Remove from Scene">&lt;</button>
+                <span class="agent-name">${adv.name} (Diff ${adv.difficulty})</span>
+            </div>
+            `;
+        });
+
+        if (encounter.environment) {
+            envListDiv.innerHTML = `
+            <div class="scene-item" data-id="${encounter.environment.simId}">
+                <button class="move-button" title="Remove from Scene">&lt;</button>
+                <span class="agent-name">${encounter.environment.name} (Diff ${encounter.environment.difficulty})</span>
+            </div>
+            `;
+        }
+    }
