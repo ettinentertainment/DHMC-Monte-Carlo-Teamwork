@@ -12,6 +12,7 @@ let activeEncounters = [
        bpModifier: 0 
    }
 ];
+let currentlyEditingEncounterId = activeEncounters[0] ? activeEncounters[0].id : null;
 let SRD_ADVERSARIES = [];
 let PREMADE_CHARACTERS = [];
 let PLACEHOLDER_ENVIRONMENTS = []; // NEW
@@ -79,8 +80,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // NEW: Listener for adding new encounters
    document.getElementById('add-encounter-button').addEventListener('click', addEncounter);
 
+   // NEW: Listener for clearing all encounters
+   document.getElementById('clear-all-encounters-button').addEventListener('click', handleClearAllEncounters);
+
    // NEW: Delegated listener for all encounter modifier inputs
    document.getElementById('scene-column').addEventListener('input', handleEncounterInput);
+
+   // NEW: Delegated listener for encounter buttons (edit, remove, clear)
+   document.getElementById('scene-column').addEventListener('click', handleEncounterClick);
     // Hide old visualize checkbox
     const visualizeToggle = document.getElementById('visualize-checkbox');
     if(visualizeToggle) visualizeToggle.style.display = 'none';
@@ -257,9 +264,9 @@ function handlePoolClick(event) {
     }
 
     // --- NEW Encounter-Aware Logic ---
-        const targetEncounter = activeEncounters[activeEncounters.length - 1];
+        const targetEncounter = activeEncounters.find(e => e.id === currentlyEditingEncounterId);
         if (!targetEncounter) {
-            printToLog("--- ERROR --- No active encounter to add to.");
+            printToLog("--- ERROR --- No encounter is selected for editing. Please click an encounter's 'Edit' button first.");
             return;
         }
 
@@ -447,6 +454,15 @@ function renderActiveParty() {
        const numPCs = activeParty.length;
        let cumulativeBudget = (numPCs > 0) ? (3 * numPCs) + 2 : 0;
 
+       if (activeEncounters.length === 0) {
+           addEncounter(); // Ensure there is always at least one encounter
+           return;
+       }
+
+       if (!currentlyEditingEncounterId || !activeEncounters.find(e => e.id === currentlyEditingEncounterId)) {
+           currentlyEditingEncounterId = activeEncounters[activeEncounters.length - 1].id;
+       }
+
        activeEncounters.forEach((encounter, index) => {
            let adversaryBP = 0;
            let adversaryHTML = '';
@@ -454,7 +470,7 @@ function renderActiveParty() {
 
            encounter.adversaries.forEach(adv => {
                adversaryHTML += `
-               <div class="scene-item" data-id="${adv.simId}" data-encounter-id="${encounter.id}">
+               <div class="scene-item" data-id="${adv.simId}">
                    <button class="move-button" title="Remove from Scene">&lt;</button>
                    <span class="agent-name">${adv.name} (Diff ${adv.difficulty})</span>
                </div>
@@ -472,7 +488,7 @@ function renderActiveParty() {
 
            if (encounter.environment) {
                environmentHTML = `
-               <div class="scene-item" data-id="${encounter.environment.simId}" data-encounter-id="${encounter.id}">
+               <div class="scene-item" data-id="${encounter.environment.simId}">
                    <button class="move-button" title="Remove from Scene">&lt;</button>
                    <span class="agent-name">${encounter.environment.name} (Diff ${encounter.environment.difficulty})</span>
                </div>
@@ -483,25 +499,33 @@ function renderActiveParty() {
            const totalSpentBP = adversaryBP + modifierBP;
            const currentBudget = (index === 0) ? cumulativeBudget : cumulativeBudget;
            const remainingBudget = currentBudget - totalSpentBP;
+           const isEditingClass = (encounter.id === currentlyEditingEncounterId) ? 'editing' : '';
 
            const encounterBlockHTML = `
            <details class="encounter-block" data-id="${encounter.id}" open>
-               <summary class="encounter-summary">
-                   Encounter ${index + 1}
-                   <span class="battlepoint-display">(Spent: ${totalSpentBP} / Budget: ${currentBudget})</span>
+               <summary class="encounter-summary ${isEditingClass}">
+                   <span>Encounter ${index + 1}</span>
+                   <div class="encounter-summary-controls">
+                       <span class="battlepoint-display">(Spent: ${totalSpentBP} / Budget: ${currentBudget})</span>
+                       <button class="move-button edit-encounter-btn" title="Edit Encounter">✎</button>
+                       <button class="move-button remove-encounter-btn" title="Remove Encounter">X</button>
+                   </div>
                </summary>
                <div class="encounter-content">
                    <div class="pool-container">
                        <h4>Active Adversaries</h4>
                        <div class="agent-list">${adversaryHTML}</div>
                    </div>
-                   <div class="modifier-input-container">
-                       <label for="bp-modifier-${encounter.id}">BP Adjustment:</label>
-                       <input type="number" class="bp-modifier-input" id="bp-modifier-${encounter.id}" data-encounter-id="${encounter.id}" value="${modifierBP}">
-                   </div>
                    <div class="pool-container">
                        <h4>Active Environment</h4>
                        <div class="agent-list">${environmentHTML}</div>
+                   </div>
+                   <div class="encounter-controls">
+                       <div class="modifier-input-container">
+                           <label for="bp-modifier-${encounter.id}">BP Adjustment:</label>
+                           <input type="number" class="bp-modifier-input" id="bp-modifier-${encounter.id}" data-encounter-id="${encounter.id}" value="${modifierBP}">
+                       </div>
+                       <button class="clear-encounter-btn">Clear Encounter</button>
                    </div>
                </div>
            </details>
@@ -513,12 +537,14 @@ function renderActiveParty() {
 
    function addEncounter() {
        const newId = `enc-${Date.now()}`;
-       activeEncounters.push({
+       const newEncounter = {
            id: newId,
            adversaries: [],
            environment: null,
            bpModifier: 0
-       });
+       };
+       activeEncounters.push(newEncounter);
+       currentlyEditingEncounterId = newId; // NEW: Set new encounter as active
        printToLog(`Added Encounter ${activeEncounters.length}.`);
        renderEncounterList();
    }
@@ -2242,3 +2268,57 @@ function renderBattlemap(gameState) {
             }
         }
     }
+
+function handleEncounterClick(event) {
+       const editButton = event.target.closest('.edit-encounter-btn');
+       const removeButton = event.target.closest('.remove-encounter-btn');
+       const clearButton = event.target.closest('.clear-encounter-btn');
+
+       if (editButton) {
+           const encounterId = editButton.closest('.encounter-block').dataset.id;
+           currentlyEditingEncounterId = encounterId;
+           printToLog(`Editing Encounter ${activeEncounters.findIndex(e => e.id === encounterId) + 1}.`);
+           renderEncounterList();
+           return;
+       }
+
+       if (removeButton) {
+           const encounterId = removeButton.closest('.encounter-block').dataset.id;
+           const encounterIndex = activeEncounters.findIndex(e => e.id === encounterId);
+           if (encounterIndex === -1) return;
+
+           if (activeEncounters.length === 1) {
+               printToLog("Cannot remove the last encounter. Clear it instead.");
+               return;
+           }
+
+           activeEncounters.splice(encounterIndex, 1);
+           printToLog(`Removed Encounter ${encounterIndex + 1}.`);
+
+           // If we removed the actively edited encounter, set the new active one to the last in the list
+           if (currentlyEditingEncounterId === encounterId) {
+               currentlyEditingEncounterId = activeEncounters[activeEncounters.length - 1].id;
+           }
+           renderEncounterList();
+           return;
+       }
+
+       if (clearButton) {
+           const encounterId = clearButton.closest('.encounter-block').dataset.id;
+           const encounter = activeEncounters.find(e => e.id === encounterId);
+           if (!encounter) return;
+
+           encounter.adversaries = [];
+           encounter.environment = null;
+           encounter.bpModifier = 0;
+           printToLog(`Cleared Encounter ${activeEncounters.findIndex(e => e.id === encounterId) + 1}.`);
+           renderEncounterList();
+           return;
+       }
+   }
+
+   function handleClearAllEncounters() {
+       activeEncounters = [];
+       addEncounter(); // Adds a fresh 'Encounter 1' and sets it as active
+       printToLog("All encounters cleared.");
+   }
