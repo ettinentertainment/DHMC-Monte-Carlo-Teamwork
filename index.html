@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daggerheart Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Daggerheart Monte Carlo Simulator</h1>
+        <div class="sim-controls">
+            <label for="visualize-checkbox">
+                <input type="checkbox" id="visualize-checkbox">
+                Visualize Sim?
+            </label>
+        </div>
+    </header>
+    
+    <div class="simulator-layout">
+        <div class="layout-column" id="input-column">
+            <h3><span class="col-number">1</span> Add to Pool (Manual)</h3>
+            <div class="json-input-box">
+                <label for="character-json">Paste Player JSON:</label>
+                <textarea id="character-json" rows="6" placeholder="Paste player JSON here..."></textarea>
+                <div class="button-row">
+                    <button id="add-character-button" class="add-button">Add Player to Pool</button>
+                </div>
+            </div>
+            <div class="json-input-box">
+                <label for="adversary-json">Paste Adversary JSON:</label>
+                <textarea id="adversary-json" rows="6" placeholder="Paste adversary JSON here..."></textarea>
+                <div class="button-row">
+                    <button id="add-adversary-button" class="add-button">Add Adversary to Pool</button>
+                </div>
+            </div>
+            <div class="json-input-box">
+                <label for="environment-json">Paste Environment JSON:</label>
+                <textarea id="environment-json" rows="6" placeholder="Paste environment JSON here..."></textarea>
+                <div class="button-row">
+                    <button id="add-environment-button" class="add-button">Add Environment to Pool</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layout-column" id="pool-column">
+            <h3><span class="col-number">2</span> Staging Pool (Library)</h3>
+            <div class="pool-container">
+                <div class="pool-header">
+                    <h4>Player Pool</h4>
+                    <div class="pool-filters">
+                        <select id="pc-pool-class-filter">
+                            <option value="all">All Classes</option>
+                            <option value="Bard">Bard</option>
+                            <option value="Druid">Druid</option>
+                            <option value="Guardian">Guardian</option>
+                            <option value="Ranger">Ranger</option>
+                            <option value="Rogue">Rogue</option>
+                            <option value="Seraph">Seraph</option>
+                            <option value="Sorcerer">Sorcerer</option>
+                            <option value="Warrior">Warrior</option>
+                            <option value="Wizard">Wizard</option>
+                        </select>
+                        <select id="pc-pool-level-filter">
+                            <option value="all">All Levels</option>
+                            <option value="1">Lvl 1</option>
+                            <option value="2">Lvl 2</option>
+                            <option value="3">Lvl 3</option>
+                            <option value="4">Lvl 4</option>
+                            <option value="5">Lvl 5</option>
+                            <option value="6">Lvl 6</option>
+                            <option value="7">Lvl 7</option>
+                            <option value="8">Lvl 8</option>
+                            <option value="9">Lvl 9</option>
+                            <option value="10">Lvl 10</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="player-pool-list" class="agent-list"></div>
+            </div>
+            <div class="pool-container">
+                <div class="pool-header">
+                    <h4>Adversary Pool</h4>
+                    <div class="pool-filters">
+                        <select id="adv-pool-tier-filter">
+                            <option value="all">All Tiers</option>
+                            <option value="1">Tier 1</option>
+                            <option value="2">Tier 2</option>
+                            <option value="3">Tier 3</option>
+                            <option value="4">Tier 4</option>
+                        </select>
+                        <select id="adv-pool-type-filter">
+                            <option value="all">All Types</option>
+                            <option value="Bruiser">Bruiser</option>
+                            <option value="Horde">Horde</option>
+                            <option value="Leader">Leader</option>
+                            <option value="Minion">Minion</option>
+                            <option value="Ranged">Ranged</option>
+                            <option value="Skulk">Skulk</option>
+                            <option value="Social">Social</option>
+                            <option value="Solo">Solo</option>
+                            <option value="Standard">Standard</option>
+                            <option value="Support">Support</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="adversary-pool-list" class="agent-list"></div>
+            </div>
+            <div class="pool-container">
+                <div class="pool-header">
+                    <h4>Environment Pool</h4>
+                </div>
+                <div id="environment-pool-list" class="agent-list"></div>
+            </div>
+        </div>
+
+        <div class="layout-column" id="scene-column">
+            <h3><span class="col-number">3</span> Active Scene (for Sim)</h3>
+            <div class="pool-container">
+                <h4>Active Party</h4>
+                <div id="active-party-list" class="agent-list"></div>
+            </div>
+            <div class="pool-container">
+                <h4>Active Adversaries <span id="battlepoint-display">(Spent: 0 / Budget: 0)</span></h4>
+                <div id="active-adversary-list" class="agent-list"></div>
+                <div class="modifier-input-container">
+                    <label for="bp-modifier-input">BP Adjustment:</label>
+                    <input type="number" id="bp-modifier-input" value="0">
+                </div>
+            </div>
+            <div class="pool-container">
+                <div class="pool-header">
+                    <h4>Active Environment</h4>
+                </div>
+                <div id="active-environment" class="agent-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="output-area">
+        <div class="log-container full-width" id="log-container">
+            <div class="log-header">
+                <h3>Simulation Log:</h3>
+                <div class="controls-main">
+                    <button id="run-button" class="action-button">Run Simulation</button>
+                    <button id="run-multiple-button" class="action-button">Run 5 Sims</button>
+                    <button id="run-ten-button" class="action-button">Run 10 Sims</button>
+                    <button id="playback-button" class="action-button" disabled>Play Back Last Sim</button>
+                    <button id="export-log-button" class="action-button">Export Log</button>
+                </div>
+            </div>
+            <div id="log-output"></div>
+        </div>
+
+        <div class="visualizer-container hidden" id="visualizer-container">
+            <div class="visualizer-header">
+                <h3>Battle Map</h3>
+                <div class="map-controls">
+                    <label for="map-size-select">Map Size:</label>
+                    <select id="map-size-select">
+                        <option value="large">Large (30x30)</option>
+                        <option value="medium">Medium (20x20)</option>
+                        <option value="small">Small (15x15)</option>
+                    </select>
+                </div>
+            </div>
+            <div id="battlemap-grid">
+                </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
