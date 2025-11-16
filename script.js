@@ -7,6 +7,7 @@ let activeParty = [];
 // NEW STATE: Replaces activeAdversaries and activeEnvironment
 let activeEncounters = []; // Starts empty
 let currentlyEditingEncounterId = null; // No encounter selected by default
+let currentPickerMode = 'adversary'; // To track what the picker is for
 
 let SRD_ADVERSARIES = [];
 let PREMADE_CHARACTERS = [];
@@ -81,13 +82,26 @@ document.addEventListener('DOMContentLoaded', () => {
    // REVISED: Now listens for clicks on the main scene column (for edit/remove)
    document.getElementById('scene-column').addEventListener('click', handleSceneColumnClick);
 
-   // NEW: Listeners for modal controls
+   // --- NEW Modal Listeners ---
+   // Encounter Editor Modal
    document.getElementById('encounter-modal-close').addEventListener('click', closeEncounterModal);
    document.getElementById('encounter-modal-overlay').addEventListener('click', (e) => {
        if (e.target.id === 'encounter-modal-overlay') closeEncounterModal();
    });
    document.getElementById('modal-clear-encounter-btn').addEventListener('click', handleModalClearEncounter);
    document.getElementById('modal-bp-modifier-input').addEventListener('input', handleEncounterInput);
+   document.getElementById('modal-add-adversary-btn').addEventListener('click', () => openAgentPicker('adversary'));
+   document.getElementById('modal-add-environment-btn').addEventListener('click', () => openAgentPicker('environment'));
+
+   // Agent Picker Modal
+   document.getElementById('agent-picker-close').addEventListener('click', closeAgentPicker);
+   document.getElementById('agent-picker-overlay').addEventListener('click', (e) => {
+       if (e.target.id === 'agent-picker-overlay') closeAgentPicker();
+   });
+   document.getElementById('agent-picker-list').addEventListener('click', handleAgentPickerClick);
+
+   // Agent Picker Filters (moved from renderPools)
+   document.getElementById('agent-picker-filters').addEventListener('change', renderAgentPickerList);
     // Hide old visualize checkbox
     const visualizeToggle = document.getElementById('visualize-checkbox');
     if(visualizeToggle) visualizeToggle.style.display = 'none';
@@ -97,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initial Renders
     renderActiveParty();
-    renderEncounterList(); // REPLACES renderActiveEnvironment()
     initializeBattlemap();
 });
 
@@ -260,41 +273,8 @@ function handlePoolClick(event) {
         renderActiveParty(); // This will also re-render encounter list
         return;
     }
-
-    // --- NEW Modal-Aware Logic ---\n       if (!currentlyEditingEncounterId) {
-       if (!currentlyEditingEncounterId) {
-           printToLog("--- ERROR --- Please select an encounter to 'Edit' before adding agents.");
-           return;
-       }
-       const targetEncounter = activeEncounters.find(e => e.id === currentlyEditingEncounterId);
-       if (!targetEncounter) {
-           printToLog(`--- ERROR --- Could not find encounter ${currentlyEditingEncounterId}.`);
-           return;
-       }
-
-       let agentTemplate = adversaryPool.find(a => a.simId === agentId);
-       if (agentTemplate) {
-           const newAgentInstance = JSON.parse(JSON.stringify(agentTemplate));
-           newAgentInstance.simId = `adv-instance-${Date.now()}-${Math.random()}`; 
-           targetEncounter.adversaries.push(newAgentInstance);
-           printToLog(`Copied ${newAgentInstance.name} to Encounter ${activeEncounters.findIndex(e => e.id === currentlyEditingEncounterId) + 1}.`);
-           renderModalContent(); // Re-render modal
-           renderEncounterList(); // Re-render summary list
-           return;
-       }
-
-       // Environment Pool
-       let envTemplate = environmentPool.find(e => e.simId === agentId);
-       if (envTemplate) {
-           const newEnvInstance = JSON.parse(JSON.stringify(envTemplate));
-           newEnvInstance.simId = `env-instance-${Date.now()}-${Math.random()}`;
-           targetEncounter.environment = newEnvInstance; 
-           printToLog(`Set Environment for Encounter ${activeEncounters.findIndex(e => e.id === currentlyEditingEncounterId) + 1} to: ${newEnvInstance.name}.`);
-           renderModalContent(); // Re-render modal
-           renderEncounterList(); // Re-render summary list
-           return;
-       }
-   }
+    // All other logic is removed and moved to the agent picker
+}
 
 function handleSceneClick(event) {
     const target = event.target;
@@ -314,31 +294,8 @@ function handleSceneClick(event) {
             return;
         }
     }
-
-    // Check Modal Lists (Adversaries and Environments)
-    if (target.closest('#encounter-modal-content')) {
-        const encounter = activeEncounters.find(e => e.id === currentlyEditingEncounterId);
-        if (!encounter) return;
-
-        // Check Adversaries in this encounter
-        let adversaryIndex = encounter.adversaries.findIndex(a => a.simId === agentId);
-        if (adversaryIndex > -1) {
-            const agent = encounter.adversaries.splice(adversaryIndex, 1)[0];
-            printToLog(`Removed ${agent.name} from encounter.`);
-            renderModalContent();
-            renderEncounterList();
-            return;
-        }
-
-        // Check Environment in this encounter
-        if (encounter.environment && encounter.environment.simId === agentId) {
-            printToLog(`Removed ${encounter.environment.name} from encounter.`);
-            encounter.environment = null;
-            renderModalContent();
-            renderEncounterList();
-            return;
-        }
-    }
+    
+    // All other logic is moved to modal/scene column handlers
 }
 
 // --- DYNAMIC UI RENDERING ---
@@ -352,14 +309,18 @@ function renderPools() {
     // 1. Get Filter Values
     const pcClassFilter = document.getElementById('pc-pool-class-filter').value;
     const pcLevelFilter = document.getElementById('pc-pool-level-filter').value;
-    const advTierFilter = document.getElementById('adv-pool-tier-filter').value;
-    const advTypeFilter = document.getElementById('adv-pool-type-filter').value;
+    
+    // We get filter values for adversaries from the *picker modal* now
+    const advTierFilterEl = document.getElementById('adv-pool-tier-filter');
+    const advTypeFilterEl = document.getElementById('adv-pool-type-filter');
+    const advTierFilter = advTierFilterEl ? advTierFilterEl.value : 'all';
+    const advTypeFilter = advTypeFilterEl ? advTypeFilterEl.value : 'all';
 
     // 2. Filter Player Pool
     const filteredPlayers = playerPool.filter(char => {
         const isManual = !char.class || !char.level;
         if (isManual) {
-            return (pcClassFilter === 'all' && pcLevelFilter === 'all'); // Only show manual adds if no filter
+            return (pcClassFilter === 'all' && pcLevelFilter === 'all');
         }
         const classMatch = (pcClassFilter === 'all' || char.class.name === pcClassFilter);
         const levelMatch = (pcLevelFilter === 'all' || char.level == pcLevelFilter);
@@ -370,14 +331,14 @@ function renderPools() {
     const filteredAdversaries = adversaryPool.filter(adv => {
         const isManual = !adv.tier || !adv.type;
         if (isManual) {
-             return (advTierFilter === 'all' && advTypeFilter === 'all'); // Only show manual adds if no filter
+             return (advTierFilter === 'all' && advTypeFilter === 'all'); 
         }
         const tierMatch = (advTierFilter === 'all' || adv.tier == advTierFilter);
         const typeMatch = (advTypeFilter === 'all' || adv.type === advTypeFilter);
         return tierMatch && typeMatch;
     });
 
-    // 4. Render Filtered Players
+    // 4. Render Filtered Players (with add button)
     filteredPlayers.forEach(char => {
         const level = char.level || 'Custom';
         const className = char.class?.name || 'JSON';
@@ -391,11 +352,11 @@ function renderPools() {
         `;
     });
 
-    // 5. Render Filtered Adversaries
+    // 5. Render Filtered Adversaries (READ-ONLY)
     filteredAdversaries.forEach(adv => {
         const difficulty = adv.difficulty || 'N/A';
         const complexity = getAdversaryComplexity(adv);
-        const complexityStars = renderComplexityStars(complexity); // Get stars
+        const complexityStars = renderComplexityStars(complexity); 
         let features = "No features listed.";
         if (adv.features && adv.features.length > 0) {
              features = adv.features.map(f => `• ${f.name} (${f.type})`).join('\n');
@@ -405,7 +366,7 @@ function renderPools() {
         <div class="pool-item" data-id="${adv.simId}" title="${features}">
             <span class="agent-name">${adv.name} (Diff ${difficulty}) ${complexityStars}</span>
             <div class="pool-item-controls">
-                <button class="move-button" title="Add to Active Scene">&gt;</button>
+                
             </div>
         </div>
         `;
@@ -416,6 +377,33 @@ function renderPools() {
     }
     if (filteredAdversaries.length === 0 && adversaryPool.length > 0) {
         adversaryListDiv.innerHTML = `<div class="pool-item"><span>No adversaries match filters.</span></div>`;
+    }
+
+    // 6. NEW: Populate the Agent Picker Filters HTML
+    const pickerFilters = document.getElementById('agent-picker-filters');
+    if (pickerFilters && !pickerFilters.innerHTML) { // Only populate once
+        pickerFilters.innerHTML = `
+            <select id="adv-pool-tier-filter">
+                <option value="all">All Tiers</option>
+                <option value="1">Tier 1</option>
+                <option value="2">Tier 2</option>
+                <option value="3">Tier 3</option>
+                <option value="4">Tier 4</option>
+            </select>
+            <select id="adv-pool-type-filter">
+                <option value="all">All Types</option>
+                <option value="Bruiser">Bruiser</option>
+                <option value="Horde">Horde</option>
+                <option value="Leader">Leader</option>
+                <option value="Minion">Minion</option>
+                <option value="Ranged">Ranged</option>
+                <option value="Skulk">Skulk</option>
+                <option value="Social">Social</option>
+                <option value="Solo">Solo</option>
+                <option value="Standard">Standard</option>
+                <option value="Support">Support</option>
+            </select>
+        `;
     }
 }
 
@@ -472,6 +460,7 @@ function renderActiveParty() {
 
        if (activeEncounters.length === 0) {
            encounterListDiv.innerHTML = `<div class="empty-list-message">Click 'Add Encounter' to start.</div>`;
+           return;
        }
 
        const numPCs = activeParty.length;
@@ -498,9 +487,11 @@ function renderActiveParty() {
 
            // NEW: BP Color logic
            let bpClass = 'bp-under'; // Yellow (default)
+           const percentUsed = currentBudget > 0 ? totalSpentBP / currentBudget : 0;
+
            if (totalSpentBP > currentBudget) {
                bpClass = 'bp-over'; // Red
-           } else if (totalSpentBP === currentBudget && totalSpentBP > 0) {
+           } else if (percentUsed >= 0.9 || totalSpentBP === currentBudget) {
                bpClass = 'bp-on'; // Green
            }
 
@@ -514,7 +505,6 @@ function renderActiveParty() {
                        <button class="move-button remove-encounter-btn" title="Remove Encounter">X</button>
                    </div>
                </summary>
-               
            </details>
            `;
            encounterListDiv.innerHTML += encounterRowHTML;
@@ -535,7 +525,6 @@ function renderActiveParty() {
            bpModifier: 0
        };
        activeEncounters.push(newEncounter);
-       currentlyEditingEncounterId = newId; // Set new encounter as active
        printToLog(`Added Encounter ${activeEncounters.length}.`);
        renderEncounterList();
        openEncounterModal(newId); // NEW: Open modal for the new encounter
@@ -2278,7 +2267,7 @@ function renderBattlemap(gameState) {
             const encounterIndex = activeEncounters.findIndex(e => e.id === encounterId);
             if (encounterIndex === -1) return;
 
-            if (activeEncounters.length === 1 && activeParty.length > 0) {
+            if (activeEncounters.length === 1) {
                 printToLog("Cannot remove the last encounter. Clear it instead.");
                 return;
             }
@@ -2362,4 +2351,109 @@ function renderBattlemap(gameState) {
             </div>
             `;
         }
+    }
+
+    // --- NEW: Agent Picker Functions ---
+
+    function openAgentPicker(mode) {
+        currentPickerMode = mode;
+        document.getElementById('agent-picker-title').innerText = (mode === 'adversary') ? 'Select Adversary' : 'Select Environment';
+        
+        // Show/hide relevant filters
+        const advFilters = document.getElementById('agent-picker-filters');
+        if (mode === 'adversary') {
+            advFilters.style.display = 'flex';
+        } else {
+            advFilters.style.display = 'none'; // No filters for environments yet
+        }
+
+        renderAgentPickerList();
+        document.getElementById('encounter-modal-overlay').classList.add('hidden');
+        document.getElementById('agent-picker-overlay').classList.remove('hidden');
+    }
+
+    function closeAgentPicker() {
+        document.getElementById('agent-picker-overlay').classList.add('hidden');
+        document.getElementById('encounter-modal-overlay').classList.remove('hidden');
+    }
+
+    function renderAgentPickerList() {
+        const listDiv = document.getElementById('agent-picker-list');
+        listDiv.innerHTML = '';
+
+        if (currentPickerMode === 'adversary') {
+            const advTierFilter = document.getElementById('adv-pool-tier-filter').value;
+            const advTypeFilter = document.getElementById('adv-pool-type-filter').value;
+
+            const filteredAdversaries = adversaryPool.filter(adv => {
+                const isManual = !adv.tier || !adv.type;
+                if (isManual) return (advTierFilter === 'all' && advTypeFilter === 'all');
+                const tierMatch = (advTierFilter === 'all' || adv.tier == advTierFilter);
+                const typeMatch = (advTypeFilter === 'all' || adv.type === advTypeFilter);
+                return tierMatch && typeMatch;
+            });
+
+            filteredAdversaries.forEach(adv => {
+                const difficulty = adv.difficulty || 'N/A';
+                const complexity = getAdversaryComplexity(adv);
+                const complexityStars = renderComplexityStars(complexity);
+                listDiv.innerHTML += `
+                <div class="pool-item" data-id="${adv.simId}">
+                    <span class="agent-name">${adv.name} (Diff ${difficulty}) ${complexityStars}</span>
+                    <div class="pool-item-controls">
+                        <button class="move-button" title="Add to Encounter">&gt;</button>
+                    </div>
+                </div>
+                `;
+            });
+        } else if (currentPickerMode === 'environment') {
+            environmentPool.forEach(env => {
+                listDiv.innerHTML += `
+                <div class="pool-item" data-id="${env.simId}">
+                    <span class="agent-name">${env.name} (Diff ${env.difficulty})</span>
+                    <div class="pool-item-controls">
+                        <button class="move-button" title="Set as Active Environment">&gt;</button>
+                    </div>
+                </div>
+                `;
+            });
+        }
+    }
+
+    function handleAgentPickerClick(event) {
+        const target = event.target;
+        if (!target.closest('button.move-button')) return; 
+        const agentItem = target.closest('.pool-item');
+        if (!agentItem) return;
+        const agentId = agentItem.dataset.id;
+        if (!agentId) return; 
+
+        const targetEncounter = activeEncounters.find(e => e.id === currentlyEditingEncounterId);
+        if (!targetEncounter) {
+            printToLog("--- ERROR --- No encounter selected.");
+            closeAgentPicker();
+            return;
+        }
+
+        if (currentPickerMode === 'adversary') {
+            let agentTemplate = adversaryPool.find(a => a.simId === agentId);
+            if (agentTemplate) {
+                const newAgentInstance = JSON.parse(JSON.stringify(agentTemplate));
+                newAgentInstance.simId = `adv-instance-${Date.now()}-${Math.random()}`; 
+                targetEncounter.adversaries.push(newAgentInstance);
+                printToLog(`Copied ${newAgentInstance.name} to encounter.`);
+            }
+        } else if (currentPickerMode === 'environment') {
+            let envTemplate = environmentPool.find(e => e.id === agentId);
+            if (envTemplate) {
+                const newEnvInstance = JSON.parse(JSON.stringify(envTemplate));
+                newEnvInstance.simId = `env-instance-${Date.now()}-${Math.random()}`;
+                targetEncounter.environment = newEnvInstance; 
+                printToLog(`Set Environment for encounter to: ${newEnvInstance.name}.`);
+            }
+        }
+
+        renderModalContent();
+        renderEncounterList();
+        closeAgentPicker();
     }
