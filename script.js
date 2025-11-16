@@ -70,8 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Pool Filter Listeners
     document.getElementById('pc-pool-class-filter').addEventListener('change', renderPools);
     document.getElementById('pc-pool-level-filter').addEventListener('change', renderPools);
-    document.getElementById('adv-pool-tier-filter').addEventListener('change', renderPools);
-    document.getElementById('adv-pool-type-filter').addEventListener('change', renderPools);
 
     // NEW: Listener for adding new encounters
    document.getElementById('add-encounter-button').addEventListener('click', addEncounter);
@@ -306,15 +304,9 @@ function renderPools() {
     playerListDiv.innerHTML = '';
     adversaryListDiv.innerHTML = '';
 
-    // 1. Get Filter Values
+    // 1. Get Filter Values for Players (from Column 2)
     const pcClassFilter = document.getElementById('pc-pool-class-filter').value;
     const pcLevelFilter = document.getElementById('pc-pool-level-filter').value;
-    
-    // We get filter values for adversaries from the *picker modal* now
-    const advTierFilterEl = document.getElementById('adv-pool-tier-filter');
-    const advTypeFilterEl = document.getElementById('adv-pool-type-filter');
-    const advTierFilter = advTierFilterEl ? advTierFilterEl.value : 'all';
-    const advTypeFilter = advTypeFilterEl ? advTypeFilterEl.value : 'all';
 
     // 2. Filter Player Pool
     const filteredPlayers = playerPool.filter(char => {
@@ -327,18 +319,7 @@ function renderPools() {
         return classMatch && levelMatch;
     });
 
-    // 3. Filter Adversary Pool
-    const filteredAdversaries = adversaryPool.filter(adv => {
-        const isManual = !adv.tier || !adv.type;
-        if (isManual) {
-             return (advTierFilter === 'all' && advTypeFilter === 'all'); 
-        }
-        const tierMatch = (advTierFilter === 'all' || adv.tier == advTierFilter);
-        const typeMatch = (advTypeFilter === 'all' || adv.type === advTypeFilter);
-        return tierMatch && typeMatch;
-    });
-
-    // 4. Render Filtered Players (with add button)
+    // 3. Render Filtered Players (with add button)
     filteredPlayers.forEach(char => {
         const level = char.level || 'Custom';
         const className = char.class?.name || 'JSON';
@@ -352,8 +333,8 @@ function renderPools() {
         `;
     });
 
-    // 5. Render Filtered Adversaries (READ-ONLY)
-    filteredAdversaries.forEach(adv => {
+    // 4. Render *All* Adversaries (READ-ONLY) - All filtering logic is removed from here.
+    adversaryPool.forEach(adv => {
         const difficulty = adv.difficulty || 'N/A';
         const complexity = getAdversaryComplexity(adv);
         const complexityStars = renderComplexityStars(complexity); 
@@ -372,14 +353,15 @@ function renderPools() {
         `;
     });
 
+    // 5. Handle Empty List Messages
     if (filteredPlayers.length === 0 && playerPool.length > 0) {
         playerListDiv.innerHTML = `<div class="pool-item"><span>No players match filters.</span></div>`;
     }
-    if (filteredAdversaries.length === 0 && adversaryPool.length > 0) {
-        adversaryListDiv.innerHTML = `<div class="pool-item"><span>No adversaries match filters.</span></div>`;
+    if (adversaryPool.length === 0) {
+        adversaryListDiv.innerHTML = `<div class="pool-item"><span>No adversaries to display.</span></div>`;
     }
 
-    // 6. NEW: Populate the Agent Picker Filters HTML
+    // 6. Populate the Agent Picker Filters HTML (This logic is correct and preserved)
     const pickerFilters = document.getElementById('agent-picker-filters');
     if (pickerFilters && !pickerFilters.innerHTML) { // Only populate once
         pickerFilters.innerHTML = `
@@ -2444,10 +2426,10 @@ function renderBattlemap(gameState) {
                 printToLog(`Copied ${newAgentInstance.name} to encounter.`);
             }
         } else if (currentPickerMode === 'environment') {
-            let envTemplate = environmentPool.find(e => e.id === agentId);
+            let envTemplate = environmentPool.find(e => e.simId === agentId);
             if (envTemplate) {
                 const newEnvInstance = JSON.parse(JSON.stringify(envTemplate));
-                newEnvInstance.simId = `env-instance-${Date.now()}-${Math.random()}`;
+                newEnvInstance.simId = `env-instance-${Date.now()}-${Math.random()}`;\
                 targetEncounter.environment = newEnvInstance; 
                 printToLog(`Set Environment for encounter to: ${newEnvInstance.name}.`);
             }
