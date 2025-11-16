@@ -304,7 +304,7 @@ function renderPools() {
     playerListDiv.innerHTML = '';
     adversaryListDiv.innerHTML = '';
 
-    // 1. Get Filter Values for Players (from Column 2)
+    // 1. Get Filter Values for Players (from Column 2) - This is correct.
     const pcClassFilter = document.getElementById('pc-pool-class-filter').value;
     const pcLevelFilter = document.getElementById('pc-pool-level-filter').value;
 
@@ -1569,7 +1569,7 @@ function executeParsedEffect(action, adversary, target, gameState) {
         case 'GAIN_FEAR':
             const fearValue = action.value || 1;
             simLog(` -> GM gains ${fearValue} Fear!`);
-            gameState.fear = Math.min(12, gameState.fear + fearValue);
+            gameState.fear = Math.min(12, gameState.fear + 1);
             simLog(` GM Fear: ${gameState.fear}`);
             break;
         
