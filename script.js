@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
    document.getElementById('agent-picker-list').addEventListener('click', handleAgentPickerClick);
 
    // Agent Picker Filters (moved from renderPools)
-   document.getElementById('agent-picker-filters').addEventListener('change', renderAgentPickerList);
+   // DELETED LINE: document.getElementById('agent-picker-filters').addEventListener('change', renderAgentPickerList);
     // Hide old visualize checkbox
     const visualizeToggle = document.getElementById('visualize-checkbox');
     if(visualizeToggle) visualizeToggle.style.display = 'none';
@@ -386,6 +386,8 @@ function renderPools() {
                 <option value="Support">Support</option>
             </select>
         `;
+        // ADDED LINE:
+        document.getElementById('agent-picker-filters').addEventListener('change', renderAgentPickerList);
     }
 }
 
@@ -852,7 +854,7 @@ function recordSnapshot(gameState, playbackLog) {
             id: a.id,
             name: a.name,
             current_hp: a.current_hp,
-            position: { ...a.position }
+            position: { ...p.position }
         }))
     };
     playbackLog.push(snapshot);
@@ -2327,7 +2329,7 @@ function renderBattlemap(gameState) {
 
         if (encounter.environment) {
             envListDiv.innerHTML = `
-            <div class="scene-item" data-id="${encounter.environment.simId}">
+            <div class-="scene-item" data-id="${encounter.environment.simId}">
                 <button class="move-button" title="Remove from Scene">&lt;</button>
                 <span class="agent-name">${encounter.environment.name} (Diff ${encounter.environment.difficulty})</span>
             </div>
