@@ -121,6 +121,7 @@ async function loadAndPopulateDatabases() {
     
     // After all are loaded, render pools
     renderPools(); // NEW
+    renderEnvironmentPool(); // NEW
 }
 
 async function loadSRDDatabase() {
@@ -332,7 +333,8 @@ function renderPools() {
         `;
     });
 
-    // 4. Render *All* Adversaries (READ-ONLY) - All filtering logic is removed from here.
+    // 4. Render *All* Adversaries (READ-ONLY)
+    // NOTE: Filters are now in the modal, so we render all.
     adversaryPool.forEach(adv => {
         const difficulty = adv.difficulty || 'N/A';
         const complexity = getAdversaryComplexity(adv);
@@ -352,12 +354,14 @@ function renderPools() {
         `;
     });
 
+    // 5. Handle Empty List Message
+    if (adversaryPool.length === 0) {
+        adversaryListDiv.innerHTML = `<div class="pool-item"><span>No adversaries to display.</span></div>`;
+    }
+
     // 5. Handle Empty List Messages
     if (filteredPlayers.length === 0 && playerPool.length > 0) {
         playerListDiv.innerHTML = `<div class="pool-item"><span>No players match filters.</span></div>`;
-    }
-    if (adversaryPool.length === 0) {
-        adversaryListDiv.innerHTML = `<div class="pool-item"><span>No adversaries to display.</span></div>`;
     }
 
     // 6. Populate the Agent Picker Filters HTML (This logic is correct and preserved)
