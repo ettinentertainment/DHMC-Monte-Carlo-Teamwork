@@ -1280,17 +1280,5 @@ function simLog(message) {
     BATCH_LOG.push(message);
 }
 
-// printToLog(message, className) prints text to the *actual* UI
-function printToLog(message, className = null) {
-    const logOutput = document.getElementById('log-output');
-    if (logOutput) {
-        const el = document.createElement('div');
-        if (className) {
-            el.className = className;
-        }
-        el.innerText = message; // Use innerText to preserve line breaks from scoreboard
-        logOutput.appendChild(el);
-        logOutput.scrollTop = logOutput.scrollHeight; 
-    }
-}
-// --- *** END NEW LOGGING SYSTEM *** ---
+
+
