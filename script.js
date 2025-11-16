@@ -108,8 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderActiveParty();
     initializeBattlemap();
 
-    // Load data *after* UI is built
-    loadAndPopulateDatabases(); // <-- MOVED THIS LINE
 });
 
 // --- DATA & POOL MANAGEMENT ---
