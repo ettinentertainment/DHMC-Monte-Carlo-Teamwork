@@ -105,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Load all data
     // Initial Renders
-    renderPools(); // <-- ADD THIS LINE
     renderActiveParty();
     initializeBattlemap();
 
