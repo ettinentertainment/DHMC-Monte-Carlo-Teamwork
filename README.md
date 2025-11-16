@@ -1,4 +1,4 @@
-\# Daggerheart Monte Carlo Simulator
+ Daggerheart Monte Carlo Simulator
 
 
 
@@ -6,7 +6,7 @@ This project is a conflict simulator for the Daggerheart TTRPG, designed to run 
 
 
 
-\## Project Architecture
+Project Architecture
 
 
 
@@ -22,7 +22,7 @@ This project is a conflict simulator for the Daggerheart TTRPG, designed to run 
 
 
 
-\## Development Roadmap
+Development Roadmap
 
 
 
@@ -38,3 +38,4 @@ This project is a conflict simulator for the Daggerheart TTRPG, designed to run 
 
 \- \[ ] \*\*Step 6: The Combat Loop.\*\*
 
+Scarius Wuz Here
