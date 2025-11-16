@@ -99,17 +99,18 @@ document.addEventListener('DOMContentLoaded', () => {
    document.getElementById('agent-picker-list').addEventListener('click', handleAgentPickerClick);
 
    // Agent Picker Filters (moved from renderPools)
-   // DELETED LINE: document.getElementById('agent-picker-filters').addEventListener('change', renderAgentPickerList);
     // Hide old visualize checkbox
     const visualizeToggle = document.getElementById('visualize-checkbox');
     if(visualizeToggle) visualizeToggle.style.display = 'none';
     
     // Load all data
-    loadAndPopulateDatabases();
-    
     // Initial Renders
+    renderPools(); // <-- ADD THIS LINE
     renderActiveParty();
     initializeBattlemap();
+
+    // Load data *after* UI is built
+    loadAndPopulateDatabases(); // <-- MOVED THIS LINE
 });
 
 // --- DATA & POOL MANAGEMENT ---
@@ -120,8 +121,7 @@ async function loadAndPopulateDatabases() {
     await loadEnvironmentDatabase(); // NEW
     
     // After all are loaded, render pools
-    renderPools();
-    renderEnvironmentPool(); // NEW
+    renderPools(); // NEW
 }
 
 async function loadSRDDatabase() {
