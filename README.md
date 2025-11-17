@@ -1,40 +1,46 @@
-\# Daggerheart Monte Carlo Simulator
+Vercel preview location: https://dhmc-monte-carlo-teamwork-e-git-31f9ad-ettins-projects-831471cc.vercel.app/
+
+Stack - Frontend: HTML & CSS, Backend: Javascript, Deployment: Github & Vercel
+
+index.html - controls webpage html markdown
+style.css - Handles webpage css for colors, fonts, positioning, etc
+sim-core.js - handles global variables, instantiation of player and adversary agents, and helper functions
+sim-engine.js - Handles the AI brain for Sim Logic
+ui-controller.js - handles data loading, pool rendering, UI rendering, event listeners, pool filters, modal listeners
+
+
+To RUN locally: 
+- Download this branches zip file and extract it.
+- Open the extracted file in Visual Studio.
+- Download Visual Studio extension "Live Server" by Ritwick Dewy.
+- Select the index.html file in the explorer window.
+- Right click index.html and select Open With Live Server.
+- A browser will open on a local port.
+- The browser will auto refresh on each file save allowing you to preview/interact with the program.
 
 
 
-This project is a conflict simulator for the Daggerheart TTRPG, designed to run Monte Carlo simulations to test adventure and encounter balance.
+-----TO DO-----
 
+- GM settings panel (manually adjust fear, scale adversary resource usage, etc.)
+- New workflow for concurrent encounters (New button after Sim competion to carry over fear and survivors?, gm gains 1d4 fear, players gain 1d4 hope? [simulates between battle rolls])
+- Modal for playback (pop out window to show map, battle summary/stats, playback speed, css to color certain headings in sim log [round start, etc])
+- Change map selection to be chosen before running sim
+- Verify JSON integrity of all players and adversaries
+- Create template JSON for each (adversary, player, environment) & have backend check Manual Add to pool JSONs against templates to ensure any loaded items will work properly in the ecosystem.
+- Make the Sim AI Brain more robust (account for actions, tactics, feature synergies. Allow for GM difficulty dial.)
+    - Spilt adversary Brain from Player Brain?
+- Build out environments for additional ways for GM to spend fear.
+- Implement Conditions.
 
+-----Known Issues-----
 
-\## Project Architecture
-
-
-
-1\.  \*\*Core Resolution Engine:\*\* Handles all Duality Dice (Hope/Fear) rolls.
-
-2\.  \*\*Agent Data Models (JSON):\*\* The `.json` files for Characters, Adversaries, and Environments.
-
-3\.  \*\*The "Brain" (Simulation Agents):\*\* Code that reads the `.json` files and makes decisions (e.g., `PC\_Agent`, `GM\_Agent`).
-
-4\.  \*\*Action \& Ability Lexicon:\*\* A library of all the rules (cards, features) so the code can understand them.
-
-5\.  \*\*Simulation Runner:\*\* The main loop that runs the combat.
-
-
-
-\## Development Roadmap
-
-
-
-\- \[X] \*\*Step 1: Core Resolution Engine.\*\* Built the `CoreResolutionEngine` class.
-
-\- \[X] \*\*Step 2: Define Data Schemas.\*\* Created the first `monte.json` character sheet.
-
-\- \[X] \*\*Step 3: Build the PC Agent.\*\* Taught our "brain" how to read the character JSON.
-
-\- \[ ] \*\*Step 4: Build the GM \& Adversary Agents.\*\*
-
-\- \[ ] \*\*Step 5: The Action Lexicon.\*\*
-
-\- \[ ] \*\*Step 6: The Combat Loop.\*\*
-
+- Adversary thresholds broken in JSON
+    thresholds: {},           thresholds: {
+    severe: 10,         VS.   severe: 10, 
+    major:5                   major: 5
+                              }
+- Horde not adjusting BP when added to encounter builder
+- minions add 1 BP per minion opposed to the 1 minion per pc = 1 BP rule
+- adding from survivor pool to active party is occasionally blocked if fresh players are loaded into active party before attempting to move survivor
+- players auto gain 2 Hope on run sim (this is fine for one off encounters but inflates hope for multi encounters b4 rest
