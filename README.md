@@ -33,14 +33,15 @@ To RUN locally:
 - Build out environments for additional ways for GM to spend fear.
 - Implement Conditions.
 
+-----In Progress-----
+
+- Refactor to create data-driven action lexicon for Player Characters. (DONE?)
+- Data Model Refactor: Add Parsed Effects to PC Domain Cards (Completed All Domains: levels 1&2)
+- "Refactor: Convert Simulation Engine to Asynchronous Loop",
+
 -----Known Issues-----
 
-- Adversary thresholds broken in JSON
-    thresholds: {},           thresholds: {
-    severe: 10,         VS.   severe: 10, 
-    major:5                   major: 5
-                              }
 - Horde not adjusting BP when added to encounter builder
-- minions add 1 BP per minion opposed to the 1 minion per pc = 1 BP rule
 - adding from survivor pool to active party is occasionally blocked if fresh players are loaded into active party before attempting to move survivor
 - players auto gain 2 Hope on run sim (this is fine for one off encounters but inflates hope for multi encounters b4 rest
+- GM decides to spend FEAR for an additional spotlight even though all adversaries have acted this turn (GM loses fear even though action was not taken.)
