@@ -1,0 +1,1988 @@
+{
+  "Guardian": {
+    "name": "Guardian",
+    "spellcast_trait": "strength",
+    "description": "Defenders of their cohort, known for unshakeable fortitude.",
+    "classFeature": {
+      "id": "Frontline Tank",
+      "name": "Frontline Tank",
+      "type": "CLASS_FEATURE",
+      "tags": [
+        "Guardian",
+        "Hope Feature",
+        "Action"
+      ],
+      "description": "Spend 3 Hope to clear 2 Armor Slots.",
+      "range": "Self",
+      "cost": {
+        "type": "hope",
+        "value": 3
+      },
+      "effects": [
+        {
+          "type": "HEAL_TARGET",
+          "target": "SELF",
+          "resource": "armor_slots",
+          "value": 2
+        }
+      ]
+    },
+    "features": [
+      {
+        "id": "Unstoppable",
+        "name": "Unstoppable",
+        "type": "CLASS_FEATURE",
+        "tags": [
+          "Guardian",
+          "Action",
+          "Passive"
+        ],
+        "description": "Become Unstoppable. Reduce phys dmg by 1 threshold. Add die to dmg. Immunity to Restrained/Vulnerable.",
+        "limit": "ONCE_PER_LONG_REST",
+        "range": "Self",
+        "cost": {
+          "type": "none"
+        },
+        "resource_mechanic": {
+          "type": "die",
+          "id": "unstoppable_die",
+          "start_value": 1,
+          "die_size": {
+            "1": "d4",
+            "5": "d6"
+          },
+          "trigger_increment": "ON_DEAL_HP_DAMAGE",
+          "reset_trigger": "SCENE_END_OR_MAX_VALUE"
+        },
+        "effects": [
+          {
+            "type": "APPLY_CONDITION",
+            "condition": "Unstoppable",
+            "target": "SELF",
+            "duration": "SCENE_OR_DIE_MAX"
+          }
+        ],
+        "passiveModifiers": [
+          {
+            "type": "REDUCE_SEVERITY",
+            "value": 1,
+            "condition": "Unstoppable",
+            "criteria": {
+              "damage_type": "physical"
+            }
+          },
+          {
+            "type": "MODIFY_MECHANIC",
+            "mechanic": "ADD_RESOURCE_DIE_TO_DAMAGE",
+            "resource_id": "unstoppable_die",
+            "condition": "Unstoppable"
+          },
+          {
+            "type": "IMMUNITY",
+            "values": [
+              "Restrained",
+              "Vulnerable"
+            ],
+            "condition": "Unstoppable"
+          }
+        ]
+      }
+    ],
+    "subclasses": {
+      "Stalwart": [
+        {
+          "id": "Unwavering",
+          "tier": "FOUNDATION",
+          "name": "Unwavering",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Stalwart",
+            "Passive"
+          ],
+          "description": "+1 Damage Thresholds.",
+          "passiveModifiers": [
+            {
+              "target": "Thresholds",
+              "value": 1,
+              "type": "flat"
+            }
+          ]
+        },
+        {
+          "id": "Iron Will",
+          "tier": "FOUNDATION",
+          "name": "Iron Will",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Stalwart",
+            "Reaction"
+          ],
+          "description": "Mark extra Armor Slot to reduce physical severity.",
+          "cost": {
+            "type": "armor_slot",
+            "value": 1
+          },
+          "trigger": "ON_TAKE_DAMAGE",
+          "effects": [
+            {
+              "type": "REDUCE_SEVERITY",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "Unrelenting",
+          "tier": "SPECIALIZATION",
+          "name": "Unrelenting",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Stalwart",
+            "Passive"
+          ],
+          "description": "+2 Damage Thresholds.",
+          "passiveModifiers": [
+            {
+              "target": "Thresholds",
+              "value": 2,
+              "type": "flat"
+            }
+          ]
+        },
+        {
+          "id": "Partners-in-Arms",
+          "tier": "SPECIALIZATION",
+          "name": "Partners-in-Arms",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Stalwart",
+            "Reaction"
+          ],
+          "description": "Mark Armor Slot to reduce ally severity.",
+          "range": "Very Close",
+          "cost": {
+            "type": "armor_slot",
+            "value": 1
+          },
+          "trigger": "ON_ALLY_TAKE_DAMAGE",
+          "effects": [
+            {
+              "type": "REDUCE_SEVERITY",
+              "target": "ALLY",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "Undaunted",
+          "tier": "MASTERY",
+          "name": "Undaunted",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Stalwart",
+            "Passive"
+          ],
+          "description": "+3 Damage Thresholds.",
+          "passiveModifiers": [
+            {
+              "target": "Thresholds",
+              "value": 3,
+              "type": "flat"
+            }
+          ]
+        },
+        {
+          "id": "Loyal Protector",
+          "tier": "MASTERY",
+          "name": "Loyal Protector",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Stalwart",
+            "Reaction"
+          ],
+          "description": "Intercept damage for low HP ally.",
+          "range": "Close",
+          "cost": {
+            "type": "stress",
+            "value": 1
+          },
+          "trigger": "ON_ALLY_TAKE_DAMAGE",
+          "effects": [
+            {
+              "type": "MOVE",
+              "target": "ALLY"
+            },
+            {
+              "type": "INTERCEPT_DAMAGE",
+              "target_self": true
+            }
+          ]
+        }
+      ],
+      "Vengeance": [
+        {
+          "id": "At Ease",
+          "tier": "FOUNDATION",
+          "name": "At Ease",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Vengeance",
+            "Passive"
+          ],
+          "description": "+1 Max Stress.",
+          "passiveModifiers": [
+            {
+              "target": "max_stress",
+              "value": 1,
+              "type": "flat"
+            }
+          ]
+        },
+        {
+          "id": "Revenge",
+          "tier": "FOUNDATION",
+          "name": "Revenge",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Vengeance",
+            "Reaction"
+          ],
+          "description": "Mark 2 Stress to deal 1 HP to melee attacker.",
+          "range": "Melee",
+          "cost": {
+            "type": "stress",
+            "value": 2
+          },
+          "trigger": "ON_TAKE_DAMAGE",
+          "effects": [
+            {
+              "type": "DEAL_DAMAGE",
+              "damage_string": "1 HP",
+              "is_direct": true
+            }
+          ]
+        },
+        {
+          "id": "Act of Reprisal",
+          "tier": "SPECIALIZATION",
+          "name": "Act of Reprisal",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Vengeance",
+            "Reaction"
+          ],
+          "description": "Ally hit -> +1 Proficiency vs attacker.",
+          "range": "Melee",
+          "trigger": "ON_ALLY_TAKE_DAMAGE",
+          "effects": [
+            {
+              "type": "APPLY_BUFF",
+              "buff": "PROFICIENCY_BONUS",
+              "value": 1,
+              "target": "SELF"
+            }
+          ]
+        },
+        {
+          "id": "Nemesis",
+          "tier": "MASTERY",
+          "name": "Nemesis",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Vengeance",
+            "Action"
+          ],
+          "description": "Spend 2 Hope to Prioritize adversary.",
+          "cost": {
+            "type": "hope",
+            "value": 2
+          },
+          "effects": [
+            {
+              "type": "APPLY_CONDITION",
+              "condition": "Prioritized",
+              "target": "TARGET"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "Warrior": {
+    "name": "Warrior",
+    "spellcast_trait": "agility",
+    "description": "Masters of weapons and violence.",
+    "classFeature": {
+      "id": "No Mercy",
+      "name": "No Mercy",
+      "type": "CLASS_FEATURE",
+      "tags": [
+        "Warrior",
+        "Hope Feature",
+        "Action"
+      ],
+      "description": "Spend 3 Hope for +1 Attack until rest.",
+      "cost": {
+        "type": "hope",
+        "value": 3
+      },
+      "effects": [
+        {
+          "type": "APPLY_BUFF",
+          "buff": "ATTACK_BONUS",
+          "value": 1,
+          "duration": "UNTIL_REST"
+        }
+      ]
+    },
+    "features": [
+      {
+        "id": "Attack of Opportunity",
+        "name": "Attack of Opportunity",
+        "type": "CLASS_FEATURE",
+        "tags": [
+          "Warrior",
+          "Reaction"
+        ],
+        "description": "Adversary leaves melee -> Stop/Dmg/Move.",
+        "range": "Melee",
+        "trigger": "ON_ADVERSARY_MOVE_AWAY",
+        "effects": [
+          {
+            "type": "CHOICE",
+            "options": [
+              {
+                "type": "PREVENT_MOVEMENT"
+              },
+              {
+                "type": "WEAPON_ATTACK"
+              },
+              {
+                "type": "MOVE_WITH_TARGET"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "Combat Training",
+        "name": "Combat Training",
+        "type": "CLASS_FEATURE",
+        "tags": [
+          "Warrior",
+          "Passive"
+        ],
+        "description": "Ignore burden. +Level physical damage.",
+        "passiveModifiers": [
+          {
+            "type": "MODIFY_MECHANIC",
+            "mechanic": "IGNORE_BURDEN"
+          },
+          {
+            "target": "damage_flat_bonus",
+            "value_key": "level",
+            "condition": "physical damage"
+          }
+        ]
+      }
+    ],
+    "subclasses": {
+      "Call of the Brave": [
+        {
+          "id": "Courage",
+          "tier": "FOUNDATION",
+          "name": "Courage",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Call of the Brave",
+            "Passive",
+            "Reaction"
+          ],
+          "description": "Fail with Fear -> Gain Hope.",
+          "trigger": "ON_FAIL_WITH_FEAR",
+          "effects": [
+            {
+              "type": "GAIN_HOPE",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "Battle Ritual",
+          "tier": "FOUNDATION",
+          "name": "Battle Ritual",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Call of the Brave",
+            "Action"
+          ],
+          "description": "Once/rest, Clear 2 Stress, Gain 2 Hope.",
+          "limit": "ONCE_PER_LONG_REST",
+          "effects": [
+            {
+              "type": "HEAL_STRESS",
+              "value": 2,
+              "target": "SELF"
+            },
+            {
+              "type": "GAIN_HOPE",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "id": "Rise to the Challenge",
+          "tier": "SPECIALIZATION",
+          "name": "Rise to the Challenge",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Call of the Brave",
+            "Passive"
+          ],
+          "description": "<=2 HP -> d20 Hope Die.",
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_MECHANIC",
+              "mechanic": "HOPE_DIE_SIZE",
+              "value": "d20",
+              "condition": "hp_unmarked <= 2"
+            }
+          ]
+        },
+        {
+          "id": "Camaraderie",
+          "tier": "SPECIALIZATION",
+          "name": "Camaraderie",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Call of the Brave",
+            "Passive"
+          ],
+          "description": "Tag Team +1/session. Allies pay 2 Hope.",
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_LIMIT",
+              "feature": "Tag Team",
+              "value": 1
+            },
+            {
+              "type": "MODIFY_COST",
+              "feature": "Tag Team",
+              "target": "ALLY",
+              "value": 2
+            }
+          ]
+        }
+      ],
+      "Call of the Slayer": [
+        {
+          "id": "Slayer",
+          "tier": "FOUNDATION",
+          "name": "Slayer",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Call of the Slayer",
+            "Passive",
+            "Reaction"
+          ],
+          "description": "Store Slayer Dice (d6).",
+          "resource_mechanic": {
+            "type": "die",
+            "id": "slayer_die",
+            "die_size": "d6",
+            "max_tokens": "PROFICIENCY",
+            "trigger_gain": "ON_ROLL_WITH_HOPE_OPTIONAL"
+          },
+          "effects": [
+            {
+              "type": "MODIFY_ROLL",
+              "mechanic": "ADD_RESOURCE_DIE",
+              "resource_id": "slayer_die"
+            }
+          ]
+        },
+        {
+          "id": "Weapon Specialist",
+          "tier": "SPECIALIZATION",
+          "name": "Weapon Specialist",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Call of the Slayer",
+            "Action Option"
+          ],
+          "description": "Spend 1 Hope to add Secondary Dmg Die.",
+          "cost": {
+            "type": "hope",
+            "value": 1
+          },
+          "trigger": "ON_SUCCESSFUL_ATTACK",
+          "effects": [
+            {
+              "type": "ADD_SECONDARY_DAMAGE_DIE"
+            }
+          ]
+        },
+        {
+          "id": "Martial Preparation",
+          "tier": "MASTERY",
+          "name": "Martial Preparation",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Call of the Slayer",
+            "Downtime Action"
+          ],
+          "description": "Grant Slayer Die to allies.",
+          "effects": [
+            {
+              "type": "GRANT_RESOURCE_DIE",
+              "resource_id": "slayer_die",
+              "target": "ALL_ALLIES"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "Seraph": {
+    "name": "Seraph",
+    "spellcast_trait": "strength",
+    "description": "Divine fighters and healers.",
+    "classFeature": {
+      "id": "Life Support",
+      "name": "Life Support",
+      "type": "CLASS_FEATURE",
+      "tags": [
+        "Seraph",
+        "Hope Feature",
+        "Action"
+      ],
+      "description": "Spend 3 Hope to Heal Ally.",
+      "cost": {
+        "type": "hope",
+        "value": 3
+      },
+      "range": "Close",
+      "effects": [
+        {
+          "type": "HEAL_TARGET",
+          "target": "ALLY",
+          "heal_string": "1 HP"
+        }
+      ]
+    },
+    "features": [
+      {
+        "id": "Prayer Dice",
+        "name": "Prayer Dice",
+        "type": "CLASS_FEATURE",
+        "tags": [
+          "Seraph",
+          "Passive"
+        ],
+        "description": "Roll d4s equal to Spellcast trait.",
+        "resource_mechanic": {
+          "type": "pool",
+          "id": "prayer_dice",
+          "die_size": "d4",
+          "max_tokens": "SPELLCAST_TRAIT",
+          "reset_trigger": "SESSION_START"
+        },
+        "effects": [
+          {
+            "type": "ACTION_OPTION",
+            "cost": {
+              "type": "resource",
+              "id": "prayer_dice",
+              "value": 1
+            },
+            "effect": "VARIOUS"
+          }
+        ]
+      }
+    ],
+    "subclasses": {
+      "Divine Wielder": [
+        {
+          "id": "Spirit Weapon",
+          "tier": "FOUNDATION",
+          "name": "Spirit Weapon",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Divine Wielder",
+            "Passive"
+          ],
+          "description": "Melee/Very Close range becomes Close.",
+          "passiveModifiers": [
+            {
+              "target": "range",
+              "value": "Close",
+              "condition": "range check"
+            }
+          ]
+        },
+        {
+          "id": "Sparing Touch",
+          "tier": "FOUNDATION",
+          "name": "Sparing Touch",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Divine Wielder",
+            "Action"
+          ],
+          "description": "Heal 2 HP/Stress once/rest.",
+          "limit": "ONCE_PER_LONG_REST",
+          "range": "Melee",
+          "effects": [
+            {
+              "type": "HEAL_TARGET",
+              "heal_string": "2 HP or 2 Stress"
+            }
+          ]
+        },
+        {
+          "id": "Devout",
+          "tier": "SPECIALIZATION",
+          "name": "Devout",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Divine Wielder",
+            "Passive"
+          ],
+          "description": "Prayer Dice Advantage.",
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_MECHANIC",
+              "mechanic": "PRAYER_DICE_ADVANTAGE"
+            }
+          ]
+        },
+        {
+          "id": "Sacred Resonance",
+          "tier": "MASTERY",
+          "name": "Sacred Resonance",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Divine Wielder",
+            "Passive"
+          ],
+          "description": "Double matching dice dmg.",
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_MECHANIC",
+              "mechanic": "MATCHING_DICE_CRIT_DOUBLE"
+            }
+          ]
+        }
+      ],
+      "Winged Sentinel": [
+        {
+          "id": "Wings of Light",
+          "tier": "FOUNDATION",
+          "name": "Wings of Light",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Winged Sentinel",
+            "Passive",
+            "Action"
+          ],
+          "description": "Flight. Spend Hope for +1d8 dmg.",
+          "passiveModifiers": [
+            {
+              "type": "GRANT_ABILITY",
+              "ability": "FLIGHT"
+            }
+          ],
+          "effects": [
+            {
+              "type": "ACTION_OPTION",
+              "trigger": "ON_SUCCESSFUL_ATTACK",
+              "cost": {
+                "type": "hope",
+                "value": 1
+              },
+              "effect": "ADD_DAMAGE_DIE",
+              "value": "1d8"
+            }
+          ]
+        },
+        {
+          "id": "Ethereal Visage",
+          "tier": "FOUNDATION",
+          "name": "Ethereal Visage",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Winged Sentinel",
+            "Passive"
+          ],
+          "description": "Advantage Presence while flying.",
+          "passiveModifiers": [
+            {
+              "type": "GAIN_ADVANTAGE",
+              "condition": "Presence Roll while flying"
+            }
+          ]
+        },
+        {
+          "id": "Ascendant",
+          "tier": "SPECIALIZATION",
+          "name": "Ascendant",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Winged Sentinel",
+            "Passive"
+          ],
+          "description": "+4 Severe Threshold.",
+          "passiveModifiers": [
+            {
+              "target": "thresholds.severe",
+              "value": 4,
+              "type": "flat"
+            }
+          ]
+        },
+        {
+          "id": "Power of the Gods",
+          "tier": "MASTERY",
+          "name": "Power of the Gods",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Winged Sentinel",
+            "Passive"
+          ],
+          "description": "Wings bonus becomes 1d12.",
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_VALUE",
+              "feature": "Wings of Light",
+              "target": "damage_die",
+              "value": "1d12"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "Rogue": {
+    "name": "Rogue",
+    "spellcast_trait": "finesse",
+    "description": "Scoundrels and masters of stealth.",
+    "classFeature": {
+      "id": "Rogue's Dodge",
+      "name": "Rogue's Dodge",
+      "type": "CLASS_FEATURE",
+      "tags": [
+        "Rogue",
+        "Hope Feature",
+        "Action"
+      ],
+      "cost": {
+        "type": "hope",
+        "value": 3
+      },
+      "effects": [
+        {
+          "type": "APPLY_BUFF",
+          "buff": "EVASION_BONUS",
+          "value": 2,
+          "duration": "UNTIL_HIT_OR_REST"
+        }
+      ]
+    },
+    "features": [
+      {
+        "id": "Cloaked",
+        "name": "Cloaked",
+        "type": "CLASS_FEATURE",
+        "tags": [
+          "Rogue",
+          "Passive"
+        ],
+        "description": "Replaces Hidden.",
+        "passiveModifiers": [
+          {
+            "type": "MODIFY_MECHANIC",
+            "mechanic": "REPLACE_CONDITION",
+            "from": "Hidden",
+            "to": "Cloaked"
+          }
+        ]
+      },
+      {
+        "id": "Sneak Attack",
+        "name": "Sneak Attack",
+        "type": "CLASS_FEATURE",
+        "tags": [
+          "Rogue",
+          "Passive"
+        ],
+        "description": "+Tier d6 dmg.",
+        "passiveModifiers": [
+          {
+            "type": "MODIFY_MECHANIC",
+            "mechanic": "ADD_DAMAGE_DIE",
+            "die": "d6",
+            "count": "TIER",
+            "condition": "Cloaked OR ally in Melee"
+          }
+        ]
+      }
+    ],
+    "subclasses": {
+      "Nightwalker": [
+        {
+          "id": "Shadow Stepper",
+          "tier": "FOUNDATION",
+          "name": "Shadow Stepper",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Nightwalker",
+            "Action"
+          ],
+          "cost": {
+            "type": "stress",
+            "value": 1
+          },
+          "range": "Far",
+          "effects": [
+            {
+              "type": "TELEPORT",
+              "range": "Far"
+            },
+            {
+              "type": "APPLY_CONDITION",
+              "condition": "Cloaked",
+              "target": "SELF"
+            }
+          ]
+        },
+        {
+          "id": "Dark Cloud",
+          "tier": "FOUNDATION",
+          "name": "Dark Cloud",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Nightwalker",
+            "Action"
+          ],
+          "effects": [
+            {
+              "type": "SPELLCAST_ROLL",
+              "difficulty": 15,
+              "details": {
+                "on_success": [
+                  {
+                    "type": "CREATE_ZONE",
+                    "name": "Dark Cloud"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "Adrenaline",
+          "tier": "SPECIALIZATION",
+          "name": "Adrenaline",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Nightwalker",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "target": "damage_flat_bonus",
+              "value_key": "level",
+              "condition": "Vulnerable"
+            }
+          ]
+        },
+        {
+          "id": "Fleeting Shadow",
+          "tier": "SPECIALIZATION",
+          "name": "Fleeting Shadow",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Nightwalker",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "target": "Evasion",
+              "value": 1,
+              "type": "flat"
+            },
+            {
+              "type": "MODIFY_VALUE",
+              "feature": "Shadow Stepper",
+              "target": "range",
+              "value": "Very Far"
+            }
+          ]
+        },
+        {
+          "id": "Vanishing Act",
+          "tier": "MASTERY",
+          "name": "Vanishing Act",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Nightwalker",
+            "Action"
+          ],
+          "cost": {
+            "type": "stress",
+            "value": 1
+          },
+          "effects": [
+            {
+              "type": "APPLY_CONDITION",
+              "condition": "Cloaked",
+              "target": "SELF"
+            },
+            {
+              "type": "REMOVE_CONDITION",
+              "condition": "Restrained",
+              "target": "SELF"
+            }
+          ]
+        }
+      ],
+      "Syndicate": [
+        {
+          "id": "Well-Connected",
+          "tier": "FOUNDATION",
+          "name": "Well-Connected",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Syndicate",
+            "Passive"
+          ],
+          "effects": [
+            {
+              "type": "NARRATIVE_EFFECT",
+              "description": "Knows local contact."
+            }
+          ]
+        },
+        {
+          "id": "Contacts Everywhere",
+          "tier": "FOUNDATION",
+          "name": "Contacts Everywhere",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Syndicate",
+            "Action"
+          ],
+          "limit": "ONCE_PER_SESSION",
+          "effects": [
+            {
+              "type": "CHOICE",
+              "options": [
+                {
+                  "type": "GAIN_RESOURCE"
+                },
+                {
+                  "type": "MODIFY_ROLL",
+                  "value": 3
+                },
+                {
+                  "type": "ADD_DAMAGE_DIE",
+                  "value": "2d8"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Reliable Backup",
+          "tier": "SPECIALIZATION",
+          "name": "Reliable Backup",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Syndicate",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_LIMIT",
+              "feature": "Contacts Everywhere",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "Wizard": {
+    "name": "Wizard",
+    "spellcast_trait": "knowledge",
+    "description": "Masters of arcane power.",
+    "classFeature": {
+      "id": "Not This Time",
+      "name": "Not This Time",
+      "type": "CLASS_FEATURE",
+      "tags": [
+        "Wizard",
+        "Hope Feature",
+        "Reaction"
+      ],
+      "cost": {
+        "type": "hope",
+        "value": 3
+      },
+      "range": "Far",
+      "effects": [
+        {
+          "type": "FORCE_REROLL",
+          "target": "ADVERSARY"
+        }
+      ]
+    },
+    "features": [
+      {
+        "id": "Prestidigitation",
+        "name": "Prestidigitation",
+        "type": "CLASS_FEATURE",
+        "tags": [
+          "Wizard",
+          "Action"
+        ],
+        "effects": [
+          {
+            "type": "NARRATIVE_EFFECT",
+            "description": "Minor magic."
+          }
+        ]
+      },
+      {
+        "id": "Strange Patterns",
+        "name": "Strange Patterns",
+        "type": "CLASS_FEATURE",
+        "tags": [
+          "Wizard",
+          "Passive"
+        ],
+        "passiveModifiers": [
+          {
+            "type": "MODIFY_MECHANIC",
+            "mechanic": "TRIGGER_ON_ROLL_VALUE",
+            "value": 12
+          }
+        ]
+      }
+    ],
+    "subclasses": {
+      "School of Knowledge": [
+        {
+          "id": "Prepared",
+          "tier": "FOUNDATION",
+          "name": "Prepared",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "School of Knowledge",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_MECHANIC",
+              "mechanic": "EXTRA_DOMAIN_CARD",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "Adept",
+          "tier": "FOUNDATION",
+          "name": "Adept",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "School of Knowledge",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_COST",
+              "feature": "Utilize Experience",
+              "cost": "stress"
+            },
+            {
+              "type": "MODIFY_VALUE",
+              "feature": "Utilize Experience",
+              "value": "double"
+            }
+          ]
+        },
+        {
+          "id": "Accomplished",
+          "tier": "SPECIALIZATION",
+          "name": "Accomplished",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "School of Knowledge",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_MECHANIC",
+              "mechanic": "EXTRA_DOMAIN_CARD",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "Perfect Recall",
+          "tier": "SPECIALIZATION",
+          "name": "Perfect Recall",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "School of Knowledge",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_MECHANIC",
+              "mechanic": "REDUCE_RECALL_COST",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "Brilliant",
+          "tier": "MASTERY",
+          "name": "Brilliant",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "School of Knowledge",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_MECHANIC",
+              "mechanic": "EXTRA_DOMAIN_CARD",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "Honed Expertise",
+          "tier": "MASTERY",
+          "name": "Honed Expertise",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "School of Knowledge",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_MECHANIC",
+              "mechanic": "EXPERIENCE_FREE_CHANCE",
+              "chance": 0.33
+            }
+          ]
+        }
+      ],
+      "School of War": [
+        {
+          "id": "Battlemage",
+          "tier": "FOUNDATION",
+          "name": "Battlemage",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "School of War",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "target": "max_hp",
+              "value": 1,
+              "type": "flat"
+            }
+          ]
+        },
+        {
+          "id": "Face Your Fear",
+          "tier": "FOUNDATION",
+          "name": "Face Your Fear",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "School of War",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "type": "ADD_DAMAGE_DIE",
+              "die": "1d10",
+              "damage_type": "magic",
+              "condition": "SUCCESS_WITH_FEAR"
+            }
+          ]
+        },
+        {
+          "id": "Conjure Shield",
+          "tier": "SPECIALIZATION",
+          "name": "Conjure Shield",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "School of War",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "target": "Evasion",
+              "value_key": "proficiency",
+              "condition": "current_hope >= 2"
+            }
+          ]
+        },
+        {
+          "id": "Fueled by Fear",
+          "tier": "SPECIALIZATION",
+          "name": "Fueled by Fear",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "School of War",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_VALUE",
+              "feature": "Face Your Fear",
+              "target": "die",
+              "value": "2d10"
+            }
+          ]
+        },
+        {
+          "id": "Thrive in Chaos",
+          "tier": "MASTERY",
+          "name": "Thrive in Chaos",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "School of War",
+            "Action Option"
+          ],
+          "cost": {
+            "type": "stress",
+            "value": 1
+          },
+          "effects": [
+            {
+              "type": "INCREASE_SEVERITY",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "Have No Fear",
+          "tier": "MASTERY",
+          "name": "Have No Fear",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "School of War",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_VALUE",
+              "feature": "Face Your Fear",
+              "target": "die",
+              "value": "3d10"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "Bard": {
+    "name": "Bard",
+    "spellcast_trait": "presence",
+    "description": "Masters of captivation.",
+    "classFeature": {
+      "id": "Make a Scene",
+      "name": "Make a Scene",
+      "type": "CLASS_FEATURE",
+      "tags": [
+        "Bard",
+        "Hope Feature",
+        "Action"
+      ],
+      "cost": {
+        "type": "hope",
+        "value": 3
+      },
+      "range": "Close",
+      "effects": [
+        {
+          "type": "APPLY_DEBUFF",
+          "debuff": "DIFFICULTY_PENALTY",
+          "value": -2
+        }
+      ]
+    },
+    "features": [
+      {
+        "id": "Rally",
+        "name": "Rally",
+        "type": "CLASS_FEATURE",
+        "tags": [
+          "Bard",
+          "Action"
+        ],
+        "limit": "ONCE_PER_SESSION",
+        "resource_mechanic": {
+          "type": "die",
+          "id": "rally_die",
+          "die_size": {
+            "1": "d6",
+            "5": "d8"
+          },
+          "reset_trigger": "SESSION_END"
+        },
+        "effects": [
+          {
+            "type": "GRANT_RESOURCE_DIE",
+            "resource_id": "rally_die",
+            "target": "ALL_ALLIES_AND_SELF"
+          }
+        ]
+      }
+    ],
+    "subclasses": {
+      "Troubadour": [
+        {
+          "id": "Gifted Performer",
+          "tier": "FOUNDATION",
+          "name": "Gifted Performer",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Troubadour",
+            "Action"
+          ],
+          "effects": [
+            {
+              "type": "CHOICE",
+              "options": [
+                {
+                  "name": "Relaxing Song"
+                },
+                {
+                  "name": "Epic Song"
+                },
+                {
+                  "name": "Heartbreaking Song"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Maestro",
+          "tier": "FOUNDATION",
+          "name": "Maestro",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Troubadour",
+            "Passive",
+            "Reaction"
+          ],
+          "trigger": "ON_GIVE_RALLY_DIE",
+          "effects": [
+            {
+              "type": "CHOICE",
+              "target": "ALLY",
+              "options": [
+                {
+                  "type": "GAIN_HOPE"
+                },
+                {
+                  "type": "HEAL_STRESS"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Virtuoso",
+          "tier": "SPECIALIZATION",
+          "name": "Virtuoso",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Troubadour",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_LIMIT",
+              "feature": "Gifted Performer",
+              "value": 2
+            }
+          ]
+        }
+      ],
+      "Wordsmith": [
+        {
+          "id": "Rousing Speech",
+          "tier": "FOUNDATION",
+          "name": "Rousing Speech",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Wordsmith",
+            "Action"
+          ],
+          "limit": "ONCE_PER_LONG_REST",
+          "effects": [
+            {
+              "type": "HEAL_STRESS",
+              "value": 2,
+              "target": "ALL_ALLIES_IN_RANGE",
+              "range": "Far"
+            }
+          ]
+        },
+        {
+          "id": "Heart of a Poet",
+          "tier": "FOUNDATION",
+          "name": "Heart of a Poet",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Wordsmith",
+            "Reaction"
+          ],
+          "cost": {
+            "type": "hope",
+            "value": 1
+          },
+          "effects": [
+            {
+              "type": "MODIFY_ROLL",
+              "value": "1d4"
+            }
+          ]
+        },
+        {
+          "id": "Eloquent",
+          "tier": "SPECIALIZATION",
+          "name": "Eloquent",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Wordsmith",
+            "Action"
+          ],
+          "limit": "ONCE_PER_SESSION",
+          "effects": [
+            {
+              "type": "CHOICE",
+              "target": "ALLY",
+              "options": [
+                {
+                  "type": "NARRATIVE_EFFECT"
+                },
+                {
+                  "type": "MODIFY_MECHANIC"
+                },
+                {
+                  "type": "GRANT_ABILITY"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Epic Poetry",
+          "tier": "SPECIALIZATION",
+          "name": "Epic Poetry",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Wordsmith",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_VALUE",
+              "feature": "Rally",
+              "target": "die_size",
+              "value": "d10"
+            },
+            {
+              "type": "MODIFY_MECHANIC",
+              "mechanic": "HELP_DIE_SIZE",
+              "value": "d10"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "Druid": {
+    "name": "Druid",
+    "spellcast_trait": "instinct",
+    "description": "Guardians of the wilderness.",
+    "classFeature": {
+      "id": "Evolution",
+      "name": "Evolution",
+      "type": "CLASS_FEATURE",
+      "tags": [
+        "Druid",
+        "Hope Feature",
+        "Action"
+      ],
+      "cost": {
+        "type": "hope",
+        "value": 3
+      },
+      "effects": [
+        {
+          "type": "APPLY_CONDITION",
+          "condition": "Beastform",
+          "target": "SELF"
+        },
+        {
+          "type": "APPLY_BUFF",
+          "buff": "TRAIT_BONUS",
+          "value": 1
+        }
+      ]
+    },
+    "features": [
+      {
+        "id": "Beastform",
+        "name": "Beastform",
+        "type": "CLASS_FEATURE",
+        "tags": [
+          "Druid",
+          "Action"
+        ],
+        "cost": {
+          "type": "stress",
+          "value": 1
+        },
+        "effects": [
+          {
+            "type": "APPLY_CONDITION",
+            "condition": "Beastform"
+          }
+        ]
+      },
+      {
+        "id": "Wildtouch",
+        "name": "Wildtouch",
+        "type": "CLASS_FEATURE",
+        "tags": [
+          "Druid",
+          "Action"
+        ],
+        "effects": [
+          {
+            "type": "NARRATIVE_EFFECT",
+            "description": "Minor nature magic."
+          }
+        ]
+      }
+    ],
+    "subclasses": {
+      "Warden of the Elements": [
+        {
+          "id": "Elemental Incarnation",
+          "tier": "FOUNDATION",
+          "name": "Elemental Incarnation",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Warden of the Elements",
+            "Action"
+          ],
+          "cost": {
+            "type": "stress",
+            "value": 1
+          },
+          "effects": [
+            {
+              "type": "CHOICE",
+              "options": [
+                {
+                  "name": "Channel Fire"
+                },
+                {
+                  "name": "Channel Earth"
+                },
+                {
+                  "name": "Channel Water"
+                },
+                {
+                  "name": "Channel Air"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Elemental Aura",
+          "tier": "FOUNDATION",
+          "name": "Elemental Aura",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Warden of the Elements",
+            "Action"
+          ],
+          "limit": "ONCE_PER_REST",
+          "condition": "Channeling",
+          "effects": [
+            {
+              "type": "ACTIVATE_AURA"
+            }
+          ]
+        },
+        {
+          "id": "Elemental Dominion",
+          "tier": "SPECIALIZATION",
+          "name": "Elemental Dominion",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Warden of the Elements",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_MECHANIC",
+              "mechanic": "ENHANCE_CHANNELING"
+            }
+          ]
+        }
+      ],
+      "Warden of Renewal": [
+        {
+          "id": "Clarity of Nature",
+          "tier": "FOUNDATION",
+          "name": "Clarity of Nature",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Warden of Renewal",
+            "Action"
+          ],
+          "limit": "ONCE_PER_LONG_REST",
+          "effects": [
+            {
+              "type": "HEAL_STRESS",
+              "value_key": "traits.instinct"
+            }
+          ]
+        },
+        {
+          "id": "Regeneration",
+          "tier": "FOUNDATION",
+          "name": "Regeneration",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Warden of Renewal",
+            "Action"
+          ],
+          "cost": {
+            "type": "hope",
+            "value": 3
+          },
+          "range": "Melee",
+          "effects": [
+            {
+              "type": "HEAL_TARGET",
+              "heal_string": "1d4 HP"
+            }
+          ]
+        },
+        {
+          "id": "Regenerative Reach",
+          "tier": "SPECIALIZATION",
+          "name": "Regenerative Reach",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Warden of Renewal",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_VALUE",
+              "feature": "Regeneration",
+              "target": "range",
+              "value": "Very Close"
+            }
+          ]
+        },
+        {
+          "id": "Warden's Protection",
+          "tier": "SPECIALIZATION",
+          "name": "Warden's Protection",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Warden of Renewal",
+            "Action"
+          ],
+          "limit": "ONCE_PER_LONG_REST",
+          "cost": {
+            "type": "hope",
+            "value": 2
+          },
+          "effects": [
+            {
+              "type": "HEAL_TARGET",
+              "target": "1d4 ALLIES",
+              "heal_string": "2 HP"
+            }
+          ]
+        },
+        {
+          "id": "Defender",
+          "tier": "MASTERY",
+          "name": "Defender",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Warden of Renewal",
+            "Reaction"
+          ],
+          "condition": "Beastform",
+          "cost": {
+            "type": "stress",
+            "value": 1
+          },
+          "effects": [
+            {
+              "type": "REDUCE_SEVERITY",
+              "target": "ALLY",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "Ranger": {
+    "name": "Ranger",
+    "spellcast_trait": "agility",
+    "description": "Skilled hunters.",
+    "classFeature": {
+      "id": "Hold Them Off",
+      "name": "Hold Them Off",
+      "type": "CLASS_FEATURE",
+      "tags": [
+        "Ranger",
+        "Hope Feature",
+        "Reaction"
+      ],
+      "cost": {
+        "type": "hope",
+        "value": 3
+      },
+      "effects": [
+        {
+          "type": "ADD_TARGET",
+          "value": 2
+        }
+      ]
+    },
+    "features": [
+      {
+        "id": "Ranger's Focus",
+        "name": "Ranger's Focus",
+        "type": "CLASS_FEATURE",
+        "tags": [
+          "Ranger",
+          "Action",
+          "Passive"
+        ],
+        "cost": {
+          "type": "hope",
+          "value": 1
+        },
+        "effects": [
+          {
+            "type": "WEAPON_ATTACK",
+            "details": {
+              "on_success": [
+                {
+                  "type": "APPLY_CONDITION",
+                  "condition": "Focus"
+                }
+              ]
+            }
+          }
+        ],
+        "passiveModifiers": [
+          {
+            "type": "DEAL_STRESS",
+            "condition": "Target is Focus"
+          }
+        ]
+      }
+    ],
+    "subclasses": {
+      "Beastbound": [
+        {
+          "id": "Companion",
+          "tier": "FOUNDATION",
+          "name": "Companion",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Beastbound",
+            "Passive",
+            "Action"
+          ],
+          "resource_mechanic": {
+            "type": "pool",
+            "id": "companion_stress",
+            "max_tokens": 2
+          },
+          "passiveModifiers": [
+            {
+              "type": "SUMMON_COMPANION"
+            }
+          ]
+        },
+        {
+          "id": "Expert Training",
+          "tier": "FOUNDATION",
+          "name": "Expert Training",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Beastbound",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_MECHANIC",
+              "mechanic": "COMPANION_LEVEL_UP",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "Battle-Bonded",
+          "tier": "SPECIALIZATION",
+          "name": "Battle-Bonded",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Beastbound",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "target": "Evasion",
+              "value": 2,
+              "type": "flat"
+            }
+          ]
+        },
+        {
+          "id": "Advanced Training",
+          "tier": "SPECIALIZATION",
+          "name": "Advanced Training",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Beastbound",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_MECHANIC",
+              "mechanic": "COMPANION_LEVEL_UP",
+              "value": 2
+            }
+          ]
+        },
+        {
+          "id": "Loyal Friend",
+          "tier": "MASTERY",
+          "name": "Loyal Friend",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Beastbound",
+            "Reaction"
+          ],
+          "limit": "ONCE_PER_LONG_REST",
+          "effects": [
+            {
+              "type": "INTERCEPT_DAMAGE",
+              "source": "COMPANION"
+            }
+          ]
+        }
+      ],
+      "Wayfinder": [
+        {
+          "id": "Ruthless Predator",
+          "tier": "FOUNDATION",
+          "name": "Ruthless Predator",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Wayfinder",
+            "Passive",
+            "Action"
+          ],
+          "effects": [
+            {
+              "name": "Boost Proficiency",
+              "cost": {
+                "type": "stress",
+                "value": 1
+              },
+              "type": "APPLY_BUFF"
+            }
+          ],
+          "passiveModifiers": [
+            {
+              "type": "DEAL_STRESS",
+              "trigger": "ON_DEAL_SEVERE_DAMAGE"
+            }
+          ]
+        },
+        {
+          "id": "Path Forward",
+          "tier": "FOUNDATION",
+          "name": "Path Forward",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Wayfinder",
+            "Action"
+          ],
+          "effects": [
+            {
+              "type": "NARRATIVE_EFFECT",
+              "description": "Find path."
+            }
+          ]
+        },
+        {
+          "id": "Elusive Predator",
+          "tier": "SPECIALIZATION",
+          "name": "Elusive Predator",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Wayfinder",
+            "Passive"
+          ],
+          "passiveModifiers": [
+            {
+              "target": "Evasion",
+              "value": 2,
+              "condition": "Attacker is Focus"
+            }
+          ]
+        },
+        {
+          "id": "Apex Predator",
+          "tier": "SPECIALIZATION",
+          "name": "Apex Predator",
+          "type": "SUBCLASS_FEATURE",
+          "tags": [
+            "Wayfinder",
+            "Action Option"
+          ],
+          "cost": {
+            "type": "hope",
+            "value": 1
+          },
+          "effects": [
+            {
+              "type": "MODIFY_MECHANIC",
+              "mechanic": "REMOVE_GM_FEAR_ON_SUCCESS"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

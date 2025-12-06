@@ -1,0 +1,98 @@
+{
+  "Bear": {
+    "id": "Bear",
+    "name": "Bear",
+    "type": "ADVERSARY",
+    "tier": 1,
+    "tags": [
+      "Bruiser",
+      "Beast",
+      "Tier 1"
+    ],
+    "stats": {
+      "difficulty": 14,
+      "hp": 7,
+      "stress": 2,
+      "thresholds": {
+        "major": 9,
+        "severe": 17
+      },
+      "attack": {
+        "name": "Claws",
+        "range": "Melee",
+        "damage": "1d8+3 phy",
+        "modifier": "+1"
+      }
+    },
+    "features": [
+      {
+        "id": "Bear_Overwhelming_Force",
+        "name": "Overwhelming Force",
+        "type": "ADVERSARY_FEATURE",
+        "tags": [
+          "Passive"
+        ],
+        "description": "Targets who mark HP from the Bear's standard attack are knocked back to Very Close range.",
+        "passiveModifiers": [
+          {
+            "type": "KNOCKBACK",
+            "trigger": "ON_DEAL_HP_STANDARD_ATTACK",
+            "range": "Very Close",
+            "target": "PRIMARY_TARGET"
+          }
+        ]
+      },
+      {
+        "id": "Bear_Bite",
+        "name": "Bite",
+        "type": "ADVERSARY_FEATURE",
+        "tags": [
+          "Action"
+        ],
+        "cost": {
+          "type": "stress",
+          "value": 1
+        },
+        "description": "Mark a Stress to make an attack against a target within Melee range. On a success, the target takes 3d4+10 physical damage and is Restrained until they break free with a successful Strength Roll.",
+        "effects": [
+          {
+            "type": "ATTACK_ROLL",
+            "range": "Melee",
+            "target": "PRIMARY_TARGET",
+            "details": {
+              "on_success": [
+                {
+                  "type": "DEAL_DAMAGE",
+                  "damage_string": "3d4+10 phy",
+                  "is_direct": false
+                },
+                {
+                  "type": "APPLY_CONDITION",
+                  "condition": "Restrained",
+                  "duration_text": "until Strength Roll success"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "Bear_Momentum",
+        "name": "Momentum",
+        "type": "ADVERSARY_FEATURE",
+        "tags": [
+          "Reaction"
+        ],
+        "description": "When the Bear makes a successful attack against a PC, you gain a Fear.",
+        "passiveModifiers": [
+          {
+            "type": "GAIN_FEAR",
+            "trigger": "ON_SUCCESSFUL_ATTACK",
+            "value": 1,
+            "target": "GM"
+          }
+        ]
+      }
+    ]
+  }
+}

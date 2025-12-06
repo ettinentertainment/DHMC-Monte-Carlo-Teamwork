@@ -1,0 +1,5372 @@
+{
+  "Rune Ward": {
+    "id": "Rune Ward",
+    "name": "Rune Ward",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Reaction"
+    ],
+    "recall_cost": 0,
+    "description": "The ward's holder can spend a Hope to reduce incoming damage by 1d8. Ends if 8 is rolled.",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "range": "Self",
+    "effects": [
+      {
+        "type": "REDUCE_DAMAGE",
+        "bonus_die": "1d8",
+        "details": "If 8 is rolled, ward ends."
+      }
+    ]
+  },
+  "Unleash Chaos": {
+    "id": "Unleash Chaos",
+    "name": "Unleash Chaos",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Spend tokens to deal d10 magic damage.",
+    "range": "Far",
+    "token_mechanic": {
+      "type": "Spellcast trait",
+      "refresh": "session_start"
+    },
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "PRIMARY_TARGET",
+        "cost": {
+          "type": "token",
+          "value": "X"
+        },
+        "details": {
+          "on_success": [
+            {
+              "type": "DEAL_DAMAGE",
+              "damage_string": "Xd10 mag"
+            }
+          ]
+        }
+      },
+      {
+        "type": "REPLENISH_TOKENS",
+        "cost": {
+          "type": "stress",
+          "value": 1
+        }
+      }
+    ]
+  },
+  "Wall Walk": {
+    "id": "Wall Walk",
+    "name": "Wall Walk",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Target can climb walls.",
+    "range": "Melee",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "APPLY_CONDITION",
+        "target": "ALLY_TARGET",
+        "condition": "Wall Walking",
+        "duration_text": "until end of scene"
+      }
+    ]
+  },
+  "Cinder Grasp": {
+    "id": "Cinder Grasp",
+    "name": "Cinder Grasp",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Deal 1d20+3 damage and set On Fire.",
+    "range": "Melee",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "PRIMARY_TARGET",
+        "details": {
+          "on_success": [
+            {
+              "type": "DEAL_DAMAGE",
+              "damage_string": "1d20+3 mag"
+            },
+            {
+              "type": "APPLY_CONDITION",
+              "condition": "On Fire",
+              "duration_text": "temporarily"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Floating Eye": {
+    "id": "Floating Eye",
+    "name": "Floating Eye",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 0,
+    "description": "Create a remote viewing sensor.",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "range": "Very Far",
+    "effects": [
+      {
+        "type": "NARRATIVE_EFFECT",
+        "description": "Create a floating eye sensor to see through."
+      }
+    ]
+  },
+  "Counterspell": {
+    "id": "Counterspell",
+    "name": "Counterspell",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Reaction"
+    ],
+    "recall_cost": 2,
+    "description": "Interrupt a magical effect. On success, effect stops.",
+    "trigger": "ON_MAGIC_EFFECT",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "details": {
+          "on_success": [
+            {
+              "type": "CANCEL_EFFECT"
+            },
+            {
+              "type": "VAULT_CARD"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Flight": {
+    "id": "Flight",
+    "name": "Flight",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Gain flight tokens equal to Agility.",
+    "token_mechanic": {
+      "type": "Agility",
+      "refresh": "on_cast"
+    },
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 15,
+        "details": {
+          "on_success": [
+            {
+              "type": "GRANT_TOKENS",
+              "amount": "Agility"
+            }
+          ]
+        }
+      },
+      {
+        "type": "SPEND_TOKEN",
+        "details": "Fly during action"
+      }
+    ]
+  },
+  "Blink Out": {
+    "id": "Blink Out",
+    "name": "Blink Out",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Teleport self and willing creatures.",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "range": "Far",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 12,
+        "details": {
+          "on_success": [
+            {
+              "type": "TELEPORT",
+              "range": "Far"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Preservation Blast": {
+    "id": "Preservation Blast",
+    "name": "Preservation Blast",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Push all melee targets back and damage them.",
+    "range": "Melee",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "ALL_IN_RANGE",
+        "details": {
+          "on_success": [
+            {
+              "type": "KNOCKBACK",
+              "range": "Far"
+            },
+            {
+              "type": "DEAL_DAMAGE",
+              "damage_string": "1d8+3 mag"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Chain Lightning": {
+    "id": "Chain Lightning",
+    "name": "Chain Lightning",
+    "type": "DOMAIN_CARD",
+    "tier": 5,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Damage chains between targets within Close range.",
+    "cost": {
+      "type": "stress",
+      "value": 2
+    },
+    "range": "Close",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "CHAIN",
+        "details": {
+          "on_success": [
+            {
+              "type": "DEAL_DAMAGE",
+              "damage_string": "2d8+4 mag"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Premonition": {
+    "id": "Premonition",
+    "name": "Premonition",
+    "type": "DOMAIN_CARD",
+    "tier": 5,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Reaction"
+    ],
+    "recall_cost": 0,
+    "description": "Rescind a move and consequences once per long rest.",
+    "limit": "Once per long rest",
+    "effects": [
+      {
+        "type": "NARRATIVE_EFFECT",
+        "description": "Rewind time to before the last move."
+      }
+    ]
+  },
+  "Rift Walker": {
+    "id": "Rift Walker",
+    "name": "Rift Walker",
+    "type": "DOMAIN_CARD",
+    "tier": 6,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Place a mark to teleport back to later.",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 15,
+        "details": {
+          "on_success": [
+            {
+              "type": "SET_MARKER"
+            }
+          ]
+        }
+      },
+      {
+        "type": "TELEPORT",
+        "target": "MARKER"
+      }
+    ]
+  },
+  "Telekinesis": {
+    "id": "Telekinesis",
+    "name": "Telekinesis",
+    "type": "DOMAIN_CARD",
+    "tier": 6,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Move target or throw them.",
+    "range": "Far",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "PRIMARY_TARGET",
+        "details": {
+          "on_success": [
+            {
+              "type": "MOVE_TARGET",
+              "range": "Far"
+            }
+          ]
+        }
+      },
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "SECONDARY_TARGET",
+        "details": {
+          "on_success": [
+            {
+              "type": "DEAL_DAMAGE",
+              "damage_string": "1d12+4 phy"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Arcana-Touched": {
+    "id": "Arcana-Touched",
+    "name": "Arcana-Touched",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Arcana",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 0,
+    "description": "+1 Spellcast rolls. Swap Hope/Fear once per rest.",
+    "condition": "4+ Arcana cards equipped",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_STAT",
+        "stat": "spellcast",
+        "value": 1
+      },
+      {
+        "type": "SWAP_HOPE_FEAR",
+        "limit": "Once per rest"
+      }
+    ]
+  },
+  "Cloaking Blast": {
+    "id": "Cloaking Blast",
+    "name": "Cloaking Blast",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Become Cloaked after casting a spell.",
+    "trigger": "ON_SPELLCAST_SUCCESS",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "APPLY_CONDITION",
+        "condition": "Cloaked"
+      }
+    ]
+  },
+  "Arcane Reflection": {
+    "id": "Arcane Reflection",
+    "name": "Arcane Reflection",
+    "type": "DOMAIN_CARD",
+    "tier": 8,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Reaction"
+    ],
+    "recall_cost": 2,
+    "description": "Spend Hope to reflect magic damage.",
+    "trigger": "ON_TAKE_MAGIC_DAMAGE",
+    "effects": [
+      {
+        "type": "REFLECT_DAMAGE",
+        "cost": {
+          "type": "hope",
+          "value": "X"
+        },
+        "details": "Roll X d6s; on a 6, reflect damage."
+      }
+    ]
+  },
+  "Confusing Aura": {
+    "id": "Confusing Aura",
+    "name": "Confusing Aura",
+    "type": "DOMAIN_CARD",
+    "tier": 8,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Create illusory layers to negate attacks.",
+    "limit": "Once per long rest",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 14,
+        "details": {
+          "on_success": [
+            {
+              "type": "GAIN_TOKENS",
+              "source": "Stress"
+            }
+          ]
+        }
+      },
+      {
+        "type": "NARRATIVE_EFFECT",
+        "description": "Roll d6s equal to layers on hit. 5+ negates attack."
+      }
+    ]
+  },
+  "Earthquake": {
+    "id": "Earthquake",
+    "name": "Earthquake",
+    "type": "DOMAIN_CARD",
+    "tier": 9,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Massive AOE damage and difficult terrain.",
+    "range": "Very Far",
+    "limit": "Once per rest",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 16,
+        "details": {
+          "on_success": [
+            {
+              "type": "AOE_DAMAGE",
+              "damage_string": "3d10+8 phy",
+              "condition": "Vulnerable"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Sensory Projection": {
+    "id": "Sensory Projection",
+    "name": "Sensory Projection",
+    "type": "DOMAIN_CARD",
+    "tier": 9,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 0,
+    "description": "Project senses to any place visited before.",
+    "limit": "Once per rest",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 15,
+        "details": {
+          "on_success": [
+            {
+              "type": "NARRATIVE_EFFECT",
+              "description": "Remote viewing/hearing."
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Adjust Reality": {
+    "id": "Adjust Reality",
+    "name": "Adjust Reality",
+    "type": "DOMAIN_CARD",
+    "tier": 10,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Spend 5 Hope to change any roll result to a number of your choice.",
+    "cost": {
+      "type": "hope",
+      "value": 5
+    },
+    "effects": [
+      {
+        "type": "MODIFY_ROLL",
+        "value": "SET_RESULT"
+      }
+    ]
+  },
+  "Falling Sky": {
+    "id": "Falling Sky",
+    "name": "Falling Sky",
+    "type": "DOMAIN_CARD",
+    "tier": 10,
+    "tags": [
+      "Arcana",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Rain arcana shards. Mark Stress for damage.",
+    "range": "Far",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "ALL_IN_RANGE",
+        "details": {
+          "on_success": [
+            {
+              "type": "DEAL_DAMAGE",
+              "damage_string": "1d20+2 mag per Stress marked"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Get Back Up": {
+    "id": "Get Back Up",
+    "name": "Get Back Up",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Mark Stress to reduce Severe damage severity.",
+    "trigger": "ON_TAKE_SEVERE_DAMAGE",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "REDUCE_SEVERITY",
+        "value": 1
+      }
+    ]
+  },
+  "Not Good Enough": {
+    "id": "Not Good Enough",
+    "name": "Not Good Enough",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 1,
+    "description": "Reroll 1s or 2s on damage dice.",
+    "passiveModifiers": [
+      {
+        "type": "REROLL_DICE",
+        "condition": "1s or 2s",
+        "trigger": "ON_DAMAGE_ROLL"
+      }
+    ]
+  },
+  "Whirlwind": {
+    "id": "Whirlwind",
+    "name": "Whirlwind",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 0,
+    "description": "Hit all enemies in Very Close range for half damage.",
+    "trigger": "ON_SUCCESSFUL_ATTACK",
+    "condition": "Target in Very Close range",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "CLEAVE_ATTACK",
+        "range": "Very Close",
+        "damage_string": "half"
+      }
+    ]
+  },
+  "A Soldier's Bond": {
+    "id": "A Soldier's Bond",
+    "name": "A Soldier's Bond",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Both gain 3 Hope on compliment.",
+    "limit": "Once per long rest",
+    "effects": [
+      {
+        "type": "GAIN_HOPE",
+        "target": "SELF",
+        "value": 3
+      },
+      {
+        "type": "GAIN_HOPE",
+        "target": "ALLY_TARGET",
+        "value": 3
+      }
+    ]
+  },
+  "Reckless": {
+    "id": "Reckless",
+    "name": "Reckless",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Mark Stress for Advantage on attack.",
+    "trigger": "BEFORE_ATTACK_ROLL",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "GAIN_ADVANTAGE",
+        "duration_text": "for that attack"
+      }
+    ]
+  },
+  "Versatile Fighter": {
+    "id": "Versatile Fighter",
+    "name": "Versatile Fighter",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 1,
+    "description": "Use any trait for weapon attacks. Maximize die on Stress.",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_MECHANIC",
+        "mechanic": "ANY_TRAIT_FOR_WEAPON"
+      },
+      {
+        "type": "MAXIMIZE_DAMAGE_DIE",
+        "cost": {
+          "type": "stress",
+          "value": 1
+        }
+      }
+    ]
+  },
+  "Brace": {
+    "id": "Brace",
+    "name": "Brace",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Mark Stress to mark an additional Armor Slot.",
+    "trigger": "ON_MARK_ARMOR",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "HEAL_RESOURCE",
+        "resource": "armor_slot",
+        "value": 1
+      }
+    ]
+  },
+  "Deadly Focus": {
+    "id": "Deadly Focus",
+    "name": "Deadly Focus",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "+1 Proficiency against focused target.",
+    "limit": "Once per rest",
+    "effects": [
+      {
+        "type": "APPLY_CONDITION",
+        "condition": "Deadly Focus",
+        "details": "+1 Proficiency vs Target"
+      }
+    ]
+  },
+  "Fortified Armor": {
+    "id": "Fortified Armor",
+    "name": "Fortified Armor",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 0,
+    "description": "+2 to damage thresholds while wearing armor.",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_STAT",
+        "stat": "Thresholds",
+        "value": 2,
+        "condition": "Wearing Armor"
+      }
+    ]
+  },
+  "Champion's Edge": {
+    "id": "Champion's Edge",
+    "name": "Champion's Edge",
+    "type": "DOMAIN_CARD",
+    "tier": 5,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 2,
+    "description": "On crit, spend up to 3 Hope for effects.",
+    "trigger": "ON_CRIT_SUCCESS",
+    "effects": [
+      {
+        "type": "CHOICE",
+        "options": [
+          "Clear 1 HP",
+          "Clear 1 Armor Slot",
+          "Deal 1 HP to target"
+        ],
+        "limit": "3 Hope max"
+      }
+    ]
+  },
+  "Vitality": {
+    "id": "Vitality",
+    "name": "Vitality",
+    "type": "DOMAIN_CARD",
+    "tier": 5,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 0,
+    "description": "Permanently gain stats. Vault card.",
+    "effects": [
+      {
+        "type": "PERMANENT_BUFF",
+        "options": [
+          "1 Stress Slot",
+          "1 HP Slot",
+          "+2 Thresholds"
+        ],
+        "count": 2
+      },
+      {
+        "type": "VAULT_CARD"
+      }
+    ]
+  },
+  "Battle-Hardened": {
+    "id": "Battle-Hardened",
+    "name": "Battle-Hardened",
+    "type": "DOMAIN_CARD",
+    "tier": 6,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Clear 1 HP instead of Death Move.",
+    "limit": "Once per long rest",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "trigger": "ON_DEATH_MOVE",
+    "effects": [
+      {
+        "type": "HEAL_HP",
+        "value": 1
+      }
+    ]
+  },
+  "Rage Up": {
+    "id": "Rage Up",
+    "name": "Rage Up",
+    "type": "DOMAIN_CARD",
+    "tier": 6,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Mark Stress to add 2x Strength to damage.",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "MODIFY_DAMAGE",
+        "value_string": "2 * Strength"
+      }
+    ]
+  },
+  "Blade-Touched": {
+    "id": "Blade-Touched",
+    "name": "Blade-Touched",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 0,
+    "description": "+2 Attack, +4 Severe Threshold.",
+    "condition": "4+ Blade cards equipped",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_STAT",
+        "stat": "attack_bonus",
+        "value": 2
+      },
+      {
+        "type": "MODIFY_STAT",
+        "stat": "severe_threshold",
+        "value": 4
+      }
+    ]
+  },
+  "Glancing Blow": {
+    "id": "Glancing Blow",
+    "name": "Glancing Blow",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 2,
+    "description": "On failed attack, deal half proficiency damage.",
+    "trigger": "ON_FAILED_ATTACK",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "DEAL_DAMAGE",
+        "damage_string": "Half Proficiency"
+      }
+    ]
+  },
+  "Battle Cry": {
+    "id": "Battle Cry",
+    "name": "Battle Cry",
+    "type": "DOMAIN_CARD",
+    "tier": 8,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 3,
+    "description": "Allies clear Stress, gain Hope, Advantage.",
+    "limit": "Once per long rest",
+    "effects": [
+      {
+        "type": "HEAL_STRESS",
+        "target": "ALL_ALLIES",
+        "value": 1
+      },
+      {
+        "type": "GAIN_HOPE",
+        "target": "ALL_ALLIES",
+        "value": 1
+      },
+      {
+        "type": "APPLY_BUFF",
+        "target": "ALL_ALLIES",
+        "buff": "Advantage on attacks"
+      }
+    ]
+  },
+  "Frenzy": {
+    "id": "Frenzy",
+    "name": "Frenzy",
+    "type": "DOMAIN_CARD",
+    "tier": 8,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 3,
+    "description": "+10 Dmg, +8 Severe. No Armor Slots.",
+    "limit": "Once per long rest",
+    "effects": [
+      {
+        "type": "APPLY_CONDITION",
+        "condition": "Frenzy"
+      }
+    ]
+  },
+  "Gore and Glory": {
+    "id": "Gore and Glory",
+    "name": "Gore and Glory",
+    "type": "DOMAIN_CARD",
+    "tier": 9,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 0,
+    "description": "Crit or Kill = Gain Hope or Clear Stress.",
+    "passiveModifiers": [
+      {
+        "type": "GAIN_RESOURCE",
+        "trigger": "ON_CRIT_OR_KILL",
+        "options": [
+          "Hope",
+          "Clear Stress"
+        ]
+      }
+    ]
+  },
+  "Reaper's Strike": {
+    "id": "Reaper's Strike",
+    "name": "Reaper's Strike",
+    "type": "DOMAIN_CARD",
+    "tier": 9,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 3,
+    "description": "Auto-hit target for 5 HP.",
+    "limit": "Once per long rest",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "DEAL_DAMAGE",
+        "damage_string": "5 HP",
+        "direct": true
+      }
+    ]
+  },
+  "Battle Monster": {
+    "id": "Battle Monster",
+    "name": "Battle Monster",
+    "type": "DOMAIN_CARD",
+    "tier": 10,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 0,
+    "description": "Mark 4 Stress to force target to mark HP equal to your marked HP.",
+    "cost": {
+      "type": "stress",
+      "value": 4
+    },
+    "effects": [
+      {
+        "type": "DEAL_DAMAGE",
+        "damage_string": "Self Marked HP",
+        "direct": true
+      }
+    ]
+  },
+  "Onslaught": {
+    "id": "Onslaught",
+    "name": "Onslaught",
+    "type": "DOMAIN_CARD",
+    "tier": 10,
+    "tags": [
+      "Blade",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 3,
+    "description": "Minimum 2 HP damage. Retaliation on allies.",
+    "passiveModifiers": [
+      {
+        "type": "MINIMUM_DAMAGE",
+        "value": "Major Threshold"
+      },
+      {
+        "type": "REACTION_ATTACK",
+        "trigger": "ON_ALLY_HIT"
+      }
+    ]
+  },
+  "Deft Maneuvers": {
+    "id": "Deft Maneuvers",
+    "name": "Deft Maneuvers",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 0,
+    "description": "Sprint Far without check. Bonus to hit if attacking after.",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "limit": "Once per rest",
+    "effects": [
+      {
+        "type": "MOVE",
+        "range": "Far",
+        "details": "No Agility Roll needed."
+      },
+      {
+        "type": "CONDITIONAL_EFFECT",
+        "condition": "End in Melee of adversary",
+        "details": {
+          "type": "MODIFY_ROLL",
+          "bonus": 1
+        }
+      }
+    ]
+  },
+  "I See It Coming": {
+    "id": "I See It Coming",
+    "name": "I See It Coming",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Boost Evasion vs ranged attack.",
+    "trigger": "ON_TARGETED_BY_ATTACK",
+    "condition": "Attack from > Melee",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "range": "Self",
+    "effects": [
+      {
+        "type": "MODIFY_STAT",
+        "stat": "Evasion",
+        "bonus_die": "1d4"
+      }
+    ]
+  },
+  "Untouchable": {
+    "id": "Untouchable",
+    "name": "Untouchable",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 1,
+    "description": "Evasion bonus = half Agility.",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_STAT",
+        "target": "Evasion",
+        "value_string": "half Agility",
+        "details": "Round up"
+      }
+    ]
+  },
+  "Ferocity": {
+    "id": "Ferocity",
+    "name": "Ferocity",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 2,
+    "description": "Increase Evasion by marked HP.",
+    "trigger": "ON_DEAL_HP",
+    "cost": {
+      "type": "hope",
+      "value": 2
+    },
+    "effects": [
+      {
+        "type": "MODIFY_STAT",
+        "stat": "Evasion",
+        "bonus_string": "HP marked by target",
+        "duration_text": "until next attack"
+      }
+    ]
+  },
+  "Strategic Approach": {
+    "id": "Strategic Approach",
+    "name": "Strategic Approach",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Spend token for Advantage, Heal, or Damage on first engagement.",
+    "trigger": "ON_ATTACK",
+    "limit": "First time moving into Close range",
+    "cost": {
+      "type": "token",
+      "value": 1
+    },
+    "token_mechanic": {
+      "type": "Knowledge",
+      "minimum": 1,
+      "refresh": "long_rest"
+    },
+    "effects": [
+      {
+        "type": "CHOICE",
+        "options": [
+          {
+            "type": "GAIN_ADVANTAGE"
+          },
+          {
+            "type": "HEAL_STRESS",
+            "target": "ALLY_TARGET",
+            "value": 1
+          },
+          {
+            "type": "DEAL_DAMAGE",
+            "bonus_die": "1d8"
+          }
+        ]
+      }
+    ]
+  },
+  "Scramble": {
+    "id": "Scramble",
+    "name": "Scramble",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Avoid attack and move out of melee.",
+    "limit": "Once per rest",
+    "trigger": "ON_TAKE_DAMAGE",
+    "effects": [
+      {
+        "type": "AVOID_ATTACK"
+      },
+      {
+        "type": "MOVE",
+        "range": "Out of Melee"
+      }
+    ]
+  },
+  "Tactician": {
+    "id": "Tactician",
+    "name": "Tactician",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 1,
+    "description": "Share Experiences. d20 Hope Die on Tag Team.",
+    "passiveModifiers": [
+      {
+        "type": "SHARE_EXPERIENCE",
+        "cost": {
+          "type": "hope",
+          "value": 1
+        }
+      },
+      {
+        "type": "MODIFY_MECHANIC",
+        "mechanic": "TAG_TEAM_D20"
+      }
+    ]
+  },
+  "Boost": {
+    "id": "Boost",
+    "name": "Boost",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Launch off ally. Advantage + d10 dmg.",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "range": "Far",
+    "effects": [
+      {
+        "type": "MOVE",
+        "range": "Far"
+      },
+      {
+        "type": "ATTACK_BONUS",
+        "details": "Advantage, +1d10 dmg"
+      }
+    ]
+  },
+  "Redirect": {
+    "id": "Redirect",
+    "name": "Redirect",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Redirect missed ranged attack to nearby enemy.",
+    "trigger": "ON_DODGE_RANGED",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "REDIRECT_ATTACK",
+        "target": "Very Close Enemy",
+        "check": "Proficiency d6s"
+      }
+    ]
+  },
+  "Know Thy Enemy": {
+    "id": "Know Thy Enemy",
+    "name": "Know Thy Enemy",
+    "type": "DOMAIN_CARD",
+    "tier": 5,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 0,
+    "description": "Learn stats/tactics. Remove GM Fear.",
+    "effects": [
+      {
+        "type": "INSTINCT_ROLL",
+        "details": {
+          "on_success": [
+            {
+              "type": "LEARN_INFO"
+            },
+            {
+              "type": "REMOVE_GM_FEAR",
+              "cost": {
+                "type": "stress",
+                "value": 1
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Signature Move": {
+    "id": "Signature Move",
+    "name": "Signature Move",
+    "type": "DOMAIN_CARD",
+    "tier": 5,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Use d20 Hope Die on signature move.",
+    "limit": "Once per rest",
+    "effects": [
+      {
+        "type": "MODIFY_ROLL",
+        "die": "d20 Hope Die"
+      },
+      {
+        "type": "HEAL_STRESS",
+        "value": 1,
+        "condition": "Success"
+      }
+    ]
+  },
+  "Rapid Riposte": {
+    "id": "Rapid Riposte",
+    "name": "Rapid Riposte",
+    "type": "DOMAIN_CARD",
+    "tier": 6,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 0,
+    "description": "Deal weapon damage on missed incoming melee.",
+    "trigger": "ON_DODGE_MELEE",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "DEAL_DAMAGE",
+        "damage_string": "Weapon Damage"
+      }
+    ]
+  },
+  "Recovery": {
+    "id": "Recovery",
+    "name": "Recovery",
+    "type": "DOMAIN_CARD",
+    "tier": 6,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 1,
+    "description": "Short rest acts as long rest move.",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_MECHANIC",
+        "mechanic": "SHORT_REST_AS_LONG"
+      },
+      {
+        "type": "SHARE_BENEFIT",
+        "cost": {
+          "type": "hope",
+          "value": 1
+        }
+      }
+    ]
+  },
+  "Bone-Touched": {
+    "id": "Bone-Touched",
+    "name": "Bone-Touched",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 0,
+    "description": "+1 Agility. Force enemy miss.",
+    "condition": "4+ Bone cards equipped",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_STAT",
+        "stat": "agility",
+        "value": 1
+      },
+      {
+        "type": "FORCE_MISS",
+        "cost": {
+          "type": "hope",
+          "value": 3
+        },
+        "limit": "Once per rest"
+      }
+    ]
+  },
+  "Cruel Precision": {
+    "id": "Cruel Precision",
+    "name": "Cruel Precision",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 1,
+    "description": "Add Finesse or Agility to damage.",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_DAMAGE",
+        "value_string": "+ Finesse OR Agility"
+      }
+    ]
+  },
+  "Breaking Blow": {
+    "id": "Breaking Blow",
+    "name": "Breaking Blow",
+    "type": "DOMAIN_CARD",
+    "tier": 8,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 2,
+    "description": "Next attack against target deals +2d12.",
+    "trigger": "ON_SUCCESSFUL_ATTACK",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "APPLY_DEBUFF",
+        "buff": "Vulnerable to next attack (+2d12)"
+      }
+    ]
+  },
+  "Wrangle": {
+    "id": "Wrangle",
+    "name": "Wrangle",
+    "type": "DOMAIN_CARD",
+    "tier": 8,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 3,
+    "description": "Move everyone within Close range.",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "AGILITY_ROLL",
+        "target": "ALL_IN_RANGE",
+        "details": {
+          "on_success": [
+            {
+              "type": "MOVE_TARGET",
+              "range": "Close"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "On The Brink": {
+    "id": "On The Brink",
+    "name": "On The Brink",
+    "type": "DOMAIN_CARD",
+    "tier": 9,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 1,
+    "description": "Ignore Minor damage when low HP.",
+    "condition": "Unmarked HP <= 2",
+    "passiveModifiers": [
+      {
+        "type": "IMMUNITY",
+        "value": "Minor Damage"
+      }
+    ]
+  },
+  "Splintering Strike": {
+    "id": "Splintering Strike",
+    "name": "Splintering Strike",
+    "type": "DOMAIN_CARD",
+    "tier": 9,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 3,
+    "description": "Hit all enemies. Redistribute damage. +1 die.",
+    "limit": "Once per long rest",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "AOE_ATTACK",
+        "details": "Redistribute total damage. +1 damage die per target."
+      }
+    ]
+  },
+  "Deathrun": {
+    "id": "Deathrun",
+    "name": "Deathrun",
+    "type": "DOMAIN_CARD",
+    "tier": 10,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Run and hit everyone in path. Decreasing damage.",
+    "cost": {
+      "type": "hope",
+      "value": 3
+    },
+    "range": "Far",
+    "effects": [
+      {
+        "type": "CHAIN_ATTACK",
+        "details": "Remove 1 damage die per subsequent target."
+      }
+    ]
+  },
+  "Swift Step": {
+    "id": "Swift Step",
+    "name": "Swift Step",
+    "type": "DOMAIN_CARD",
+    "tier": 10,
+    "tags": [
+      "Bone",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 2,
+    "description": "Clear Stress or gain Hope on dodge.",
+    "trigger": "ON_DODGE",
+    "passiveModifiers": [
+      {
+        "type": "HEAL_STRESS",
+        "value": 1
+      },
+      {
+        "type": "GAIN_HOPE",
+        "value": 1,
+        "condition": "Cannot clear stress"
+      }
+    ]
+  },
+  "Book Of Ava": {
+    "id": "Book Of Ava",
+    "name": "Book Of Ava",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Codex",
+      "Grimoire"
+    ],
+    "recall_cost": 2,
+    "description": "Spells: Power Push, Tava's Armor, Ice Spike.",
+    "effects": [
+      {
+        "name": "Power Push",
+        "type": "Action",
+        "range": "Melee",
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "target": "PRIMARY_TARGET",
+            "details": {
+              "on_success": [
+                {
+                  "type": "DEAL_DAMAGE",
+                  "damage_string": "1d10+2 mag"
+                },
+                {
+                  "type": "KNOCKBACK",
+                  "range": "Far"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Tava's Armor",
+        "type": "Action",
+        "range": "Melee",
+        "cost": {
+          "type": "hope",
+          "value": 1
+        },
+        "effects": [
+          {
+            "type": "MODIFY_STAT",
+            "target": "ALLY_TARGET",
+            "stat": "Armor Score",
+            "bonus": 1
+          }
+        ]
+      },
+      {
+        "name": "Ice Spike",
+        "type": "Action",
+        "range": "Far",
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "difficulty": 12,
+            "details": {
+              "on_success": [
+                {
+                  "type": "NARRATIVE_EFFECT",
+                  "description": "Summon ice spike"
+                }
+              ]
+            }
+          },
+          {
+            "type": "SPELLCAST_ROLL",
+            "target": "PRIMARY_TARGET",
+            "details": {
+              "on_success": [
+                {
+                  "type": "DEAL_DAMAGE",
+                  "damage_string": "1d6 phy"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "Book Of Illiat": {
+    "id": "Book Of Illiat",
+    "name": "Book Of Illiat",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Codex",
+      "Grimoire"
+    ],
+    "recall_cost": 2,
+    "description": "Spells: Slumber, Arcane Barrage, Telepathy.",
+    "effects": [
+      {
+        "name": "Slumber",
+        "type": "Action",
+        "range": "Very Close",
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "target": "PRIMARY_TARGET",
+            "details": {
+              "on_success": [
+                {
+                  "type": "APPLY_CONDITION",
+                  "condition": "Asleep"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Arcane Barrage",
+        "type": "Action",
+        "range": "Close",
+        "cost": {
+          "type": "hope",
+          "value": "X"
+        },
+        "limit": "Once per rest",
+        "effects": [
+          {
+            "type": "DEAL_DAMAGE",
+            "damage_string": "Xd6 mag",
+            "is_direct": false
+          }
+        ]
+      },
+      {
+        "name": "Telepathy",
+        "type": "Action",
+        "range": "Self",
+        "cost": {
+          "type": "hope",
+          "value": 1
+        },
+        "effects": [
+          {
+            "type": "NARRATIVE_EFFECT",
+            "description": "Mental communication"
+          }
+        ]
+      }
+    ]
+  },
+  "Book Of Tyfar": {
+    "id": "Book Of Tyfar",
+    "name": "Book Of Tyfar",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Codex",
+      "Grimoire"
+    ],
+    "recall_cost": 2,
+    "description": "Spells: Wild Flame, Magic Hand, Mysterious Mist.",
+    "effects": [
+      {
+        "name": "Wild Flame",
+        "type": "Action",
+        "range": "Melee",
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "target": "MULTI_TARGET",
+            "num_targets": 3,
+            "details": {
+              "on_success": [
+                {
+                  "type": "DEAL_DAMAGE",
+                  "damage_string": "2d6 mag"
+                },
+                {
+                  "type": "DEAL_STRESS",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Magic Hand",
+        "type": "Action",
+        "range": "Far",
+        "effects": [
+          {
+            "type": "NARRATIVE_EFFECT",
+            "description": "Conjure magical hand"
+          }
+        ]
+      },
+      {
+        "name": "Mysterious Mist",
+        "type": "Action",
+        "range": "Very Close",
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "difficulty": 13,
+            "details": {
+              "on_success": [
+                {
+                  "type": "CREATE_HAZARD",
+                  "description": "Obscuring fog"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "Book Of Sitil": {
+    "id": "Book Of Sitil",
+    "name": "Book Of Sitil",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Codex",
+      "Grimoire"
+    ],
+    "recall_cost": 2,
+    "description": "Spells: Adjust Appearance, Parallela, Illusion.",
+    "effects": [
+      {
+        "name": "Adjust Appearance",
+        "type": "Action",
+        "effects": [
+          {
+            "type": "NARRATIVE_EFFECT",
+            "description": "Shift appearance"
+          }
+        ]
+      },
+      {
+        "name": "Parallela",
+        "type": "Action",
+        "range": "Close",
+        "cost": {
+          "type": "hope",
+          "value": 2
+        },
+        "effects": [
+          {
+            "type": "APPLY_PASSIVE_EFFECT",
+            "target": "ALLY_TARGET",
+            "details": {
+              "trigger": "ON_SUCCESSFUL_ATTACK",
+              "type": "CLEAVE_ATTACK",
+              "num_targets": 1
+            }
+          }
+        ]
+      },
+      {
+        "name": "Illusion",
+        "type": "Action",
+        "range": "Close",
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "difficulty": 14,
+            "details": {
+              "on_success": [
+                {
+                  "type": "NARRATIVE_EFFECT",
+                  "description": "Visual illusion"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "Book Of Vagras": {
+    "id": "Book Of Vagras",
+    "name": "Book Of Vagras",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Codex",
+      "Grimoire"
+    ],
+    "recall_cost": 2,
+    "description": "Spells: Runic Lock, Arcane Door, Reveal.",
+    "effects": [
+      {
+        "name": "Runic Lock",
+        "type": "Action",
+        "range": "Melee",
+        "limit": "Once per rest",
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "difficulty": 15,
+            "details": {
+              "on_success": [
+                {
+                  "type": "NARRATIVE_EFFECT",
+                  "description": "Magical lock"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Arcane Door",
+        "type": "Action",
+        "range": "Far",
+        "cost": {
+          "type": "hope",
+          "value": 1
+        },
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "difficulty": 13,
+            "details": {
+              "on_success": [
+                {
+                  "type": "NARRATIVE_EFFECT",
+                  "description": "Teleport portal"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Reveal",
+        "type": "Action",
+        "range": "Close",
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "details": {
+              "on_success": [
+                {
+                  "type": "NARRATIVE_EFFECT",
+                  "description": "Reveal hidden"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "Book Of Korvax": {
+    "id": "Book Of Korvax",
+    "name": "Book Of Korvax",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Codex",
+      "Grimoire"
+    ],
+    "recall_cost": 2,
+    "description": "Spells: Levitation, Recant, Rune Circle.",
+    "effects": [
+      {
+        "name": "Levitation",
+        "type": "Action",
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "details": {
+              "on_success": [
+                {
+                  "type": "MOVE_TARGET",
+                  "range": "Close (Vertical)"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Recant",
+        "type": "Action",
+        "range": "Melee",
+        "cost": {
+          "type": "hope",
+          "value": 1
+        },
+        "effects": [
+          {
+            "type": "REACTION_ROLL",
+            "difficulty": 15,
+            "details": {
+              "on_failure": [
+                {
+                  "type": "MODIFY_MEMORY",
+                  "duration": "1 minute"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Rune Circle",
+        "type": "Action",
+        "range": "Melee",
+        "cost": {
+          "type": "stress",
+          "value": 1
+        },
+        "effects": [
+          {
+            "type": "CREATE_HAZARD",
+            "damage": "2d12+4 mag",
+            "effect": "Knockback"
+          }
+        ]
+      }
+    ]
+  },
+  "Book Of Norai": {
+    "id": "Book Of Norai",
+    "name": "Book Of Norai",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Codex",
+      "Grimoire"
+    ],
+    "recall_cost": 2,
+    "description": "Spells: Mystic Tether, Fireball.",
+    "effects": [
+      {
+        "name": "Mystic Tether",
+        "type": "Action",
+        "range": "Far",
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "details": {
+              "on_success": [
+                {
+                  "type": "APPLY_CONDITION",
+                  "condition": "Restrained"
+                },
+                {
+                  "type": "DEAL_STRESS",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Fireball",
+        "type": "Action",
+        "range": "Very Far",
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "details": {
+              "on_success": [
+                {
+                  "type": "AOE_DAMAGE",
+                  "damage_string": "d20+5 mag",
+                  "range": "Very Close"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "Book Of Exota": {
+    "id": "Book Of Exota",
+    "name": "Book Of Exota",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Codex",
+      "Grimoire"
+    ],
+    "recall_cost": 3,
+    "description": "Spells: Repudiate, Create Construct.",
+    "effects": [
+      {
+        "name": "Repudiate",
+        "type": "Reaction",
+        "limit": "Once per rest",
+        "effects": [
+          {
+            "type": "CANCEL_EFFECT"
+          }
+        ]
+      },
+      {
+        "name": "Create Construct",
+        "type": "Action",
+        "cost": {
+          "type": "hope",
+          "value": 1
+        },
+        "effects": [
+          {
+            "type": "SUMMON",
+            "stats": "2d10+3 phy"
+          }
+        ]
+      }
+    ]
+  },
+  "Book Of Grynn": {
+    "id": "Book Of Grynn",
+    "name": "Book Of Grynn",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Codex",
+      "Grimoire"
+    ],
+    "recall_cost": 2,
+    "description": "Spells: Arcane Deflection, Time Lock, Wall of Flame.",
+    "effects": [
+      {
+        "name": "Arcane Deflection",
+        "type": "Reaction",
+        "limit": "Once per long rest",
+        "cost": {
+          "type": "hope",
+          "value": 1
+        },
+        "effects": [
+          {
+            "type": "NEGATE_DAMAGE"
+          }
+        ]
+      },
+      {
+        "name": "Time Lock",
+        "type": "Action",
+        "range": "Far",
+        "effects": [
+          {
+            "type": "FREEZE_OBJECT"
+          }
+        ]
+      },
+      {
+        "name": "Wall of Flame",
+        "type": "Action",
+        "range": "Far",
+        "effects": [
+          {
+            "type": "CREATE_HAZARD",
+            "damage": "4d10+3 mag"
+          }
+        ]
+      }
+    ]
+  },
+  "Book Of Yarrow": {
+    "id": "Book Of Yarrow",
+    "name": "Book Of Yarrow",
+    "type": "DOMAIN_CARD",
+    "tier": 5,
+    "tags": [
+      "Codex",
+      "Grimoire"
+    ],
+    "recall_cost": 3,
+    "description": "Spells: Timejammer, Magic Immunity.",
+    "effects": [
+      {
+        "name": "Timejammer",
+        "type": "Action",
+        "range": "Far",
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "difficulty": 18,
+            "details": {
+              "on_success": [
+                {
+                  "type": "STOP_TIME"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Magic Immunity",
+        "type": "Action",
+        "cost": {
+          "type": "hope",
+          "value": 5
+        },
+        "effects": [
+          {
+            "type": "IMMUNITY",
+            "damage_type": "magic"
+          }
+        ]
+      }
+    ]
+  },
+  "Book Of Ronin": {
+    "id": "Book Of Ronin",
+    "name": "Book Of Ronin",
+    "type": "DOMAIN_CARD",
+    "tier": 6,
+    "tags": [
+      "Codex",
+      "Grimoire"
+    ],
+    "recall_cost": 4,
+    "description": "Spells: Transform, Eternal Enervation.",
+    "effects": [
+      {
+        "name": "Transform",
+        "type": "Action",
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "difficulty": 15,
+            "details": {
+              "on_success": [
+                {
+                  "type": "TRANSFORM_OBJECT"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Eternal Enervation",
+        "type": "Action",
+        "limit": "Once per long rest",
+        "range": "Close",
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "details": {
+              "on_success": [
+                {
+                  "type": "APPLY_CONDITION",
+                  "condition": "Permanent Vulnerable"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "Codex-Touched": {
+    "id": "Codex-Touched",
+    "name": "Codex-Touched",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Codex",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 0,
+    "description": "Mark Stress for proficiency bonus. Free recall swap.",
+    "condition": "4+ Codex cards equipped",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_ROLL",
+        "value": "Proficiency",
+        "cost": {
+          "type": "stress",
+          "value": 1
+        }
+      },
+      {
+        "type": "SWAP_CARD",
+        "cost": "Free",
+        "limit": "Once per rest"
+      }
+    ]
+  },
+  "Book Of Homet": {
+    "id": "Book Of Homet",
+    "name": "Book Of Homet",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Codex",
+      "Grimoire"
+    ],
+    "recall_cost": 2,
+    "description": "Spells: Pass Through, Plane Gate.",
+    "effects": [
+      {
+        "name": "Pass Through",
+        "type": "Action",
+        "limit": "Once per rest",
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "difficulty": 13,
+            "details": {
+              "on_success": [
+                {
+                  "type": "PHASE_WALL"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Plane Gate",
+        "type": "Action",
+        "limit": "Once per long rest",
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "difficulty": 14,
+            "details": {
+              "on_success": [
+                {
+                  "type": "OPEN_PORTAL"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "Book Of Vyola": {
+    "id": "Book Of Vyola",
+    "name": "Book Of Vyola",
+    "type": "DOMAIN_CARD",
+    "tier": 8,
+    "tags": [
+      "Codex",
+      "Grimoire"
+    ],
+    "recall_cost": 3,
+    "description": "Spells: Memory Delve, Shared Clarity.",
+    "effects": [
+      {
+        "name": "Memory Delve",
+        "type": "Action",
+        "range": "Far",
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "details": {
+              "on_success": [
+                {
+                  "type": "READ_MEMORY"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Shared Clarity",
+        "type": "Action",
+        "limit": "Once per long rest",
+        "cost": {
+          "type": "hope",
+          "value": 1
+        },
+        "effects": [
+          {
+            "type": "SHARE_STRESS_POOL"
+          }
+        ]
+      }
+    ]
+  },
+  "Disintegration Wave": {
+    "id": "Disintegration Wave",
+    "name": "Disintegration Wave",
+    "type": "DOMAIN_CARD",
+    "tier": 9,
+    "tags": [
+      "Codex",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 4,
+    "description": "Destroy enemies with Difficulty <= 18.",
+    "limit": "Once per long rest",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 18,
+        "details": {
+          "on_success": [
+            {
+              "type": "INSTANT_KILL",
+              "condition": "Difficulty <= 18",
+              "cost": {
+                "type": "stress",
+                "value": 1
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Copycat": {
+    "id": "Copycat",
+    "name": "Copycat",
+    "type": "DOMAIN_CARD",
+    "tier": 9,
+    "tags": [
+      "Codex",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 3,
+    "description": "Mimic another card feature.",
+    "limit": "Once per long rest",
+    "effects": [
+      {
+        "type": "COPY_FEATURE",
+        "cost": {
+          "type": "hope",
+          "value": "Half Level"
+        }
+      }
+    ]
+  },
+  "Deft Deceiver": {
+    "id": "Deft Deceiver",
+    "name": "Deft Deceiver",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Grace",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 0,
+    "description": "Advantage to deceive.",
+    "trigger": "ON_ROLL",
+    "condition": "Roll to deceive",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "range": "Self",
+    "effects": [
+      {
+        "type": "GAIN_ADVANTAGE"
+      }
+    ]
+  },
+  "Enrapture": {
+    "id": "Enrapture",
+    "name": "Enrapture",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Grace",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 0,
+    "description": "Enrapture target. Mark Stress to damage them.",
+    "range": "Close",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "PRIMARY_TARGET",
+        "details": {
+          "on_success": [
+            {
+              "type": "APPLY_CONDITION",
+              "condition": "Enraptured"
+            },
+            {
+              "type": "CONDITIONAL_EFFECT",
+              "cost": {
+                "type": "stress",
+                "value": 1
+              },
+              "details": {
+                "type": "DEAL_STRESS",
+                "target": "PRIMARY_TARGET",
+                "value": 1
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Inspirational Words": {
+    "id": "Inspirational Words",
+    "name": "Inspirational Words",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Grace",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Spend tokens to heal or buff ally.",
+    "range": "Self",
+    "token_mechanic": {
+      "type": "Presence",
+      "refresh": "long_rest"
+    },
+    "effects": [
+      {
+        "type": "SPEND_TOKEN",
+        "cost": {
+          "type": "token",
+          "value": 1
+        },
+        "target": "ALLY_TARGET",
+        "details": {
+          "type": "CHOICE",
+          "options": [
+            {
+              "type": "HEAL_STRESS",
+              "value": 1
+            },
+            {
+              "type": "HEAL_HP",
+              "value": 1
+            },
+            {
+              "type": "GAIN_HOPE",
+              "value": 1
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Tell No Lies": {
+    "id": "Tell No Lies",
+    "name": "Tell No Lies",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Grace",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Target cannot lie.",
+    "range": "Very Close",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "PRIMARY_TARGET",
+        "details": {
+          "on_success": [
+            {
+              "type": "APPLY_CONDITION",
+              "condition": "Cannot Lie"
+            }
+          ],
+          "special_trigger": {
+            "condition": "Refuse answer",
+            "action": "DEAL_STRESS",
+            "value": 1
+          }
+        }
+      }
+    ]
+  },
+  "Troublemaker": {
+    "id": "Troublemaker",
+    "name": "Troublemaker",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Grace",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Taunt target to deal Stress.",
+    "range": "Far",
+    "limit": "Once per rest",
+    "effects": [
+      {
+        "type": "PRESENCE_ROLL",
+        "target": "PRIMARY_TARGET",
+        "details": {
+          "on_success": [
+            {
+              "type": "DEAL_STRESS",
+              "value_string": "Highest of Proficiency d4s"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Hypnotic Shimmer": {
+    "id": "Hypnotic Shimmer",
+    "name": "Hypnotic Shimmer",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Grace",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Stun adversaries.",
+    "limit": "Once per rest",
+    "range": "Close",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "ALL_IN_RANGE",
+        "details": {
+          "on_success": [
+            {
+              "type": "APPLY_CONDITION",
+              "condition": "Stunned"
+            },
+            {
+              "type": "DEAL_STRESS",
+              "value": 1
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Soothing Speech": {
+    "id": "Soothing Speech",
+    "name": "Soothing Speech",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Grace",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 1,
+    "description": "Better healing during downtime.",
+    "passiveModifiers": [
+      {
+        "type": "BOOST_DOWNTIME",
+        "move": "Tend to Wounds",
+        "value": "+1 HP to target, +2 HP to self"
+      }
+    ]
+  },
+  "Words of Discord": {
+    "id": "Words of Discord",
+    "name": "Words of Discord",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Grace",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Target attacks another adversary.",
+    "range": "Melee",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 13,
+        "details": {
+          "on_success": [
+            {
+              "type": "FORCE_ATTACK",
+              "target": "Adversary"
+            },
+            {
+              "type": "DEAL_STRESS",
+              "value": 1
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Transcendent Union": {
+    "id": "Transcendent Union",
+    "name": "Transcendent Union",
+    "type": "DOMAIN_CARD",
+    "tier": 5,
+    "tags": [
+      "Grace",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Share HP/Stress between allies.",
+    "limit": "Once per long rest",
+    "cost": {
+      "type": "hope",
+      "value": 5
+    },
+    "effects": [
+      {
+        "type": "LINK_CREATURES",
+        "details": "Share HP/Stress marking"
+      }
+    ]
+  },
+  "Encore": {
+    "id": "Encore",
+    "name": "Encore",
+    "type": "DOMAIN_CARD",
+    "tier": 5,
+    "tags": [
+      "Grace",
+      "Spell",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Replicate ally damage.",
+    "trigger": "ON_ALLY_DAMAGE",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "details": {
+          "on_success": [
+            {
+              "type": "DEAL_DAMAGE",
+              "amount": "Equal to Ally"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Banish": {
+    "id": "Banish",
+    "name": "Banish",
+    "type": "DOMAIN_CARD",
+    "tier": 6,
+    "tags": [
+      "Grace",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Banish target from realm.",
+    "range": "Close",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "details": {
+          "on_success": [
+            {
+              "type": "FORCE_REACTION",
+              "difficulty": "Spellcast Result",
+              "on_fail": [
+                {
+                  "type": "BANISH",
+                  "limit": "Once per rest"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Sigil of Retribution": {
+    "id": "Sigil of Retribution",
+    "name": "Sigil of Retribution",
+    "type": "DOMAIN_CARD",
+    "tier": 6,
+    "tags": [
+      "Grace",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Store damage dice when hit, release on attack.",
+    "effects": [
+      {
+        "type": "APPLY_MARK",
+        "mechanic": "STORE_DAMAGE_ON_HIT"
+      }
+    ]
+  },
+  "Grace-Touched": {
+    "id": "Grace-Touched",
+    "name": "Grace-Touched",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Grace",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 0,
+    "description": "Mark Armor instead of Stress. Force Stress instead of HP.",
+    "condition": "4+ Grace cards equipped",
+    "passiveModifiers": [
+      {
+        "type": "SUBSTITUTE_RESOURCE",
+        "from": "Stress",
+        "to": "Armor Slot"
+      },
+      {
+        "type": "SUBSTITUTE_DAMAGE",
+        "from": "HP",
+        "to": "Stress"
+      }
+    ]
+  },
+  "Endless Charisma": {
+    "id": "Endless Charisma",
+    "name": "Endless Charisma",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Grace",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 1,
+    "description": "Reroll Hope/Fear on social rolls.",
+    "passiveModifiers": [
+      {
+        "type": "REROLL_DICE",
+        "cost": {
+          "type": "hope",
+          "value": 1
+        },
+        "condition": "Social Roll"
+      }
+    ]
+  },
+  "Mass Enrapture": {
+    "id": "Mass Enrapture",
+    "name": "Mass Enrapture",
+    "type": "DOMAIN_CARD",
+    "tier": 8,
+    "tags": [
+      "Grace",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 3,
+    "description": "Enrapture all targets in range.",
+    "range": "Far",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "ALL_IN_RANGE",
+        "details": {
+          "on_success": [
+            {
+              "type": "APPLY_CONDITION",
+              "condition": "Enraptured"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Safe Haven": {
+    "id": "Safe Haven",
+    "name": "Safe Haven",
+    "type": "DOMAIN_CARD",
+    "tier": 8,
+    "tags": [
+      "Grace",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 3,
+    "description": "Summon interdimensional home.",
+    "cost": {
+      "type": "hope",
+      "value": 2
+    },
+    "effects": [
+      {
+        "type": "CREATE_ZONE",
+        "name": "Safe Haven",
+        "details": "Extra downtime move inside."
+      }
+    ]
+  },
+  "Pick and Pull": {
+    "id": "Pick and Pull",
+    "name": "Pick and Pull",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Midnight",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 0,
+    "description": "Advantage on theft/locks.",
+    "passiveModifiers": [
+      {
+        "type": "GAIN_ADVANTAGE",
+        "condition": "Theft, locks, traps"
+      }
+    ]
+  },
+  "Rain of Blades": {
+    "id": "Rain of Blades",
+    "name": "Rain of Blades",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Midnight",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "AOE damage. Bonus vs Vulnerable.",
+    "range": "Very Close",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "ALL_IN_RANGE",
+        "details": {
+          "on_success": [
+            {
+              "type": "DEAL_DAMAGE",
+              "damage_string": "1d8+2 mag",
+              "use_proficiency": true
+            },
+            {
+              "type": "CONDITIONAL_EFFECT",
+              "condition": "Target Vulnerable",
+              "details": {
+                "type": "DEAL_DAMAGE",
+                "bonus_die": "1d8"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Uncanny Disguise": {
+    "id": "Uncanny Disguise",
+    "name": "Uncanny Disguise",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Midnight",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 0,
+    "description": "Magical disguise maintained by tokens.",
+    "range": "Self",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "token_mechanic": {
+      "type": "Spellcast trait",
+      "refresh": "on_cast"
+    },
+    "effects": [
+      {
+        "type": "APPLY_CONDITION",
+        "condition": "Disguised"
+      },
+      {
+        "type": "GAIN_ADVANTAGE",
+        "condition": "Presence Rolls to avoid scrutiny"
+      }
+    ]
+  },
+  "Midnight Spirit": {
+    "id": "Midnight Spirit",
+    "name": "Midnight Spirit",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Midnight",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Summon spirit to deal damage.",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "NARRATIVE_EFFECT",
+        "description": "Summon spirit"
+      },
+      {
+        "type": "SPELLCAST_ROLL",
+        "range": "Very Far",
+        "target": "PRIMARY_TARGET",
+        "details": {
+          "on_success": [
+            {
+              "type": "DEAL_DAMAGE",
+              "damage_string": "Xd6 mag"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Shadowbind": {
+    "id": "Shadowbind",
+    "name": "Shadowbind",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Midnight",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 0,
+    "description": "Restrain AOE.",
+    "range": "Very Close",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "ALL_IN_RANGE",
+        "details": {
+          "on_success": [
+            {
+              "type": "APPLY_CONDITION",
+              "condition": "Restrained"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Invisibility": {
+    "id": "Invisibility",
+    "name": "Invisibility",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Midnight",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Target becomes Invisible.",
+    "token_mechanic": {
+      "type": "Spellcast",
+      "refresh": "on_cast"
+    },
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 10,
+        "details": {
+          "on_success": [
+            {
+              "type": "APPLY_CONDITION",
+              "condition": "Invisible"
+            },
+            {
+              "type": "GAIN_TOKENS"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Chokehold": {
+    "id": "Chokehold",
+    "name": "Chokehold",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Midnight",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Make target Vulnerable.",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "APPLY_CONDITION",
+        "condition": "Vulnerable"
+      },
+      {
+        "type": "PASSIVE_BONUS",
+        "details": "+2d6 damage to Vulnerable target"
+      }
+    ]
+  },
+  "Veil of Night": {
+    "id": "Veil of Night",
+    "name": "Veil of Night",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Midnight",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Create darkness wall.",
+    "range": "Far",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 13,
+        "details": {
+          "on_success": [
+            {
+              "type": "CREATE_HAZARD",
+              "description": "Curtain of Darkness. You see through. Hidden to others."
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Hush": {
+    "id": "Hush",
+    "name": "Hush",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Midnight",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Silence target and area.",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "details": {
+          "on_success": [
+            {
+              "type": "APPLY_CONDITION",
+              "condition": "Silenced",
+              "range": "Very Close"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Phantom Retreat": {
+    "id": "Phantom Retreat",
+    "name": "Phantom Retreat",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Midnight",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Mark point, teleport back later.",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "SET_MARKER"
+      },
+      {
+        "type": "TELEPORT",
+        "target": "MARKER",
+        "cost": {
+          "type": "hope",
+          "value": 1
+        }
+      }
+    ]
+  },
+  "Never Upstaged": {
+    "id": "Never Upstaged",
+    "name": "Never Upstaged",
+    "type": "DOMAIN_CARD",
+    "tier": 6,
+    "tags": [
+      "Midnight",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 2,
+    "description": "Store tokens on hit, +5 dmg per token.",
+    "trigger": "ON_TAKE_DAMAGE",
+    "effects": [
+      {
+        "type": "GAIN_TOKENS",
+        "amount": "HP Marked",
+        "cost": {
+          "type": "stress",
+          "value": 1
+        }
+      },
+      {
+        "type": "SPEND_TOKEN",
+        "trigger": "ON_ATTACK",
+        "details": "+5 Damage"
+      }
+    ]
+  },
+  "Share The Burden": {
+    "id": "Share The Burden",
+    "name": "Share The Burden",
+    "type": "DOMAIN_CARD",
+    "tier": 6,
+    "tags": [
+      "Midnight",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 0,
+    "description": "Transfer Stress from ally to self.",
+    "limit": "Once per rest",
+    "effects": [
+      {
+        "type": "HEAL_STRESS",
+        "target": "ALLY",
+        "value": "X"
+      },
+      {
+        "type": "TAKE_STRESS",
+        "value": "X"
+      },
+      {
+        "type": "GAIN_HOPE",
+        "value": "X"
+      }
+    ]
+  },
+  "Midnight-Touched": {
+    "id": "Midnight-Touched",
+    "name": "Midnight-Touched",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Midnight",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 0,
+    "description": "Gain Hope when GM gains Fear. Add Fear die to damage.",
+    "condition": "4+ Midnight cards equipped",
+    "passiveModifiers": [
+      {
+        "type": "GAIN_HOPE",
+        "condition": "0 Hope & GM gains Fear"
+      },
+      {
+        "type": "MODIFY_DAMAGE",
+        "value": "Fear Die",
+        "cost": {
+          "type": "stress",
+          "value": 1
+        }
+      }
+    ]
+  },
+  "Vanishing Dodge": {
+    "id": "Vanishing Dodge",
+    "name": "Vanishing Dodge",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Midnight",
+      "Spell",
+      "Reaction"
+    ],
+    "recall_cost": 2,
+    "description": "Teleport and Hide on missed attack.",
+    "trigger": "ON_DODGE",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "APPLY_CONDITION",
+        "condition": "Hidden"
+      },
+      {
+        "type": "TELEPORT",
+        "range": "Close"
+      }
+    ]
+  },
+  "Shadowhunter": {
+    "id": "Shadowhunter",
+    "name": "Shadowhunter",
+    "type": "DOMAIN_CARD",
+    "tier": 8,
+    "tags": [
+      "Midnight",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 2,
+    "description": "+1 Evasion, Advantage in darkness.",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_STAT",
+        "stat": "Evasion",
+        "value": 1,
+        "condition": "Darkness"
+      },
+      {
+        "type": "GAIN_ADVANTAGE",
+        "condition": "Darkness"
+      }
+    ]
+  },
+  "Spellcharge": {
+    "id": "Spellcharge",
+    "name": "Spellcharge",
+    "type": "DOMAIN_CARD",
+    "tier": 8,
+    "tags": [
+      "Midnight",
+      "Spell",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Store tokens on magic damage. Add damage.",
+    "trigger": "ON_TAKE_MAGIC_DAMAGE",
+    "effects": [
+      {
+        "type": "GAIN_TOKENS"
+      },
+      {
+        "type": "SPEND_TOKEN",
+        "trigger": "ON_ATTACK",
+        "details": "+1d6 damage per token"
+      }
+    ]
+  },
+  "Master of the Craft": {
+    "id": "Master of the Craft",
+    "name": "Master of the Craft",
+    "type": "DOMAIN_CARD",
+    "tier": 9,
+    "tags": [
+      "Midnight",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 0,
+    "description": "Permanent Experience bonus.",
+    "effects": [
+      {
+        "type": "PERMANENT_BUFF",
+        "details": "+2 to two Exp OR +3 to one Exp"
+      },
+      {
+        "type": "VAULT_CARD"
+      }
+    ]
+  },
+  "Night Terror": {
+    "id": "Night Terror",
+    "name": "Night Terror",
+    "type": "DOMAIN_CARD",
+    "tier": 9,
+    "tags": [
+      "Midnight",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Horrify targets, steal Fear, deal damage.",
+    "limit": "Once per long rest",
+    "range": "Very Close",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "details": {
+          "on_success": [
+            {
+              "type": "APPLY_CONDITION",
+              "condition": "Horrified"
+            },
+            {
+              "type": "STEAL_FEAR"
+            },
+            {
+              "type": "DEAL_DAMAGE",
+              "damage_string": "Stolen Fear d6s"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Eclipse": {
+    "id": "Eclipse",
+    "name": "Eclipse",
+    "type": "DOMAIN_CARD",
+    "tier": 10,
+    "tags": [
+      "Midnight",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Create total darkness. Disadvantage to enemies.",
+    "limit": "Once per long rest",
+    "effects": [
+      {
+        "type": "CREATE_HAZARD",
+        "description": "Eclipse Darkness"
+      }
+    ]
+  },
+  "Specter of the Dark": {
+    "id": "Specter of the Dark",
+    "name": "Specter of the Dark",
+    "type": "DOMAIN_CARD",
+    "tier": 10,
+    "tags": [
+      "Midnight",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Become Spectral.",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "APPLY_CONDITION",
+        "condition": "Spectral"
+      }
+    ]
+  },
+  "Gifted Tracker": {
+    "id": "Gifted Tracker",
+    "name": "Gifted Tracker",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Sage",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 0,
+    "description": "Ask tracking questions. Bonus Evasion.",
+    "cost": {
+      "type": "hope",
+      "value": "X"
+    },
+    "effects": [
+      {
+        "type": "NARRATIVE_EFFECT",
+        "description": "Ask X tracking questions."
+      },
+      {
+        "type": "APPLY_PASSIVE_EFFECT",
+        "details": {
+          "type": "MODIFY_STAT",
+          "stat": "Evasion",
+          "bonus": 1,
+          "condition": "against tracked creatures"
+        }
+      }
+    ]
+  },
+  "Nature's Tongue": {
+    "id": "Nature's Tongue",
+    "name": "Nature's Tongue",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Sage",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 0,
+    "description": "Speak with animals. Bonus to cast in nature.",
+    "effects": [
+      {
+        "type": "INSTINCT_ROLL",
+        "difficulty": 12,
+        "details": {
+          "on_success": [
+            {
+              "type": "NARRATIVE_EFFECT",
+              "description": "Speak with plants/animals"
+            }
+          ]
+        }
+      },
+      {
+        "type": "CONDITIONAL_EFFECT",
+        "trigger": "BEFORE_SPELLCAST_ROLL",
+        "condition": "In nature",
+        "cost": {
+          "type": "hope",
+          "value": 1
+        },
+        "details": {
+          "type": "MODIFY_ROLL",
+          "bonus": 2
+        }
+      }
+    ]
+  },
+  "Vicious Entangle": {
+    "id": "Vicious Entangle",
+    "name": "Vicious Entangle",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Sage",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Damage and Restrain. Spread to second target.",
+    "range": "Far",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "PRIMARY_TARGET",
+        "details": {
+          "on_success": [
+            {
+              "type": "DEAL_DAMAGE",
+              "damage_string": "1d8+1 phy",
+              "is_direct": false
+            },
+            {
+              "type": "APPLY_CONDITION",
+              "condition": "Restrained"
+            },
+            {
+              "type": "CONDITIONAL_EFFECT",
+              "cost": {
+                "type": "hope",
+                "value": 1
+              },
+              "details": {
+                "type": "APPLY_CONDITION",
+                "target": "OTHER_TARGET_IN_RANGE",
+                "condition": "Restrained"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Conjure Swarm": {
+    "id": "Conjure Swarm",
+    "name": "Conjure Swarm",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Sage",
+      "Spell",
+      "Grimoire"
+    ],
+    "recall_cost": 1,
+    "description": "Spells: Tekaira Armored Beetles, Fire Flies.",
+    "effects": [
+      {
+        "name": "Tekaira Armored Beetles",
+        "type": "Action",
+        "cost": {
+          "type": "stress",
+          "value": 1
+        },
+        "effects": [
+          {
+            "type": "APPLY_PASSIVE_EFFECT",
+            "target": "SELF",
+            "details": {
+              "trigger": "ON_TAKE_DAMAGE",
+              "type": "REDUCE_SEVERITY",
+              "value": 1
+            }
+          }
+        ]
+      },
+      {
+        "name": "Fire Flies",
+        "type": "Action",
+        "range": "Close",
+        "cost": {
+          "type": "hope",
+          "value": 1
+        },
+        "effects": [
+          {
+            "type": "SPELLCAST_ROLL",
+            "target": "ALL_IN_RANGE",
+            "details": {
+              "on_success": [
+                {
+                  "type": "DEAL_DAMAGE",
+                  "damage_string": "2d8+3 mag"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "Natural Familiar": {
+    "id": "Natural Familiar",
+    "name": "Natural Familiar",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Sage",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Summon familiar. Bonus damage near familiar.",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "SUMMON_FAMILIAR"
+      },
+      {
+        "type": "APPLY_PASSIVE_EFFECT",
+        "target": "SELF",
+        "details": {
+          "trigger": "ON_DEAL_DAMAGE",
+          "condition": "Target Melee to familiar",
+          "type": "DEAL_DAMAGE",
+          "bonus_die": "1d6"
+        }
+      }
+    ]
+  },
+  "Corrosive Projectile": {
+    "id": "Corrosive Projectile",
+    "name": "Corrosive Projectile",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Sage",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Damage and Corrode target.",
+    "range": "Far",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "PRIMARY_TARGET",
+        "details": {
+          "on_success": [
+            {
+              "type": "DEAL_DAMAGE",
+              "damage_string": "1d6+4 mag"
+            },
+            {
+              "type": "APPLY_CONDITION",
+              "condition": "Corroded",
+              "cost": {
+                "type": "stress",
+                "value": 2
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Towering Stalk": {
+    "id": "Towering Stalk",
+    "name": "Towering Stalk",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Sage",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Create climbable stalk. Attack to drop enemies.",
+    "limit": "Once per rest",
+    "effects": [
+      {
+        "type": "CREATE_OBJECT",
+        "description": "Stalk"
+      },
+      {
+        "type": "SPELLCAST_ROLL",
+        "cost": {
+          "type": "stress",
+          "value": 1
+        },
+        "details": {
+          "on_success": [
+            {
+              "type": "DEAL_DAMAGE",
+              "damage_string": "1d8 phy"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Thorn Skin": {
+    "id": "Thorn Skin",
+    "name": "Thorn Skin",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Sage",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Store tokens. Spend to reduce damage/retaliate.",
+    "limit": "Once per rest",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "token_mechanic": {
+      "type": "Spellcast trait",
+      "refresh": "rest"
+    },
+    "effects": [
+      {
+        "type": "GAIN_TOKENS"
+      },
+      {
+        "type": "SPEND_TOKEN",
+        "trigger": "ON_TAKE_DAMAGE",
+        "details": "Reduce Damage by d6. Reflect if Melee."
+      }
+    ]
+  },
+  "Wild Fortress": {
+    "id": "Wild Fortress",
+    "name": "Wild Fortress",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Sage",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Create defensive dome.",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 13,
+        "details": {
+          "on_success": [
+            {
+              "type": "CREATE_OBJECT",
+              "name": "Dome",
+              "hp": 3,
+              "thresholds": [
+                15,
+                30
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Dark Whispers": {
+    "id": "Dark Whispers",
+    "name": "Dark Whispers",
+    "type": "DOMAIN_CARD",
+    "tier": 5,
+    "tags": [
+      "Sage",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 0,
+    "description": "Telepathic link. Learn info.",
+    "effects": [
+      {
+        "type": "NARRATIVE_EFFECT",
+        "description": "Telepathy on touch."
+      },
+      {
+        "type": "SPELLCAST_ROLL",
+        "cost": {
+          "type": "stress",
+          "value": 1
+        },
+        "details": {
+          "on_success": [
+            {
+              "type": "LEARN_INFO"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Mass Disguise": {
+    "id": "Mass Disguise",
+    "name": "Mass Disguise",
+    "type": "DOMAIN_CARD",
+    "tier": 5,
+    "tags": [
+      "Sage",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 0,
+    "description": "Disguise group. Countdown 8.",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "APPLY_CONDITION",
+        "target": "ALL_ALLIES",
+        "condition": "Disguised"
+      },
+      {
+        "type": "START_COUNTDOWN",
+        "value": 8
+      }
+    ]
+  },
+  "Conjured Steeds": {
+    "id": "Conjured Steeds",
+    "name": "Conjured Steeds",
+    "type": "DOMAIN_CARD",
+    "tier": 6,
+    "tags": [
+      "Sage",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Summon mounts.",
+    "cost": {
+      "type": "hope",
+      "value": "X"
+    },
+    "effects": [
+      {
+        "type": "SUMMON",
+        "count": "X",
+        "description": "Steeds"
+      }
+    ]
+  },
+  "Forager": {
+    "id": "Forager",
+    "name": "Forager",
+    "type": "DOMAIN_CARD",
+    "tier": 6,
+    "tags": [
+      "Sage",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 0,
+    "description": "Find consumables during downtime.",
+    "effects": [
+      {
+        "type": "ROLL_TABLE",
+        "table": "Foraging"
+      }
+    ]
+  },
+  "Sage-Touched": {
+    "id": "Sage-Touched",
+    "name": "Sage-Touched",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Sage",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 0,
+    "description": "+2 Spellcast in nature. Double Agility/Instinct once.",
+    "condition": "4+ Sage cards equipped",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_ROLL",
+        "value": 2,
+        "condition": "Nature"
+      },
+      {
+        "type": "DOUBLE_TRAIT",
+        "limit": "Once per rest"
+      }
+    ]
+  },
+  "Wild Surge": {
+    "id": "Wild Surge",
+    "name": "Wild Surge",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Sage",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Add d6 to all rolls, increases over time.",
+    "limit": "Once per long rest",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "APPLY_BUFF",
+        "mechanic": "ESCALATING_DIE"
+      }
+    ]
+  },
+  "Healing Strike": {
+    "id": "Healing Strike",
+    "name": "Healing Strike",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Sage",
+      "Spell",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Heal ally on damage deal.",
+    "trigger": "ON_DEAL_DAMAGE",
+    "cost": {
+      "type": "hope",
+      "value": 2
+    },
+    "effects": [
+      {
+        "type": "HEAL_HP",
+        "target": "ALLY",
+        "value": 1
+      }
+    ]
+  },
+  "Forest Sprites": {
+    "id": "Forest Sprites",
+    "name": "Forest Sprites",
+    "type": "DOMAIN_CARD",
+    "tier": 8,
+    "tags": [
+      "Sage",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Sprites buff attacks or armor.",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 13,
+        "details": {
+          "on_success": [
+            {
+              "type": "SUMMON",
+              "description": "Sprites"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Twilight Toll": {
+    "id": "Twilight Toll",
+    "name": "Twilight Toll",
+    "type": "DOMAIN_CARD",
+    "tier": 9,
+    "tags": [
+      "Sage",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Mark target. Build tokens. Massive damage.",
+    "effects": [
+      {
+        "type": "APPLY_MARK",
+        "mechanic": "BUILD_TOKENS_ON_ACTION"
+      },
+      {
+        "type": "SPEND_TOKEN",
+        "trigger": "ON_DAMAGE",
+        "details": "+1d12 per token"
+      }
+    ]
+  },
+  "Fane of the Wilds": {
+    "id": "Fane of the Wilds",
+    "name": "Fane of the Wilds",
+    "type": "DOMAIN_CARD",
+    "tier": 9,
+    "tags": [
+      "Sage",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 2,
+    "description": "Tokens from Sage cards. Buff Spellcast.",
+    "token_mechanic": {
+      "type": "Sage Cards",
+      "refresh": "long_rest"
+    },
+    "effects": [
+      {
+        "type": "SPEND_TOKEN",
+        "details": "+1 to Spellcast Roll"
+      }
+    ]
+  },
+  "Force of Nature": {
+    "id": "Force of Nature",
+    "name": "Force of Nature",
+    "type": "DOMAIN_CARD",
+    "tier": 10,
+    "tags": [
+      "Sage",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 3,
+    "description": "Transform. +10 Damage. Absorb enemies.",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "TRANSFORM",
+        "upkeep": "1 Hope per action",
+        "buffs": [
+          "+10 Damage",
+          "Immune Restrained",
+          "Absorb on Kill"
+        ]
+      }
+    ]
+  },
+  "Tempest": {
+    "id": "Tempest",
+    "name": "Tempest",
+    "type": "DOMAIN_CARD",
+    "tier": 10,
+    "tags": [
+      "Sage",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Blizzard, Hurricane, or Sandstorm.",
+    "range": "Far",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "ALL_IN_RANGE",
+        "details": {
+          "on_success": [
+            {
+              "type": "CHOICE",
+              "options": [
+                "Blizzard (Dmg+Vuln)",
+                "Hurricane (Dmg+MoveBlock)",
+                "Sandstorm (Dmg+RangeDisadv)"
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Bolt Beacon": {
+    "id": "Bolt Beacon",
+    "name": "Bolt Beacon",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Splendor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Damage and Vulnerable/Glowing.",
+    "range": "Far",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "PRIMARY_TARGET",
+        "details": {
+          "on_success": [
+            {
+              "type": "CONDITIONAL_EFFECT",
+              "cost": {
+                "type": "hope",
+                "value": 1
+              },
+              "details": {
+                "type": "MULTI_ACTION",
+                "actions": [
+                  {
+                    "type": "DEAL_DAMAGE",
+                    "damage_string": "1d8+2 mag",
+                    "use_proficiency": true
+                  },
+                  {
+                    "type": "APPLY_CONDITION",
+                    "condition": "Vulnerable"
+                  },
+                  {
+                    "type": "APPLY_CONDITION",
+                    "condition": "Glowing"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Mending Touch": {
+    "id": "Mending Touch",
+    "name": "Mending Touch",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Splendor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Heal Ally.",
+    "cost": {
+      "type": "hope",
+      "value": 2
+    },
+    "range": "Melee",
+    "effects": [
+      {
+        "type": "HEAL_TARGET",
+        "heal_string": "1 HP or 1 Stress"
+      }
+    ]
+  },
+  "Reassurance": {
+    "id": "Reassurance",
+    "name": "Reassurance",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Splendor",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 0,
+    "description": "Reroll ally action.",
+    "trigger": "ON_ALLY_ACTION_ROLL",
+    "limit": "Once per rest",
+    "effects": [
+      {
+        "type": "REROLL_DICE",
+        "target": "ALLY_TARGET"
+      }
+    ]
+  },
+  "Final Words": {
+    "id": "Final Words",
+    "name": "Final Words",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Splendor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Speak with dead.",
+    "target": "CORPSE",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 13,
+        "details": {
+          "on_success_with_hope": [
+            {
+              "type": "NARRATIVE_EFFECT",
+              "description": "Answer 3 questions"
+            }
+          ],
+          "on_success_with_fear": [
+            {
+              "type": "NARRATIVE_EFFECT",
+              "description": "Answer 1 question"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Healing Hands": {
+    "id": "Healing Hands",
+    "name": "Healing Hands",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Splendor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Heal target.",
+    "range": "Melee",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "target": "ALLY_TARGET",
+        "difficulty": 13,
+        "details": {
+          "on_success": [
+            {
+              "type": "HEAL_TARGET",
+              "cost": {
+                "type": "stress",
+                "value": 1
+              },
+              "heal_string": "2 HP or 2 Stress"
+            }
+          ],
+          "on_fail": [
+            {
+              "type": "HEAL_TARGET",
+              "cost": {
+                "type": "stress",
+                "value": 1
+              },
+              "heal_string": "1 HP or 1 Stress"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Second Wind": {
+    "id": "Second Wind",
+    "name": "Second Wind",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Splendor",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Clear 3 Stress/1 HP on hit.",
+    "limit": "Once per rest",
+    "trigger": "ON_SUCCESSFUL_ATTACK",
+    "effects": [
+      {
+        "type": "HEAL_SELF",
+        "value": "3 Stress or 1 HP"
+      },
+      {
+        "type": "HEAL_TARGET",
+        "target": "ALLY",
+        "condition": "With Hope",
+        "value": "3 Stress or 1 HP"
+      }
+    ]
+  },
+  "Voice of Reason": {
+    "id": "Voice of Reason",
+    "name": "Voice of Reason",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Splendor",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 1,
+    "description": "Advantage on social. Bonus damage when full Stress.",
+    "passiveModifiers": [
+      {
+        "type": "GAIN_ADVANTAGE",
+        "condition": "De-escalate/Convince"
+      },
+      {
+        "type": "MODIFY_STAT",
+        "stat": "Proficiency",
+        "value": 1,
+        "condition": "Max Stress"
+      }
+    ]
+  },
+  "Shape Material": {
+    "id": "Shape Material",
+    "name": "Shape Material",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Splendor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Shape stone/ice/wood.",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "NARRATIVE_EFFECT",
+        "description": "Shape material"
+      }
+    ]
+  },
+  "Smite": {
+    "id": "Smite",
+    "name": "Smite",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Splendor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Double damage on next hit.",
+    "limit": "Once per rest",
+    "cost": {
+      "type": "hope",
+      "value": 3
+    },
+    "effects": [
+      {
+        "type": "APPLY_BUFF",
+        "buff": "Double Damage Next Hit"
+      }
+    ]
+  },
+  "Manifest Wall": {
+    "id": "Manifest Wall",
+    "name": "Manifest Wall",
+    "type": "DOMAIN_CARD",
+    "tier": 5,
+    "tags": [
+      "Splendor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Create wall. Shunt creatures.",
+    "limit": "Once per rest",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 15,
+        "details": {
+          "on_success": [
+            {
+              "type": "CREATE_OBJECT",
+              "description": "Magic Wall"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Teleport": {
+    "id": "Teleport",
+    "name": "Teleport",
+    "type": "DOMAIN_CARD",
+    "tier": 5,
+    "tags": [
+      "Splendor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Teleport self and allies.",
+    "limit": "Once per long rest",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 16,
+        "details": {
+          "on_success": [
+            {
+              "type": "TELEPORT",
+              "target": "ALL_ALLIES",
+              "range": "Known Location"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Thought Delver": {
+    "id": "Thought Delver",
+    "name": "Thought Delver",
+    "type": "DOMAIN_CARD",
+    "tier": 5,
+    "tags": [
+      "Splendor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Read thoughts.",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "details": {
+          "on_success": [
+            {
+              "type": "READ_THOUGHTS"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Restoration": {
+    "id": "Restoration",
+    "name": "Restoration",
+    "type": "DOMAIN_CARD",
+    "tier": 6,
+    "tags": [
+      "Splendor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Spend tokens to heal 2 HP/Stress.",
+    "token_mechanic": {
+      "type": "Spellcast trait",
+      "refresh": "long_rest"
+    },
+    "effects": [
+      {
+        "type": "SPEND_TOKEN",
+        "details": "Heal 2 HP or 2 Stress"
+      }
+    ]
+  },
+  "Zone of Protection": {
+    "id": "Zone of Protection",
+    "name": "Zone of Protection",
+    "type": "DOMAIN_CARD",
+    "tier": 6,
+    "tags": [
+      "Splendor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Zone reduces damage by d6 value (escalating).",
+    "limit": "Once per long rest",
+    "effects": [
+      {
+        "type": "CREATE_ZONE",
+        "mechanic": "DAMAGE_REDUCTION_DIE"
+      }
+    ]
+  },
+  "Splendor-Touched": {
+    "id": "Splendor-Touched",
+    "name": "Splendor-Touched",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Splendor",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 0,
+    "description": "+3 Severe Threshold. Mark Stress/Hope instead of HP.",
+    "condition": "4+ Splendor cards equipped",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_STAT",
+        "stat": "severe_threshold",
+        "value": 3
+      },
+      {
+        "type": "SUBSTITUTE_DAMAGE",
+        "limit": "Once per long rest"
+      }
+    ]
+  },
+  "Shrug It Off": {
+    "id": "Shrug It Off",
+    "name": "Shrug It Off",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Splendor",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Reduce damage severity. Chance to vault.",
+    "trigger": "ON_TAKE_DAMAGE",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "REDUCE_SEVERITY",
+        "value": 1
+      },
+      {
+        "type": "ROLL_DIE",
+        "size": "d6",
+        "threshold": 3,
+        "on_fail": "VAULT_CARD"
+      }
+    ]
+  },
+  "Rejuvenation Barrier": {
+    "id": "Rejuvenation Barrier",
+    "name": "Rejuvenation Barrier",
+    "type": "DOMAIN_CARD",
+    "tier": 8,
+    "tags": [
+      "Splendor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Heal 1d4 HP. Physical Resistance.",
+    "limit": "Once per rest",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 15,
+        "details": {
+          "on_success": [
+            {
+              "type": "HEAL_AREA",
+              "value": "1d4 HP"
+            },
+            {
+              "type": "Physical"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Shield Aura": {
+    "id": "Shield Aura",
+    "name": "Shield Aura",
+    "type": "DOMAIN_CARD",
+    "tier": 8,
+    "tags": [
+      "Splendor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Armor slot reduces severity extra step.",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "APPLY_BUFF",
+        "buff": "Improved Armor"
+      }
+    ]
+  },
+  "Salvation Beam": {
+    "id": "Salvation Beam",
+    "name": "Salvation Beam",
+    "type": "DOMAIN_CARD",
+    "tier": 9,
+    "tags": [
+      "Splendor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Heal allies equal to Stress marked.",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 16,
+        "details": {
+          "on_success": [
+            {
+              "type": "HEAL_TARGETS",
+              "amount": "Stress Marked"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Hold The Line": {
+    "id": "Hold The Line",
+    "name": "Hold The Line",
+    "type": "DOMAIN_CARD",
+    "tier": 9,
+    "tags": [
+      "Splendor",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Pull and Restrain enemies.",
+    "cost": {
+      "type": "hope",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "APPLY_CONDITION",
+        "condition": "Restrained",
+        "target": "Approaching Enemies"
+      }
+    ]
+  },
+  "Lead By Example": {
+    "id": "Lead By Example",
+    "name": "Lead By Example",
+    "type": "DOMAIN_CARD",
+    "tier": 9,
+    "tags": [
+      "Splendor",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 3,
+    "description": "Ally clears Stress/Gains Hope on next attack.",
+    "trigger": "ON_DEAL_DAMAGE",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "effects": [
+      {
+        "type": "GRANT_BUFF",
+        "target": "NEXT_ALLY_ATTACKER"
+      }
+    ]
+  },
+  "Invigoration": {
+    "id": "Invigoration",
+    "name": "Invigoration",
+    "type": "DOMAIN_CARD",
+    "tier": 10,
+    "tags": [
+      "Splendor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Refresh exhausted features.",
+    "effects": [
+      {
+        "type": "REFRESH_FEATURE",
+        "cost": {
+          "type": "hope",
+          "value": "X"
+        },
+        "chance": "d6 roll of 6"
+      }
+    ]
+  },
+  "Resurrection": {
+    "id": "Resurrection",
+    "name": "Resurrection",
+    "type": "DOMAIN_CARD",
+    "tier": 10,
+    "tags": [
+      "Splendor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 4,
+    "description": "Bring back dead.",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "difficulty": 20,
+        "details": {
+          "on_success": [
+            {
+              "type": "RESURRECT"
+            },
+            {
+              "type": "CHECK_VAULT"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Bare Bones": {
+    "id": "Bare Bones",
+    "name": "Bare Bones",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 0,
+    "description": "Unarmored Defense.",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_STAT",
+        "condition": "Not wearing armor",
+        "target": "Armor Score",
+        "value_string": "3 + Strength"
+      },
+      {
+        "type": "MODIFY_STAT",
+        "condition": "Not wearing armor",
+        "target": "Thresholds",
+        "value_string": "Tier-based"
+      }
+    ]
+  },
+  "Forceful Push": {
+    "id": "Forceful Push",
+    "name": "Forceful Push",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 0,
+    "description": "Knockback attack. Bonus damage/Vulnerable on Hope.",
+    "range": "Melee",
+    "effects": [
+      {
+        "type": "WEAPON_ATTACK",
+        "target": "PRIMARY_TARGET",
+        "details": {
+          "on_success": [
+            {
+              "type": "KNOCKBACK",
+              "range": "Close"
+            }
+          ],
+          "on_success_with_hope": [
+            {
+              "type": "DEAL_DAMAGE",
+              "bonus_die": "1d6"
+            }
+          ],
+          "on_any_success": [
+            {
+              "type": "CONDITIONAL_EFFECT",
+              "cost": {
+                "type": "hope",
+                "value": 1
+              },
+              "details": {
+                "type": "APPLY_CONDITION",
+                "condition": "Vulnerable"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "I Am Your Shield": {
+    "id": "I Am Your Shield",
+    "name": "I Am Your Shield",
+    "type": "DOMAIN_CARD",
+    "tier": 1,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Intercept damage for ally.",
+    "trigger": "ON_ALLY_TAKE_DAMAGE",
+    "cost": {
+      "type": "stress",
+      "value": 1
+    },
+    "range": "Very Close",
+    "effects": [
+      {
+        "type": "INTERCEPT_DAMAGE"
+      }
+    ]
+  },
+  "Body Basher": {
+    "id": "Body Basher",
+    "name": "Body Basher",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 1,
+    "description": "Add Strength to damage.",
+    "passiveModifiers": [
+      {
+        "type": "DEAL_DAMAGE",
+        "trigger": "ON_SUCCESSFUL_ATTACK",
+        "condition": "Weapon is Melee",
+        "bonus_string": "Strength"
+      }
+    ]
+  },
+  "Bold Presence": {
+    "id": "Bold Presence",
+    "name": "Bold Presence",
+    "type": "DOMAIN_CARD",
+    "tier": 2,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Action",
+      "Passive"
+    ],
+    "recall_cost": 0,
+    "description": "Boost Presence roll. Avoid condition once/rest.",
+    "effects": [
+      {
+        "type": "CONDITIONAL_EFFECT",
+        "trigger": "BEFORE_PRESENCE_ROLL",
+        "cost": {
+          "type": "hope",
+          "value": 1
+        },
+        "details": {
+          "type": "MODIFY_ROLL",
+          "bonus_string": "Strength"
+        }
+      }
+    ],
+    "passiveModifiers": [
+      {
+        "type": "AVOID_CONDITION",
+        "limit": "Once per rest"
+      }
+    ]
+  },
+  "Critical Inspiration": {
+    "id": "Critical Inspiration",
+    "name": "Critical Inspiration",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Allies clear Stress/Gain Hope on Crit.",
+    "trigger": "ON_CRIT_SUCCESS",
+    "limit": "Once per rest",
+    "effects": [
+      {
+        "type": "HEAL_STRESS",
+        "target": "ALL_ALLIES",
+        "value": 1
+      },
+      {
+        "type": "GAIN_HOPE",
+        "target": "ALL_ALLIES",
+        "value": 1
+      }
+    ]
+  },
+  "Lean On Me": {
+    "id": "Lean On Me",
+    "name": "Lean On Me",
+    "type": "DOMAIN_CARD",
+    "tier": 3,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Both clear 2 Stress on ally fail.",
+    "limit": "Once per long rest",
+    "trigger": "ON_ALLY_FAIL",
+    "effects": [
+      {
+        "type": "HEAL_STRESS",
+        "target": "SELF_AND_ALLY",
+        "value": 2
+      }
+    ]
+  },
+  "Armorer": {
+    "id": "Armorer",
+    "name": "Armorer",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 1,
+    "description": "+1 Armor. Repair Armor helps allies.",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_STAT",
+        "stat": "Armor",
+        "value": 1
+      },
+      {
+        "type": "SHARE_BENEFIT",
+        "move": "Repair Armor"
+      }
+    ]
+  },
+  "Rousing Strike": {
+    "id": "Rousing Strike",
+    "name": "Rousing Strike",
+    "type": "DOMAIN_CARD",
+    "tier": 4,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Heal allies on Crit.",
+    "limit": "Once per rest",
+    "trigger": "ON_CRIT_SUCCESS",
+    "effects": [
+      {
+        "type": "HEAL_HP",
+        "target": "ALL_ALLIES",
+        "value": 1
+      }
+    ]
+  },
+  "Life Ward": {
+    "id": "Life Ward",
+    "name": "Life Ward",
+    "type": "DOMAIN_CARD",
+    "tier": 5,
+    "tags": [
+      "Valor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Prevent death move for ally.",
+    "cost": {
+      "type": "hope",
+      "value": 3
+    },
+    "effects": [
+      {
+        "type": "APPLY_BUFF",
+        "buff": "Prevent Death Move (Clear 1 HP instead)"
+      }
+    ]
+  },
+  "Goad Them On": {
+    "id": "Goad Them On",
+    "name": "Goad Them On",
+    "type": "DOMAIN_CARD",
+    "tier": 5,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Taunt target. Force attack.",
+    "effects": [
+      {
+        "type": "PRESENCE_ROLL",
+        "details": {
+          "on_success": [
+            {
+              "type": "DEAL_STRESS",
+              "value": 1
+            },
+            {
+              "type": "FORCE_ATTACK",
+              "target": "SELF",
+              "disadvantage": true
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Support Tank": {
+    "id": "Support Tank",
+    "name": "Support Tank",
+    "type": "DOMAIN_CARD",
+    "tier": 5,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Reroll ally fail.",
+    "cost": {
+      "type": "hope",
+      "value": 2
+    },
+    "effects": [
+      {
+        "type": "REROLL_DICE",
+        "target": "ALLY"
+      }
+    ]
+  },
+  "Inevitable": {
+    "id": "Inevitable",
+    "name": "Inevitable",
+    "type": "DOMAIN_CARD",
+    "tier": 6,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 1,
+    "description": "Advantage after fail.",
+    "trigger": "ON_FAIL_ROLL",
+    "effects": [
+      {
+        "type": "GAIN_ADVANTAGE",
+        "target": "NEXT_ROLL"
+      }
+    ]
+  },
+  "Rise Up": {
+    "id": "Rise Up",
+    "name": "Rise Up",
+    "type": "DOMAIN_CARD",
+    "tier": 6,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 2,
+    "description": "Bonus Severe threshold. Clear Stress on hit.",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_STAT",
+        "stat": "Severe Threshold",
+        "value": "Proficiency"
+      },
+      {
+        "type": "HEAL_STRESS",
+        "value": 1,
+        "trigger": "ON_MARK_HP"
+      }
+    ]
+  },
+  "Valor-Touched": {
+    "id": "Valor-Touched",
+    "name": "Valor-Touched",
+    "type": "DOMAIN_CARD",
+    "tier": 7,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Passive"
+    ],
+    "recall_cost": 0,
+    "description": "+1 Armor. Clear Armor on HP mark.",
+    "condition": "4+ Valor cards equipped",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_STAT",
+        "stat": "Armor",
+        "value": 1
+      },
+      {
+        "type": "HEAL_RESOURCE",
+        "resource": "armor_slot",
+        "value": 1,
+        "trigger": "ON_MARK_HP"
+      }
+    ]
+  },
+  "Stunning Sunlight": {
+    "id": "Stunning Sunlight",
+    "name": "Stunning Sunlight",
+    "type": "DOMAIN_CARD",
+    "tier": 8,
+    "tags": [
+      "Valor",
+      "Spell",
+      "Action"
+    ],
+    "recall_cost": 2,
+    "description": "Massive AOE damage and Stun.",
+    "effects": [
+      {
+        "type": "SPELLCAST_ROLL",
+        "details": {
+          "on_success": [
+            {
+              "type": "AOE_DAMAGE",
+              "damage_string": "4d20+5 mag",
+              "condition": "Stunned"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Full Surge": {
+    "id": "Full Surge",
+    "name": "Full Surge",
+    "type": "DOMAIN_CARD",
+    "tier": 8,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "+2 to all traits.",
+    "limit": "Once per long rest",
+    "cost": {
+      "type": "stress",
+      "value": 3
+    },
+    "effects": [
+      {
+        "type": "APPLY_BUFF",
+        "buff": "+2 All Traits"
+      }
+    ]
+  },
+  "Ground Pound": {
+    "id": "Ground Pound",
+    "name": "Ground Pound",
+    "type": "DOMAIN_CARD",
+    "tier": 8,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Action"
+    ],
+    "recall_cost": 1,
+    "description": "Knockback AOE.",
+    "cost": {
+      "type": "hope",
+      "value": 2
+    },
+    "effects": [
+      {
+        "type": "STRENGTH_ROLL",
+        "target": "ALL_IN_RANGE",
+        "details": {
+          "on_success": [
+            {
+              "type": "KNOCKBACK",
+              "range": "Far"
+            },
+            {
+              "type": "DEAL_DAMAGE",
+              "damage_string": "4d10+8"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Unbreakable": {
+    "id": "Unbreakable",
+    "name": "Unbreakable",
+    "type": "DOMAIN_CARD",
+    "tier": 10,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Avoid death, heal HP. Vault card.",
+    "trigger": "ON_ZERO_HP",
+    "effects": [
+      {
+        "type": "HEAL_HP",
+        "value": "1d6"
+      },
+      {
+        "type": "VAULT_CARD"
+      }
+    ]
+  },
+  "Unyielding Armor": {
+    "id": "Unyielding Armor",
+    "name": "Unyielding Armor",
+    "type": "DOMAIN_CARD",
+    "tier": 10,
+    "tags": [
+      "Valor",
+      "Ability",
+      "Reaction"
+    ],
+    "recall_cost": 1,
+    "description": "Chance to reduce damage without marking Armor.",
+    "trigger": "ON_MARK_ARMOR",
+    "effects": [
+      {
+        "type": "ROLL_DIE",
+        "size": "d6",
+        "count": "Proficiency",
+        "threshold": 6,
+        "on_success": "FREE_REDUCE"
+      }
+    ]
+  }
+}

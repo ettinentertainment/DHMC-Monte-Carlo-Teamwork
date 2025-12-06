@@ -1,0 +1,1019 @@
+{
+  "ancestries": {
+    "Clank": {
+      "name": "Clank",
+      "description": "Sentient mechanical beings built from various materials.",
+      "features": [
+        {
+          "id": "Clank_Purposeful_Design",
+          "name": "Purposeful Design",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Clank",
+            "Passive"
+          ],
+          "description": "+1 to a chosen Experience (Narrative).",
+          "effects": [
+            {
+              "type": "NARRATIVE_EFFECT",
+              "description": "+1 to one Experience."
+            }
+          ]
+        },
+        {
+          "id": "Clank_Efficient",
+          "name": "Efficient",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Clank",
+            "Passive"
+          ],
+          "description": "Treat Short Rest as Long Rest for downtime moves.",
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_MECHANIC",
+              "mechanic": "SHORT_REST_AS_LONG"
+            }
+          ]
+        }
+      ]
+    },
+    "Drakona": {
+      "name": "Drakona",
+      "description": "Wingless dragonkin with elemental breath.",
+      "features": [
+        {
+          "id": "Drakona_Scales",
+          "name": "Scales",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Drakona",
+            "Reaction"
+          ],
+          "description": "When taking Severe damage, mark Stress to mark 1 fewer HP.",
+          "trigger": "ON_TAKE_DAMAGE",
+          "trigger_criteria": {
+            "threshold": "SEVERE"
+          },
+          "cost": {
+            "type": "stress",
+            "value": 1
+          },
+          "effects": [
+            {
+              "type": "REDUCE_SEVERITY",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "Drakona_Elemental_Breath",
+          "name": "Elemental Breath",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Drakona",
+            "Action"
+          ],
+          "description": "Breath weapon (Very Close). Deals d8 magic damage.",
+          "range": "Very Close",
+          "effects": [
+            {
+              "type": "WEAPON_ATTACK",
+              "damage_die": "1d8",
+              "damage_type": "magic",
+              "trait": "proficiency"
+            }
+          ]
+        }
+      ]
+    },
+    "Dwarf": {
+      "name": "Dwarf",
+      "description": "Sturdy humanoids with dense musculature.",
+      "features": [
+        {
+          "id": "Dwarf_Thick_Skin",
+          "name": "Thick Skin",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Dwarf",
+            "Reaction"
+          ],
+          "description": "When taking Minor damage, mark 2 Stress instead of HP.",
+          "trigger": "ON_TAKE_SEVERITY",
+          "trigger_criteria": {
+            "exact_severity": 1
+          },
+          "cost": {
+            "type": "stress",
+            "value": 2
+          },
+          "effects": [
+            {
+              "type": "PREVENT_HP_MARK",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "Dwarf_Increased_Fortitude",
+          "name": "Increased Fortitude",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Dwarf",
+            "Reaction"
+          ],
+          "description": "Spend 3 Hope to halve incoming physical damage.",
+          "trigger": "ON_TAKE_DAMAGE",
+          "trigger_criteria": {
+            "damage_type": "physical"
+          },
+          "cost": {
+            "type": "hope",
+            "value": 3
+          },
+          "effects": [
+            {
+              "type": "HALVE_DAMAGE"
+            }
+          ]
+        }
+      ]
+    },
+    "Elf": {
+      "name": "Elf",
+      "description": "Tall humanoids with keen senses and celestial trance.",
+      "features": [
+        {
+          "id": "Elf_Quick_Reactions",
+          "name": "Quick Reactions",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Elf",
+            "Action Option"
+          ],
+          "description": "Mark Stress to gain Advantage on a Reaction Roll.",
+          "trigger": "ON_REACTION_ROLL",
+          "cost": {
+            "type": "stress",
+            "value": 1
+          },
+          "effects": [
+            {
+              "type": "GAIN_ADVANTAGE"
+            }
+          ]
+        },
+        {
+          "id": "Elf_Celestial_Trance",
+          "name": "Celestial Trance",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Elf",
+            "Passive"
+          ],
+          "description": "Gain an additional downtime move during rests.",
+          "passiveModifiers": [
+            {
+              "type": "GRANT_ABILITY",
+              "ability": "EXTRA_DOWNTIME_MOVE"
+            }
+          ]
+        }
+      ]
+    },
+    "Faerie": {
+      "name": "Faerie",
+      "description": "Winged insectile humanoids.",
+      "features": [
+        {
+          "id": "Faerie_Luckbender",
+          "name": "Luckbender",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Faerie",
+            "Reaction"
+          ],
+          "description": "Spend 3 Hope to reroll Duality Dice (Self or Ally).",
+          "trigger": "ON_ROLL",
+          "cost": {
+            "type": "hope",
+            "value": 3
+          },
+          "effects": [
+            {
+              "type": "REROLL_DICE",
+              "target": "SELF_OR_ALLY"
+            }
+          ]
+        },
+        {
+          "id": "Faerie_Wings",
+          "name": "Wings",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Faerie",
+            "Passive",
+            "Reaction"
+          ],
+          "description": "Can fly. While flying, mark Stress for +2 Evasion vs Attack.",
+          "trigger": "ON_TARGETED_BY_ATTACK",
+          "condition": "Flying",
+          "cost": {
+            "type": "stress",
+            "value": 1
+          },
+          "passiveModifiers": [
+            {
+              "type": "GRANT_ABILITY",
+              "ability": "FLIGHT"
+            }
+          ],
+          "effects": [
+            {
+              "type": "MODIFY_STAT",
+              "stat": "Evasion",
+              "value": 2,
+              "duration": "CURRENT_ATTACK"
+            }
+          ]
+        }
+      ]
+    },
+    "Faun": {
+      "name": "Faun",
+      "description": "Caprine humanoids with powerful legs.",
+      "features": [
+        {
+          "id": "Faun_Caprine_Leap",
+          "name": "Caprine Leap",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Faun",
+            "Passive"
+          ],
+          "description": "Leap to Close range without rolling.",
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_MECHANIC",
+              "mechanic": "MOVEMENT_MODE",
+              "value": "LEAP_CLOSE"
+            }
+          ]
+        },
+        {
+          "id": "Faun_Kick",
+          "name": "Kick",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Faun",
+            "Action Option"
+          ],
+          "description": "On melee hit, mark Stress for +2d6 dmg and Knockback.",
+          "trigger": "ON_SUCCESSFUL_ATTACK",
+          "range": "Melee",
+          "cost": {
+            "type": "stress",
+            "value": 1
+          },
+          "effects": [
+            {
+              "type": "ADD_DAMAGE_DIE",
+              "value": "2d6"
+            },
+            {
+              "type": "KNOCKBACK",
+              "range": "Very Close"
+            }
+          ]
+        }
+      ]
+    },
+    "Firbolg": {
+      "name": "Firbolg",
+      "description": "Bovine humanoids of immense strength.",
+      "features": [
+        {
+          "id": "Firbolg_Charge",
+          "name": "Charge",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Firbolg",
+            "Action Option"
+          ],
+          "description": "On successful rush (Far -> Melee), mark Stress to deal 1d12 dmg to all in Melee.",
+          "trigger": "ON_MOVE_ENGAGE",
+          "cost": {
+            "type": "stress",
+            "value": 1
+          },
+          "effects": [
+            {
+              "type": "DEAL_DAMAGE",
+              "damage_string": "1d12",
+              "target": "ALL_IN_MELEE"
+            }
+          ]
+        },
+        {
+          "id": "Firbolg_Unshakable",
+          "name": "Unshakable",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Firbolg",
+            "Reaction"
+          ],
+          "description": "When marking Stress, roll d6. On 6, ignore it.",
+          "trigger": "ON_MARK_STRESS",
+          "effects": [
+            {
+              "type": "PREVENT_STRESS",
+              "chance": 0.16
+            }
+          ]
+        }
+      ]
+    },
+    "Fungril": {
+      "name": "Fungril",
+      "description": "Mushroom-folk connected by mycelial networks.",
+      "features": [
+        {
+          "id": "Fungril_Network",
+          "name": "Fungril Network",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Fungril",
+            "Action"
+          ],
+          "description": "Instinct (12) to communicate distantly.",
+          "effects": [
+            {
+              "type": "NARRATIVE_EFFECT",
+              "description": "Long-range communication."
+            }
+          ]
+        },
+        {
+          "id": "Fungril_Death_Connection",
+          "name": "Death Connection",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Fungril",
+            "Action"
+          ],
+          "description": "Touch corpse, mark Stress to extract memory.",
+          "cost": {
+            "type": "stress",
+            "value": 1
+          },
+          "effects": [
+            {
+              "type": "NARRATIVE_EFFECT",
+              "description": "Read corpse memory."
+            }
+          ]
+        }
+      ]
+    },
+    "Galapa": {
+      "name": "Galapa",
+      "description": "Turtle-folk with natural armor.",
+      "features": [
+        {
+          "id": "Galapa_Shell",
+          "name": "Shell",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Galapa",
+            "Passive"
+          ],
+          "description": "+Proficiency to Damage Thresholds.",
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_STAT",
+              "stat": "Thresholds",
+              "value_key": "proficiency"
+            }
+          ]
+        },
+        {
+          "id": "Galapa_Retract",
+          "name": "Retract",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Galapa",
+            "Action"
+          ],
+          "description": "Mark Stress to retract. Resist Physical, Disadvantage on Actions, Cannot Move.",
+          "cost": {
+            "type": "stress",
+            "value": 1
+          },
+          "effects": [
+            {
+              "type": "APPLY_CONDITION",
+              "condition": "Retracted"
+            },
+            {
+              "type": "GAIN_RESISTANCE",
+              "damage_type": "physical"
+            }
+          ]
+        }
+      ]
+    },
+    "Giant": {
+      "name": "Giant",
+      "description": "Towering humanoids.",
+      "features": [
+        {
+          "id": "Giant_Endurance",
+          "name": "Endurance",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Giant",
+            "Passive"
+          ],
+          "description": "+1 Max HP.",
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_STAT",
+              "stat": "max_hp",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "Giant_Reach",
+          "name": "Reach",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Giant",
+            "Passive"
+          ],
+          "description": "Melee range becomes Very Close.",
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_MECHANIC",
+              "mechanic": "MELEE_RANGE_EXTEND",
+              "value": "Very Close"
+            }
+          ]
+        }
+      ]
+    },
+    "Goblin": {
+      "name": "Goblin",
+      "description": "Small, keen-sensed humanoids.",
+      "features": [
+        {
+          "id": "Goblin_Surefooted",
+          "name": "Surefooted",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Goblin",
+            "Passive"
+          ],
+          "description": "Ignore disadvantage on Agility rolls.",
+          "passiveModifiers": [
+            {
+              "type": "IGNORE_DISADVANTAGE",
+              "condition": "Agility"
+            }
+          ]
+        },
+        {
+          "id": "Goblin_Danger_Sense",
+          "name": "Danger Sense",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Goblin",
+            "Reaction"
+          ],
+          "description": "Once/rest, mark Stress to force adversary reroll vs you/ally.",
+          "limit": "ONCE_PER_REST",
+          "cost": {
+            "type": "stress",
+            "value": 1
+          },
+          "effects": [
+            {
+              "type": "FORCE_REROLL",
+              "target": "ADVERSARY"
+            }
+          ]
+        }
+      ]
+    },
+    "Halfling": {
+      "name": "Halfling",
+      "description": "Small folk with luck and optimism.",
+      "features": [
+        {
+          "id": "Halfling_Luckbringer",
+          "name": "Luckbringer",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Halfling",
+            "Passive"
+          ],
+          "description": "Start session with +1 Hope for whole party.",
+          "trigger": "SESSION_START",
+          "effects": [
+            {
+              "type": "GAIN_HOPE",
+              "target": "ALL_PARTY",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "Halfling_Internal_Compass",
+          "name": "Internal Compass",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Halfling",
+            "Passive"
+          ],
+          "description": "Reroll Hope Die if it is a 1.",
+          "passiveModifiers": [
+            {
+              "type": "REROLL_DICE",
+              "condition": "Hope Die == 1"
+            }
+          ]
+        }
+      ]
+    },
+    "Human": {
+      "name": "Human",
+      "description": "Adaptable and ambitious.",
+      "features": [
+        {
+          "id": "Human_High_Stamina",
+          "name": "High Stamina",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Human",
+            "Passive"
+          ],
+          "description": "+1 Max Stress.",
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_STAT",
+              "stat": "max_stress",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "id": "Human_Adaptability",
+          "name": "Adaptability",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Human",
+            "Reaction"
+          ],
+          "description": "Mark Stress to reroll failed Experience roll.",
+          "cost": {
+            "type": "stress",
+            "value": 1
+          },
+          "effects": [
+            {
+              "type": "REROLL_DICE",
+              "condition": "Experience Roll"
+            }
+          ]
+        }
+      ]
+    },
+    "Infernis": {
+      "name": "Infernis",
+      "description": "Demonic lineage with horns and tails.",
+      "features": [
+        {
+          "id": "Infernis_Fearless",
+          "name": "Fearless",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Infernis",
+            "Reaction"
+          ],
+          "description": "Mark 2 Stress to change Fear Roll to Hope Roll.",
+          "cost": {
+            "type": "stress",
+            "value": 2
+          },
+          "effects": [
+            {
+              "type": "CONVERT_RESULT",
+              "from": "Fear",
+              "to": "Hope"
+            }
+          ]
+        },
+        {
+          "id": "Infernis_Dread_Visage",
+          "name": "Dread Visage",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Infernis",
+            "Passive"
+          ],
+          "description": "Advantage on Intimidation.",
+          "passiveModifiers": [
+            {
+              "type": "GAIN_ADVANTAGE",
+              "condition": "Intimidate"
+            }
+          ]
+        }
+      ]
+    },
+    "Katari": {
+      "name": "Katari",
+      "description": "Feline humanoids.",
+      "features": [
+        {
+          "id": "Katari_Feline_Instincts",
+          "name": "Feline Instincts",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Katari",
+            "Action Option"
+          ],
+          "description": "Spend 2 Hope to reroll Hope Die on Agility Roll.",
+          "cost": {
+            "type": "hope",
+            "value": 2
+          },
+          "effects": [
+            {
+              "type": "REROLL_DICE",
+              "die": "HOPE",
+              "condition": "Agility"
+            }
+          ]
+        },
+        {
+          "id": "Katari_Retracting_Claws",
+          "name": "Retracting Claws",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Katari",
+            "Action"
+          ],
+          "description": "Agility Attack (Melee). Success = Vulnerable.",
+          "effects": [
+            {
+              "type": "WEAPON_ATTACK",
+              "trait": "agility",
+              "effect": "VULNERABLE"
+            }
+          ]
+        }
+      ]
+    },
+    "Orc": {
+      "name": "Orc",
+      "description": "Strong, tusked humanoids.",
+      "features": [
+        {
+          "id": "Orc_Sturdy",
+          "name": "Sturdy",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Orc",
+            "Passive"
+          ],
+          "description": "While at 1 HP, attacks against you have Disadvantage.",
+          "passiveModifiers": [
+            {
+              "type": "IMPOSE_DISADVANTAGE",
+              "condition": "Current HP == 1"
+            }
+          ]
+        },
+        {
+          "id": "Orc_Tusks",
+          "name": "Tusks",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Orc",
+            "Action Option"
+          ],
+          "description": "On melee hit, spend Hope for +1d6 dmg.",
+          "trigger": "ON_SUCCESSFUL_ATTACK",
+          "range": "Melee",
+          "cost": {
+            "type": "hope",
+            "value": 1
+          },
+          "effects": [
+            {
+              "type": "ADD_DAMAGE_DIE",
+              "value": "1d6"
+            }
+          ]
+        }
+      ]
+    },
+    "Ribbet": {
+      "name": "Ribbet",
+      "description": "Frog-folk.",
+      "features": [
+        {
+          "id": "Ribbet_Amphibious",
+          "name": "Amphibious",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Ribbet",
+            "Passive"
+          ],
+          "description": "Breathe underwater.",
+          "passiveModifiers": [
+            {
+              "type": "GRANT_ABILITY",
+              "ability": "WATER_BREATHING"
+            }
+          ]
+        },
+        {
+          "id": "Ribbet_Long_Tongue",
+          "name": "Long Tongue",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Ribbet",
+            "Action"
+          ],
+          "description": "Mark Stress. Finesse Attack (Close), d12 physical.",
+          "cost": {
+            "type": "stress",
+            "value": 1
+          },
+          "effects": [
+            {
+              "type": "WEAPON_ATTACK",
+              "trait": "finesse",
+              "range": "Close",
+              "damage_die": "1d12"
+            }
+          ]
+        }
+      ]
+    },
+    "Simiah": {
+      "name": "Simiah",
+      "description": "Monkey/Ape-folk.",
+      "features": [
+        {
+          "id": "Simiah_Natural_Climber",
+          "name": "Natural Climber",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Simiah",
+            "Passive"
+          ],
+          "description": "Advantage on climbing.",
+          "passiveModifiers": [
+            {
+              "type": "GAIN_ADVANTAGE",
+              "condition": "Climbing"
+            }
+          ]
+        },
+        {
+          "id": "Simiah_Nimble",
+          "name": "Nimble",
+          "type": "ANCESTRY_FEATURE",
+          "tags": [
+            "Simiah",
+            "Passive"
+          ],
+          "description": "+1 Evasion.",
+          "passiveModifiers": [
+            {
+              "type": "MODIFY_STAT",
+              "stat": "Evasion",
+              "value": 1
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "communities": {
+    "Highborne": {
+      "name": "Highborne",
+      "description": "Wealthy and elite upbringing.",
+      "features": [
+        {
+          "id": "Highborne_Privilege",
+          "name": "Privilege",
+          "type": "COMMUNITY_FEATURE",
+          "tags": [
+            "Highborne",
+            "Passive"
+          ],
+          "description": "Advantage on negotiation/consorting.",
+          "passiveModifiers": [
+            {
+              "type": "GAIN_ADVANTAGE",
+              "condition": "Social/Commerce"
+            }
+          ]
+        }
+      ]
+    },
+    "Loreborne": {
+      "name": "Loreborne",
+      "description": "Academic or political upbringing.",
+      "features": [
+        {
+          "id": "Loreborne_Well_Read",
+          "name": "Well-Read",
+          "type": "COMMUNITY_FEATURE",
+          "tags": [
+            "Loreborne",
+            "Passive"
+          ],
+          "description": "Advantage on history/culture/politics.",
+          "passiveModifiers": [
+            {
+              "type": "GAIN_ADVANTAGE",
+              "condition": "Knowledge"
+            }
+          ]
+        }
+      ]
+    },
+    "Orderborne": {
+      "name": "Orderborne",
+      "description": "Disciplined or religious upbringing.",
+      "features": [
+        {
+          "id": "Orderborne_Dedicated",
+          "name": "Dedicated",
+          "type": "COMMUNITY_FEATURE",
+          "tags": [
+            "Orderborne",
+            "Action"
+          ],
+          "description": "Once/rest, roll d20 as Hope Die.",
+          "limit": "ONCE_PER_REST",
+          "effects": [
+            {
+              "type": "MODIFY_MECHANIC",
+              "mechanic": "HOPE_DIE_SIZE",
+              "value": "d20"
+            }
+          ]
+        }
+      ]
+    },
+    "Ridgeborne": {
+      "name": "Ridgeborne",
+      "description": "Mountain or cliff dwelling.",
+      "features": [
+        {
+          "id": "Ridgeborne_Steady",
+          "name": "Steady",
+          "type": "COMMUNITY_FEATURE",
+          "tags": [
+            "Ridgeborne",
+            "Passive"
+          ],
+          "description": "Advantage on climbing/traversal.",
+          "passiveModifiers": [
+            {
+              "type": "GAIN_ADVANTAGE",
+              "condition": "Traversal"
+            }
+          ]
+        }
+      ]
+    },
+    "Seaborne": {
+      "name": "Seaborne",
+      "description": "Life on the water.",
+      "features": [
+        {
+          "id": "Seaborne_Know_The_Tide",
+          "name": "Know the Tide",
+          "type": "COMMUNITY_FEATURE",
+          "tags": [
+            "Seaborne",
+            "Passive",
+            "Reaction"
+          ],
+          "description": "Gain tokens on Fear rolls. Spend for +1 to rolls.",
+          "resource_mechanic": {
+            "type": "token",
+            "id": "tide_tokens",
+            "max": "LEVEL"
+          },
+          "passiveModifiers": [
+            {
+              "type": "GAIN_TOKEN_ON_FEAR"
+            }
+          ]
+        }
+      ]
+    },
+    "Slyborne": {
+      "name": "Slyborne",
+      "description": "Criminal or illicit background.",
+      "features": [
+        {
+          "id": "Slyborne_Scoundrel",
+          "name": "Scoundrel",
+          "type": "COMMUNITY_FEATURE",
+          "tags": [
+            "Slyborne",
+            "Passive"
+          ],
+          "description": "Advantage on criminal interactions/hiding.",
+          "passiveModifiers": [
+            {
+              "type": "GAIN_ADVANTAGE",
+              "condition": "Criminal/Stealth"
+            }
+          ]
+        }
+      ]
+    },
+    "Underborne": {
+      "name": "Underborne",
+      "description": "Subterranean life.",
+      "features": [
+        {
+          "id": "Underborne_Low_Light_Living",
+          "name": "Low-Light Living",
+          "type": "COMMUNITY_FEATURE",
+          "tags": [
+            "Underborne",
+            "Passive"
+          ],
+          "description": "Advantage on hiding/perception in dark.",
+          "passiveModifiers": [
+            {
+              "type": "GAIN_ADVANTAGE",
+              "condition": "Darkness"
+            }
+          ]
+        }
+      ]
+    },
+    "Wanderborne": {
+      "name": "Wanderborne",
+      "description": "Nomadic life.",
+      "features": [
+        {
+          "id": "Wanderborne_Nomadic_Pack",
+          "name": "Nomadic Pack",
+          "type": "COMMUNITY_FEATURE",
+          "tags": [
+            "Wanderborne",
+            "Action"
+          ],
+          "description": "Once/session, spend Hope to find useful item.",
+          "limit": "ONCE_PER_SESSION",
+          "cost": {
+            "type": "hope",
+            "value": 1
+          },
+          "effects": [
+            {
+              "type": "GAIN_RESOURCE",
+              "resource": "Mundane Item"
+            }
+          ]
+        }
+      ]
+    },
+    "Wildborne": {
+      "name": "Wildborne",
+      "description": "Forest dwelling.",
+      "features": [
+        {
+          "id": "Wildborne_Lightfoot",
+          "name": "Lightfoot",
+          "type": "COMMUNITY_FEATURE",
+          "tags": [
+            "Wildborne",
+            "Passive"
+          ],
+          "description": "Advantage on silent movement.",
+          "passiveModifiers": [
+            {
+              "type": "GAIN_ADVANTAGE",
+              "condition": "Stealth Move"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

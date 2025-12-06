@@ -1,0 +1,404 @@
+{
+  "Hidden": {
+    "id": "Hidden",
+    "name": "Hidden",
+    "type": "CONDITION",
+    "tags": [
+      "Standard",
+      "Break On Attack"
+    ],
+    "description": "Target is unseen. Attacks against it have disadvantage, and its attacks have advantage.",
+    "passiveModifiers": [
+      {
+        "trigger": "CHECK_OUTGOING_ADVANTAGE",
+        "type": "GRANT_ADVANTAGE"
+      },
+      {
+        "trigger": "CHECK_INCOMING_ADVANTAGE",
+        "type": "GRANT_DISADVANTAGE"
+      }
+    ]
+  },
+  "Restrained": {
+    "id": "Restrained",
+    "name": "Restrained",
+    "type": "CONDITION",
+    "tags": [
+      "Standard",
+      "Prevent Movement"
+    ],
+    "description": "Target cannot move.",
+    "passiveModifiers": [
+      {
+        "trigger": "CHECK_CAPABILITIES",
+        "type": "PREVENT_MOVEMENT"
+      }
+    ]
+  },
+  "Vulnerable": {
+    "id": "Vulnerable",
+    "name": "Vulnerable",
+    "type": "CONDITION",
+    "tags": [
+      "Standard"
+    ],
+    "description": "Attacks against this target have advantage.",
+    "passiveModifiers": [
+      {
+        "trigger": "CHECK_INCOMING_ADVANTAGE",
+        "type": "GRANT_ADVANTAGE"
+      }
+    ]
+  },
+  "Cloaked": {
+    "id": "Cloaked",
+    "name": "Cloaked",
+    "type": "CONDITION",
+    "tags": [
+      "Common",
+      "Break On Attack"
+    ],
+    "description": "Rogue status. Remains unseen even if stationary when adversary moves.",
+    "passiveModifiers": [
+      {
+        "trigger": "CHECK_OUTGOING_ADVANTAGE",
+        "type": "GRANT_ADVANTAGE"
+      },
+      {
+        "trigger": "CHECK_INCOMING_ADVANTAGE",
+        "type": "GRANT_DISADVANTAGE"
+      }
+    ]
+  },
+  "On Fire": {
+    "id": "On Fire",
+    "name": "On Fire",
+    "type": "CONDITION",
+    "tags": [
+      "Common",
+      "DOT"
+    ],
+    "description": "Take damage at start/end of actions.",
+    "passiveModifiers": [
+      {
+        "trigger": "ON_TURN_START",
+        "type": "DEAL_DAMAGE",
+        "value": "1d6",
+        "damage_type": "magic"
+      }
+    ]
+  },
+  "Poisoned": {
+    "id": "Poisoned",
+    "name": "Poisoned",
+    "type": "CONDITION",
+    "tags": [
+      "Common",
+      "DOT"
+    ],
+    "description": "Take direct damage when acting or suffer disadvantage.",
+    "passiveModifiers": [
+      {
+        "trigger": "ON_ACTION",
+        "type": "DEAL_DAMAGE",
+        "value": "1d10",
+        "damage_type": "physical_direct"
+      }
+    ]
+  },
+  "Stunned": {
+    "id": "Stunned",
+    "name": "Stunned",
+    "type": "CONDITION",
+    "tags": [
+      "Common",
+      "Block Action",
+      "Block Reaction",
+      "GM Clear Cost"
+    ],
+    "description": "Cannot use reactions or take actions.",
+    "passiveModifiers": [
+      {
+        "type": "PREVENT_ACTION"
+      },
+      {
+        "type": "PREVENT_REACTION"
+      }
+    ]
+  },
+  "Silenced": {
+    "id": "Silenced",
+    "name": "Silenced",
+    "type": "CONDITION",
+    "tags": [
+      "Common",
+      "Block Magic"
+    ],
+    "description": "Cannot make noise or cast spells.",
+    "passiveModifiers": [
+      {
+        "type": "PREVENT_SPELLCAST"
+      }
+    ]
+  },
+  "Invisible": {
+    "id": "Invisible",
+    "name": "Invisible",
+    "type": "CONDITION",
+    "tags": [
+      "Common",
+      "Break On Attack"
+    ],
+    "description": "Unseen except by magic. Attacks against have disadvantage.",
+    "passiveModifiers": [
+      {
+        "trigger": "CHECK_INCOMING_ADVANTAGE",
+        "type": "GRANT_DISADVANTAGE"
+      }
+    ]
+  },
+  "Asleep": {
+    "id": "Asleep",
+    "name": "Asleep",
+    "type": "CONDITION",
+    "tags": [
+      "Specific",
+      "Block Action",
+      "Break On Damage",
+      "GM Clear Cost"
+    ],
+    "description": "Sleeps until damaged or GM spends Fear.",
+    "passiveModifiers": [
+      {
+        "type": "PREVENT_ACTION"
+      }
+    ]
+  },
+  "Charged": {
+    "id": "Charged",
+    "name": "Charged",
+    "type": "CONDITION",
+    "tags": [
+      "Specific"
+    ],
+    "description": "Gather energy for massive damage.",
+    "passiveModifiers": []
+  },
+  "Chilled": {
+    "id": "Chilled",
+    "name": "Chilled",
+    "type": "CONDITION",
+    "tags": [
+      "Specific"
+    ],
+    "description": "Disadvantage on attack rolls.",
+    "passiveModifiers": [
+      {
+        "trigger": "CHECK_OUTGOING_ADVANTAGE",
+        "type": "GRANT_DISADVANTAGE"
+      }
+    ]
+  },
+  "Corroded": {
+    "id": "Corroded",
+    "name": "Corroded",
+    "type": "CONDITION",
+    "tags": [
+      "Specific"
+    ],
+    "description": "-1 Penalty to Difficulty (stacks).",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_STAT",
+        "stat": "difficulty",
+        "value": -1
+      }
+    ]
+  },
+  "Cursed": {
+    "id": "Cursed",
+    "name": "Cursed",
+    "type": "CONDITION",
+    "tags": [
+      "Specific",
+      "Trigger On Hope"
+    ],
+    "description": "Caster can force Fear rolls.",
+    "passiveModifiers": []
+  },
+  "Dazed": {
+    "id": "Dazed",
+    "name": "Dazed",
+    "type": "CONDITION",
+    "tags": [
+      "Specific",
+      "Block Regen"
+    ],
+    "description": "Cannot regen, immune to magic.",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_STAT",
+        "stat": "immunity",
+        "value": "magic"
+      },
+      {
+        "type": "PREVENT_REGEN"
+      }
+    ]
+  },
+  "Deathlocked": {
+    "id": "Deathlocked",
+    "name": "Deathlocked",
+    "type": "CONDITION",
+    "tags": [
+      "Specific",
+      "Incoming Direct"
+    ],
+    "description": "Incoming attacks from caster deal direct damage.",
+    "passiveModifiers": []
+  },
+  "Dizzied": {
+    "id": "Dizzied",
+    "name": "Dizzied",
+    "type": "CONDITION",
+    "tags": [
+      "Specific",
+      "Clear After Action"
+    ],
+    "description": "Disadvantage on next action, then clears.",
+    "passiveModifiers": [
+      {
+        "trigger": "CHECK_OUTGOING_ADVANTAGE",
+        "type": "GRANT_DISADVANTAGE"
+      }
+    ]
+  },
+  "Enraptured": {
+    "id": "Enraptured",
+    "name": "Enraptured",
+    "type": "CONDITION",
+    "tags": [
+      "Specific",
+      "Block Action"
+    ],
+    "description": "Cannot act or is Vulnerable.",
+    "passiveModifiers": [
+      {
+        "type": "PREVENT_ACTION"
+      },
+      {
+        "trigger": "CHECK_INCOMING_ADVANTAGE",
+        "type": "GRANT_ADVANTAGE"
+      }
+    ]
+  },
+  "Glowing": {
+    "id": "Glowing",
+    "name": "Glowing",
+    "type": "CONDITION",
+    "tags": [
+      "Specific",
+      "Prevent Hidden"
+    ],
+    "description": "Cannot be Hidden, attacks against have advantage.",
+    "passiveModifiers": [
+      {
+        "type": "PREVENT_CONDITION",
+        "condition": "Hidden"
+      },
+      {
+        "trigger": "CHECK_INCOMING_ADVANTAGE",
+        "type": "GRANT_ADVANTAGE"
+      }
+    ]
+  },
+  "Guilty": {
+    "id": "Guilty",
+    "name": "Guilty",
+    "type": "CONDITION",
+    "tags": [
+      "Specific",
+      "Block Hope Gain"
+    ],
+    "description": "Do not gain Hope on Hope rolls.",
+    "passiveModifiers": [
+      {
+        "type": "PREVENT_HOPE_GAIN"
+      }
+    ]
+  },
+  "Horrified": {
+    "id": "Horrified",
+    "name": "Horrified",
+    "type": "CONDITION",
+    "tags": [
+      "Specific"
+    ],
+    "description": "Vulnerable.",
+    "passiveModifiers": [
+      {
+        "trigger": "CHECK_INCOMING_ADVANTAGE",
+        "type": "GRANT_ADVANTAGE"
+      }
+    ]
+  },
+  "Marked": {
+    "id": "Marked",
+    "name": "Marked",
+    "type": "CONDITION",
+    "tags": [
+      "Specific"
+    ],
+    "description": "Evasion is halved.",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_STAT",
+        "stat": "evasion",
+        "multiplier": 0.5
+      }
+    ]
+  },
+  "Prioritized": {
+    "id": "Prioritized",
+    "name": "Prioritized",
+    "type": "CONDITION",
+    "tags": [
+      "Specific"
+    ],
+    "description": "Target for Guardian vengeance.",
+    "passiveModifiers": []
+  },
+  "Spectral": {
+    "id": "Spectral",
+    "name": "Spectral",
+    "type": "CONDITION",
+    "tags": [
+      "Specific",
+      "Pass Walls"
+    ],
+    "description": "Immune to physical, can pass walls.",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_STAT",
+        "stat": "immunity",
+        "value": "physical"
+      }
+    ]
+  },
+  "Unstuck": {
+    "id": "Unstuck",
+    "name": "Unstuck",
+    "type": "CONDITION",
+    "tags": [
+      "Specific",
+      "Double Cost"
+    ],
+    "description": "Double cost for Hope/Armor/HP/Stress.",
+    "passiveModifiers": [
+      {
+        "type": "MODIFY_COST",
+        "multiplier": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,934 @@
+{
+  "weapons": {
+    "Battleaxe": {
+      "id": "Battleaxe",
+      "name": "Battleaxe",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "Two-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d10",
+        "damageType": "Physical",
+        "flatBonus": 3,
+        "statToRoll": "strength"
+      },
+      "scaling": true,
+      "feature": null
+    },
+    "Broadsword": {
+      "id": "Broadsword",
+      "name": "Broadsword",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "One-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d8",
+        "damageType": "Physical",
+        "flatBonus": 0,
+        "statToRoll": "agility"
+      },
+      "scaling": true,
+      "feature": {
+        "name": "Reliable",
+        "description": "+1 to attack rolls",
+        "parsed_effect": {
+          "actions": [
+            {
+              "action_type": "MODIFY_MECHANIC",
+              "mechanic": "ATTACK_BONUS",
+              "value": 1
+            }
+          ]
+        }
+      }
+    },
+    "Crossbow": {
+      "id": "Crossbow",
+      "name": "Crossbow",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "One-Handed"
+      ],
+      "range": "Far",
+      "stats": {
+        "baseDice": "1d6",
+        "damageType": "Physical",
+        "flatBonus": 1,
+        "statToRoll": "finesse"
+      },
+      "scaling": true,
+      "feature": null
+    },
+    "Cutlass": {
+      "id": "Cutlass",
+      "name": "Cutlass",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "One-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d8",
+        "damageType": "Physical",
+        "flatBonus": 1,
+        "statToRoll": "presence"
+      },
+      "scaling": true,
+      "feature": null
+    },
+    "Dagger": {
+      "id": "Dagger",
+      "name": "Dagger",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "One-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d8",
+        "damageType": "Physical",
+        "flatBonus": 1,
+        "statToRoll": "finesse"
+      },
+      "scaling": true,
+      "feature": null
+    },
+    "Greatsword": {
+      "id": "Greatsword",
+      "name": "Greatsword",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "Two-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d10",
+        "damageType": "Physical",
+        "flatBonus": 3,
+        "statToRoll": "strength"
+      },
+      "scaling": true,
+      "feature": {
+        "name": "Massive",
+        "description": "-1 to Evasion; on hit, roll extra dmg die, drop lowest.",
+        "parsed_effect": {
+          "actions": [
+            {
+              "action_type": "MODIFY_STAT",
+              "details": {
+                "stat": "Evasion",
+                "value": -1
+              }
+            },
+            {
+              "action_type": "MODIFY_MECHANIC",
+              "mechanic": "DAMAGE_ADVANTAGE"
+            }
+          ]
+        }
+      }
+    },
+    "Halberd": {
+      "id": "Halberd",
+      "name": "Halberd",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "Two-Handed"
+      ],
+      "range": "Very Close",
+      "stats": {
+        "baseDice": "1d10",
+        "damageType": "Physical",
+        "flatBonus": 2,
+        "statToRoll": "strength"
+      },
+      "scaling": true,
+      "feature": {
+        "name": "Cumbersome",
+        "description": "-1 to Finesse",
+        "parsed_effect": {
+          "actions": [
+            {
+              "action_type": "MODIFY_STAT",
+              "details": {
+                "stat": "traits.finesse",
+                "value": -1
+              }
+            }
+          ]
+        }
+      }
+    },
+    "Longbow": {
+      "id": "Longbow",
+      "name": "Longbow",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "Two-Handed"
+      ],
+      "range": "Very Far",
+      "stats": {
+        "baseDice": "1d8",
+        "damageType": "Physical",
+        "flatBonus": 3,
+        "statToRoll": "agility"
+      },
+      "scaling": true,
+      "feature": {
+        "name": "Cumbersome",
+        "description": "-1 to Finesse",
+        "parsed_effect": {
+          "actions": [
+            {
+              "action_type": "MODIFY_STAT",
+              "details": {
+                "stat": "traits.finesse",
+                "value": -1
+              }
+            }
+          ]
+        }
+      }
+    },
+    "Longsword": {
+      "id": "Longsword",
+      "name": "Longsword",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "Two-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d8",
+        "damageType": "Physical",
+        "flatBonus": 3,
+        "statToRoll": "agility"
+      },
+      "scaling": true,
+      "feature": null
+    },
+    "Mace": {
+      "id": "Mace",
+      "name": "Mace",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "One-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d8",
+        "damageType": "Physical",
+        "flatBonus": 1,
+        "statToRoll": "strength"
+      },
+      "scaling": true,
+      "feature": null
+    },
+    "Quarterstaff": {
+      "id": "Quarterstaff",
+      "name": "Quarterstaff",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "Two-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d10",
+        "damageType": "Physical",
+        "flatBonus": 3,
+        "statToRoll": "instinct"
+      },
+      "scaling": true,
+      "feature": null
+    },
+    "Rapier": {
+      "id": "Rapier",
+      "name": "Rapier",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "One-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d8",
+        "damageType": "Physical",
+        "flatBonus": 0,
+        "statToRoll": "presence"
+      },
+      "scaling": true,
+      "feature": {
+        "name": "Quick",
+        "description": "Mark Stress to target extra creature.",
+        "parsed_effect": {
+          "actions": [
+            {
+              "action_type": "ACTION_OPTION",
+              "cost": {
+                "type": "stress",
+                "value": 1
+              },
+              "effect": "ADD_TARGET"
+            }
+          ]
+        }
+      }
+    },
+    "Shortbow": {
+      "id": "Shortbow",
+      "name": "Shortbow",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "Two-Handed"
+      ],
+      "range": "Far",
+      "stats": {
+        "baseDice": "1d6",
+        "damageType": "Physical",
+        "flatBonus": 3,
+        "statToRoll": "agility"
+      },
+      "scaling": true,
+      "feature": null
+    },
+    "Spear": {
+      "id": "Spear",
+      "name": "Spear",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "Two-Handed"
+      ],
+      "range": "Very Close",
+      "stats": {
+        "baseDice": "1d10",
+        "damageType": "Physical",
+        "flatBonus": 2,
+        "statToRoll": "finesse"
+      },
+      "scaling": true,
+      "feature": {
+        "name": "Cumbersome",
+        "description": "-1 to Finesse",
+        "parsed_effect": {
+          "actions": [
+            {
+              "action_type": "MODIFY_STAT",
+              "details": {
+                "stat": "traits.finesse",
+                "value": -1
+              }
+            }
+          ]
+        }
+      }
+    },
+    "Warhammer": {
+      "id": "Warhammer",
+      "name": "Warhammer",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "Two-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d12",
+        "damageType": "Physical",
+        "flatBonus": 3,
+        "statToRoll": "strength"
+      },
+      "scaling": true,
+      "feature": {
+        "name": "Heavy",
+        "description": "-1 to Evasion",
+        "parsed_effect": {
+          "actions": [
+            {
+              "action_type": "MODIFY_STAT",
+              "details": {
+                "stat": "Evasion",
+                "value": -1
+              }
+            }
+          ]
+        }
+      }
+    },
+    "Arcane Gauntlets": {
+      "id": "Arcane Gauntlets",
+      "name": "Arcane Gauntlets",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Magic",
+        "Two-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d10",
+        "damageType": "Magic",
+        "flatBonus": 3,
+        "statToRoll": "strength"
+      },
+      "scaling": true,
+      "feature": null
+    },
+    "Dualstaff": {
+      "id": "Dualstaff",
+      "name": "Dualstaff",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Magic",
+        "Two-Handed"
+      ],
+      "range": "Far",
+      "stats": {
+        "baseDice": "1d6",
+        "damageType": "Magic",
+        "flatBonus": 3,
+        "statToRoll": "instinct"
+      },
+      "scaling": true,
+      "feature": null
+    },
+    "Glowing Rings": {
+      "id": "Glowing Rings",
+      "name": "Glowing Rings",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Magic",
+        "Two-Handed"
+      ],
+      "range": "Very Close",
+      "stats": {
+        "baseDice": "1d10",
+        "damageType": "Magic",
+        "flatBonus": 1,
+        "statToRoll": "agility"
+      },
+      "scaling": true,
+      "feature": null
+    },
+    "Greatstaff": {
+      "id": "Greatstaff",
+      "name": "Greatstaff",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Magic",
+        "Two-Handed"
+      ],
+      "range": "Very Far",
+      "stats": {
+        "baseDice": "1d6",
+        "damageType": "Magic",
+        "flatBonus": 0,
+        "statToRoll": "knowledge"
+      },
+      "scaling": true,
+      "feature": {
+        "name": "Powerful",
+        "description": "On hit, roll extra dmg die, drop lowest.",
+        "parsed_effect": {
+          "actions": [
+            {
+              "action_type": "MODIFY_MECHANIC",
+              "mechanic": "DAMAGE_ADVANTAGE"
+            }
+          ]
+        }
+      }
+    },
+    "Hallowed Axe": {
+      "id": "Hallowed Axe",
+      "name": "Hallowed Axe",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Magic",
+        "One-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d8",
+        "damageType": "Magic",
+        "flatBonus": 1,
+        "statToRoll": "strength"
+      },
+      "scaling": true,
+      "feature": null
+    },
+    "Hand Runes": {
+      "id": "Hand Runes",
+      "name": "Hand Runes",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Magic",
+        "One-Handed"
+      ],
+      "range": "Very Close",
+      "stats": {
+        "baseDice": "1d10",
+        "damageType": "Magic",
+        "flatBonus": 0,
+        "statToRoll": "instinct"
+      },
+      "scaling": true,
+      "feature": null
+    },
+    "Returning Blade": {
+      "id": "Returning Blade",
+      "name": "Returning Blade",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Magic",
+        "One-Handed"
+      ],
+      "range": "Close",
+      "stats": {
+        "baseDice": "1d8",
+        "damageType": "Magic",
+        "flatBonus": 0,
+        "statToRoll": "finesse"
+      },
+      "scaling": true,
+      "feature": {
+        "name": "Returning",
+        "description": "Returns to hand after thrown.",
+        "parsed_effect": {
+          "actions": [
+            {
+              "action_type": "NARRATIVE_EFFECT",
+              "description": "Weapon returns to hand immediately."
+            }
+          ]
+        }
+      }
+    },
+    "Scepter": {
+      "id": "Scepter",
+      "name": "Scepter",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Magic",
+        "Two-Handed"
+      ],
+      "range": "Far",
+      "stats": {
+        "baseDice": "1d6",
+        "damageType": "Magic",
+        "flatBonus": 0,
+        "statToRoll": "presence"
+      },
+      "scaling": true,
+      "feature": {
+        "name": "Versatile",
+        "description": "Can use Presence/Melee/d8.",
+        "parsed_effect": {
+          "actions": [
+            {
+              "action_type": "ALT_PROFILE",
+              "details": {
+                "trait": "presence",
+                "range": "Melee",
+                "damage_die": "1d8"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "Shortstaff": {
+      "id": "Shortstaff",
+      "name": "Shortstaff",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Magic",
+        "One-Handed"
+      ],
+      "range": "Close",
+      "stats": {
+        "baseDice": "1d8",
+        "damageType": "Magic",
+        "flatBonus": 1,
+        "statToRoll": "instinct"
+      },
+      "scaling": true,
+      "feature": null
+    },
+    "Wand": {
+      "id": "Wand",
+      "name": "Wand",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Magic",
+        "One-Handed"
+      ],
+      "range": "Far",
+      "stats": {
+        "baseDice": "1d6",
+        "damageType": "Magic",
+        "flatBonus": 1,
+        "statToRoll": "knowledge"
+      },
+      "scaling": true,
+      "feature": null
+    },
+    "Shortsword": {
+      "id": "Shortsword",
+      "name": "Shortsword",
+      "type": "SECONDARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "One-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d8",
+        "damageType": "Physical",
+        "flatBonus": 0,
+        "statToRoll": "agility"
+      },
+      "scaling": true,
+      "feature": {
+        "name": "Paired",
+        "description": "+2 to primary weapon damage to targets within Melee range",
+        "parsed_effect": {
+          "actions": [
+            {
+              "action_type": "NARRATIVE_EFFECT",
+              "description": "Add +2 to primary weapon damage vs targets in Melee range."
+            }
+          ]
+        }
+      }
+    },
+    "Round Shield": {
+      "id": "Round Shield",
+      "name": "Round Shield",
+      "type": "SECONDARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "One-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d4",
+        "damageType": "Physical",
+        "flatBonus": 0,
+        "statToRoll": "strength"
+      },
+      "scaling": true,
+      "feature": {
+        "name": "Protective",
+        "description": "+1 to Armor Score",
+        "parsed_effect": {
+          "actions": [
+            {
+              "action_type": "MODIFY_STAT",
+              "details": {
+                "stat": "Armor",
+                "value": 1
+              }
+            }
+          ]
+        }
+      }
+    },
+    "Tower Shield": {
+      "id": "Tower Shield",
+      "name": "Tower Shield",
+      "type": "SECONDARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "One-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d6",
+        "damageType": "Physical",
+        "flatBonus": 0,
+        "statToRoll": "strength"
+      },
+      "scaling": true,
+      "feature": {
+        "name": "Barrier",
+        "description": "+2 to Armor Score; -1 to Evasion",
+        "parsed_effect": {
+          "actions": [
+            {
+              "action_type": "MODIFY_STAT",
+              "details": {
+                "stat": "Armor",
+                "value": 2
+              }
+            },
+            {
+              "action_type": "MODIFY_STAT",
+              "details": {
+                "stat": "Evasion",
+                "value": -1
+              }
+            }
+          ]
+        }
+      }
+    },
+    "Small Dagger": {
+      "id": "Small Dagger",
+      "name": "Small Dagger",
+      "type": "SECONDARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "One-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d8",
+        "damageType": "Physical",
+        "flatBonus": 0,
+        "statToRoll": "finesse"
+      },
+      "scaling": true,
+      "feature": {
+        "name": "Paired",
+        "description": "+2 to primary weapon damage to targets within Melee range",
+        "parsed_effect": {
+          "actions": [
+            {
+              "action_type": "NARRATIVE_EFFECT",
+              "description": "Add +2 to primary weapon damage vs targets in Melee range."
+            }
+          ]
+        }
+      }
+    },
+    "Whip": {
+      "id": "Whip",
+      "name": "Whip",
+      "type": "SECONDARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "One-Handed"
+      ],
+      "range": "Very Close",
+      "stats": {
+        "baseDice": "1d6",
+        "damageType": "Physical",
+        "flatBonus": 0,
+        "statToRoll": "presence"
+      },
+      "scaling": true,
+      "feature": {
+        "name": "Startling",
+        "description": "Mark Stress to crack the whip and force all adversaries within Melee range back to Close range.",
+        "parsed_effect": {
+          "actions": [
+            {
+              "action_type": "ACTION_OPTION",
+              "cost": {
+                "type": "stress",
+                "value": 1
+              },
+              "effect": "NARRATIVE_EFFECT",
+              "description": "Force adversaries in Melee range back to Close range."
+            }
+          ]
+        }
+      }
+    },
+    "Grappler": {
+      "id": "Grappler",
+      "name": "Grappler",
+      "type": "SECONDARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "One-Handed"
+      ],
+      "range": "Close",
+      "stats": {
+        "baseDice": "1d6",
+        "damageType": "Physical",
+        "flatBonus": 0,
+        "statToRoll": "finesse"
+      },
+      "scaling": true,
+      "feature": {
+        "name": "Hooked",
+        "description": "On a successful attack, you can pull the target into Melee range.",
+        "parsed_effect": {
+          "actions": [
+            {
+              "action_type": "NARRATIVE_EFFECT",
+              "description": "On hit, pull target to Melee range."
+            }
+          ]
+        }
+      }
+    },
+    "Hand Crossbow": {
+      "id": "Hand Crossbow",
+      "name": "Hand Crossbow",
+      "type": "SECONDARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "One-Handed"
+      ],
+      "range": "Far",
+      "stats": {
+        "baseDice": "1d6",
+        "damageType": "Physical",
+        "flatBonus": 1,
+        "statToRoll": "finesse"
+      },
+      "scaling": true,
+      "feature": null
+    }
+  },
+  "armor": {
+    "Chainmail": {
+      "id": "Chainmail",
+      "name": "Chainmail Armor",
+      "type": "ARMOR",
+      "tier": 1,
+      "tags": [
+        "Heavy"
+      ],
+      "range": "Self",
+      "stats": {
+        "armorScore": 4,
+        "thresholds": {
+          "major": 7,
+          "severe": 15
+        }
+      },
+      "scaling": false,
+      "feature": {
+        "name": "Heavy",
+        "description": "-1 to Evasion",
+        "passive": true,
+        "effect": {
+          "stat": "evasion",
+          "value": -1
+        }
+      }
+    },
+    "Gambeson": {
+      "id": "Gambeson",
+      "name": "Gambeson Armor",
+      "type": "ARMOR",
+      "tier": 1,
+      "tags": [
+        "Flexible"
+      ],
+      "range": "Self",
+      "stats": {
+        "armorScore": 3,
+        "thresholds": {
+          "major": 5,
+          "severe": 11
+        }
+      },
+      "scaling": false,
+      "feature": {
+        "name": "Flexible",
+        "description": "+1 to Evasion",
+        "passive": true,
+        "effect": {
+          "stat": "evasion",
+          "value": 1
+        }
+      }
+    },
+    "Leather": {
+      "id": "Leather",
+      "name": "Leather Armor",
+      "type": "ARMOR",
+      "tier": 1,
+      "tags": [],
+      "range": "Self",
+      "stats": {
+        "armorScore": 3,
+        "thresholds": {
+          "major": 6,
+          "severe": 13
+        }
+      },
+      "scaling": false,
+      "feature": null
+    },
+    "Full Plate": {
+      "id": "Full Plate",
+      "name": "Full Plate Armor",
+      "type": "ARMOR",
+      "tier": 1,
+      "tags": [
+        "Very Heavy"
+      ],
+      "range": "Self",
+      "stats": {
+        "armorScore": 4,
+        "thresholds": {
+          "major": 8,
+          "severe": 17
+        }
+      },
+      "scaling": false,
+      "feature": {
+        "name": "Very Heavy",
+        "description": "-2 to Evasion",
+        "passive": true,
+        "effect": {
+          "stat": "evasion",
+          "value": -2
+        }
+      }
+    }
+  }
+}

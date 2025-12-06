@@ -1,0 +1,282 @@
+{
+  "players": [
+              {
+  "id": "eba8b039-7588-4087-bce2-02953f39803f",
+  "name": "Tester 2",
+  "level": 1,
+  "class_key": "Guardian",
+  "subclass_key": "Stalwart",
+  "stats": {
+    "strength": 2,
+    "agility": 1,
+    "finesse": 0,
+    "instinct": 1,
+    "presence": -1,
+    "knowledge": 0
+  },
+  "derivedStats": {
+    "hp": 6,
+    "stress": 5,
+    "hope": 2,
+    "armor_slots": 0,
+    "thresholds": {
+      "minor": 1,
+      "major": 7,
+      "severe": 14
+    },
+    "evasion": 10
+  },
+  "actions": [
+    {
+      "id": "Frontline Tank",
+      "name": "Frontline Tank",
+      "type": "CLASS_FEATURE",
+      "tags": [
+        "Guardian",
+        "Hope Feature",
+        "Action"
+      ],
+      "description": "Spend 3 Hope to clear 2 Armor Slots.",
+      "range": "Self",
+      "cost": {
+        "type": "hope",
+        "value": 3
+      },
+      "effects": [
+        {
+          "type": "HEAL_TARGET",
+          "target": "SELF",
+          "resource": "armor_slots",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": "Iron Will",
+      "tier": "FOUNDATION",
+      "name": "Iron Will",
+      "type": "SUBCLASS_FEATURE",
+      "tags": [
+        "Stalwart",
+        "Reaction"
+      ],
+      "description": "Mark extra Armor Slot to reduce physical severity.",
+      "cost": {
+        "type": "armor_slot",
+        "value": 1
+      },
+      "trigger": "ON_TAKE_DAMAGE",
+      "effects": [
+        {
+          "type": "REDUCE_SEVERITY",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "Battleaxe",
+      "type": "ATTACK",
+      "name": "Battleaxe",
+      "range": "Melee",
+      "tags": [
+        "Physical",
+        "Two-Handed"
+      ],
+      "baseDice": "1d10",
+      "damageType": "Physical",
+      "flatBonus": 3,
+      "statToRoll": "strength"
+    },
+    {
+      "id": "Tower Shield",
+      "type": "ATTACK",
+      "name": "Tower Shield",
+      "range": "Melee",
+      "tags": [
+        "Physical",
+        "One-Handed"
+      ],
+      "baseDice": "1d6",
+      "damageType": "Physical",
+      "flatBonus": 0,
+      "statToRoll": "strength"
+    }
+  ],
+  "passives": [
+    {
+      "id": "Unwavering",
+      "tier": "FOUNDATION",
+      "name": "Unwavering",
+      "type": "SUBCLASS_FEATURE",
+      "tags": [
+        "Stalwart",
+        "Passive"
+      ],
+      "description": "+1 Damage Thresholds.",
+      "passiveModifiers": [
+        {
+          "target": "Thresholds",
+          "value": 1,
+          "type": "flat"
+        }
+      ]
+    },
+    {
+      "id": "Dwarf_Thick_Skin",
+      "name": "Thick Skin",
+      "type": "ANCESTRY_FEATURE",
+      "tags": [
+        "Dwarf",
+        "Reaction"
+      ],
+      "description": "When taking Minor damage, mark 2 Stress instead of HP.",
+      "trigger": "ON_TAKE_SEVERITY",
+      "trigger_criteria": {
+        "exact_severity": 1
+      },
+      "cost": {
+        "type": "stress",
+        "value": 2
+      },
+      "effects": [
+        {
+          "type": "PREVENT_HP_MARK",
+          "value": 1
+        }
+      ],
+      "source": "Ancestry"
+    },
+    {
+      "id": "Dwarf_Increased_Fortitude",
+      "name": "Increased Fortitude",
+      "type": "ANCESTRY_FEATURE",
+      "tags": [
+        "Dwarf",
+        "Reaction"
+      ],
+      "description": "Spend 3 Hope to halve incoming physical damage.",
+      "trigger": "ON_TAKE_DAMAGE",
+      "trigger_criteria": {
+        "damage_type": "physical"
+      },
+      "cost": {
+        "type": "hope",
+        "value": 3
+      },
+      "effects": [
+        {
+          "type": "HALVE_DAMAGE"
+        }
+      ],
+      "source": "Ancestry"
+    },
+    {
+      "id": "Loreborne_Well_Read",
+      "name": "Well-Read",
+      "type": "COMMUNITY_FEATURE",
+      "tags": [
+        "Loreborne",
+        "Passive"
+      ],
+      "description": "Advantage on history/culture/politics.",
+      "passiveModifiers": [
+        {
+          "type": "GAIN_ADVANTAGE",
+          "condition": "Knowledge"
+        }
+      ],
+      "source": "Community"
+    }
+  ],
+  "inventory": [
+    {
+      "id": "Chainmail",
+      "name": "Chainmail Armor",
+      "type": "ARMOR",
+      "tier": 1,
+      "tags": [
+        "Heavy"
+      ],
+      "range": "Self",
+      "stats": {
+        "armorScore": 4,
+        "thresholds": {
+          "major": 7,
+          "severe": 15
+        }
+      },
+      "scaling": false,
+      "feature": {
+        "name": "Heavy",
+        "description": "-1 to Evasion",
+        "passive": true,
+        "effect": {
+          "stat": "evasion",
+          "value": -1
+        }
+      }
+    },
+    {
+      "id": "Battleaxe",
+      "name": "Battleaxe",
+      "type": "PRIMARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "Two-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d10",
+        "damageType": "Physical",
+        "flatBonus": 3,
+        "statToRoll": "strength"
+      },
+      "scaling": true,
+      "feature": null
+    },
+    {
+      "id": "Tower Shield",
+      "name": "Tower Shield",
+      "type": "SECONDARY WEAPON",
+      "tier": 1,
+      "tags": [
+        "Physical",
+        "One-Handed"
+      ],
+      "range": "Melee",
+      "stats": {
+        "baseDice": "1d6",
+        "damageType": "Physical",
+        "flatBonus": 0,
+        "statToRoll": "strength"
+      },
+      "scaling": true,
+      "feature": {
+        "name": "Barrier",
+        "description": "+2 to Armor Score; -1 to Evasion",
+        "parsed_effect": {
+          "actions": [
+            {
+              "action_type": "MODIFY_STAT",
+              "details": {
+                "stat": "Armor",
+                "value": 2
+              }
+            },
+            {
+              "action_type": "MODIFY_STAT",
+              "details": {
+                "stat": "Evasion",
+                "value": -1
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "simId": "player-custom-1763880460240"
+}
+  ]
+}

@@ -1,0 +1,281 @@
+{
+  "Abandoned Grove": {
+    "id": "Abandoned Grove",
+    "name": "Abandoned Grove",
+    "type": "Exploration",
+    "tier": 1,
+    "difficulty": 11,
+    "features": [
+      {
+        "id": "Barbed Vines",
+        "name": "Barbed Vines",
+        "type": "ENVIRONMENT_FEATURE",
+        "tags": [
+          "Action"
+        ],
+        "description": "All targets within Very Close range of a point must succeed on an Agility Reaction Roll or take 1d8+3 physical damage and become Restrained.",
+        "effects": [
+          {
+            "type": "FORCE_REACTION_ROLL",
+            "range": "Far",
+            "target": "ALL_IN_RANGE",
+            "details": {
+              "roll_type": "agility",
+              "on_fail": [
+                {
+                  "type": "DEAL_DAMAGE",
+                  "damage_string": "1d8+3 phy"
+                },
+                {
+                  "type": "APPLY_CONDITION",
+                  "condition": "Restrained",
+                  "duration_text": "until freed"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "You Are Not Welcome Here",
+        "name": "You Are Not Welcome Here",
+        "type": "ENVIRONMENT_FEATURE",
+        "tags": [
+          "Action"
+        ],
+        "description": "Summon a Young Dryad, two Sylvan Soldiers, and Minor Treants.",
+        "effects": [
+          {
+            "type": "SUMMON_ADVERSARY",
+            "target": "Young Dryad",
+            "num_to_summon": 1
+          },
+          {
+            "type": "SUMMON_ADVERSARY",
+            "target": "Sylvan Soldier",
+            "num_to_summon": 2
+          }
+        ]
+      },
+      {
+        "id": "Defiler",
+        "name": "Defiler",
+        "type": "ENVIRONMENT_FEATURE",
+        "tags": [
+          "Action"
+        ],
+        "cost": {
+          "type": "fear",
+          "value": 1
+        },
+        "description": "Spend a Fear to summon a Minor Chaos Elemental.",
+        "effects": [
+          {
+            "type": "SUMMON_ADVERSARY",
+            "target": "Minor Chaos Elemental",
+            "num_to_summon": 1
+          },
+          {
+            "type": "TAKE_SPOTLIGHT"
+          }
+        ]
+      }
+    ]
+  },
+  "Ambushed": {
+    "id": "Ambushed",
+    "name": "Ambushed",
+    "type": "Event",
+    "tier": 1,
+    "difficulty": 12,
+    "features": [
+      {
+        "id": "Surprise!",
+        "name": "Surprise!",
+        "type": "ENVIRONMENT_FEATURE",
+        "tags": [
+          "Action"
+        ],
+        "description": "The ambushers reveal themselves. Gain 2 Fear and spotlight an adversary.",
+        "effects": [
+          {
+            "type": "GAIN_FEAR",
+            "value": 2
+          },
+          {
+            "type": "NARRATIVE_EFFECT",
+            "description": "Ambushers reveal themselves. Spotlight shifts to adversary."
+          }
+        ]
+      }
+    ]
+  },
+  "Bustling Marketplace": {
+    "id": "Bustling Marketplace",
+    "name": "Bustling Marketplace",
+    "type": "Social",
+    "tier": 1,
+    "difficulty": 10,
+    "features": [
+      {
+        "id": "Sticky Fingers",
+        "name": "Sticky Fingers",
+        "type": "ENVIRONMENT_FEATURE",
+        "tags": [
+          "Action"
+        ],
+        "description": "A thief tries to steal something. PC must make Instinct Roll or lose an item.",
+        "effects": [
+          {
+            "type": "FORCE_REACTION_ROLL",
+            "target": "PRIMARY_TARGET",
+            "details": {
+              "roll_type": "instinct",
+              "on_fail": {
+                "type": "STEAL_ITEM",
+                "num_items": 1
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "Crowd Closes In",
+        "name": "Crowd Closes In",
+        "type": "ENVIRONMENT_FEATURE",
+        "tags": [
+          "Reaction"
+        ],
+        "description": "When a PC splits from the group, the crowd cuts them off.",
+        "passiveModifiers": [
+          {
+            "type": "NARRATIVE_EFFECT",
+            "trigger": "ON_SPLIT_PARTY",
+            "description": "Target is separated from party by crowd."
+          }
+        ]
+      }
+    ]
+  },
+  "Cliffside Ascent": {
+    "id": "Cliffside Ascent",
+    "name": "Cliffside Ascent",
+    "type": "Traversal",
+    "tier": 1,
+    "difficulty": 12,
+    "features": [
+      {
+        "id": "The Climb",
+        "name": "The Climb",
+        "type": "ENVIRONMENT_FEATURE",
+        "tags": [
+          "Passive"
+        ],
+        "description": "Progress Countdown (12).",
+        "passiveModifiers": [
+          {
+            "type": "NARRATIVE_EFFECT",
+            "description": "Progress Countdown (12) to reach top."
+          }
+        ]
+      },
+      {
+        "id": "Fall",
+        "name": "Fall",
+        "type": "ENVIRONMENT_FEATURE",
+        "tags": [
+          "Action"
+        ],
+        "cost": {
+          "type": "fear",
+          "value": 1
+        },
+        "description": "Spend a Fear to have a PC plummet. If not saved, they take damage based on countdown progress.",
+        "effects": [
+          {
+            "type": "DEAL_DAMAGE",
+            "damage_string": "1d12 phy",
+            "details": "Scales with height (see SRD)."
+          },
+          {
+            "type": "NARRATIVE_EFFECT",
+            "description": "Countdown ticks up by 2."
+          }
+        ]
+      }
+    ]
+  },
+  "Raging River": {
+    "id": "Raging River",
+    "name": "Raging River",
+    "type": "Traversal",
+    "tier": 1,
+    "difficulty": 10,
+    "features": [
+      {
+        "id": "Undertow",
+        "name": "Undertow",
+        "type": "ENVIRONMENT_FEATURE",
+        "tags": [
+          "Action"
+        ],
+        "cost": {
+          "type": "fear",
+          "value": 1
+        },
+        "description": "Spend a Fear to catch a PC. Agility Reaction or take damage and become Vulnerable.",
+        "effects": [
+          {
+            "type": "FORCE_REACTION_ROLL",
+            "target": "PRIMARY_TARGET",
+            "details": {
+              "roll_type": "agility",
+              "on_fail": [
+                {
+                  "type": "DEAL_DAMAGE",
+                  "damage_string": "1d6+1 phy"
+                },
+                {
+                  "type": "APPLY_CONDITION",
+                  "condition": "Vulnerable"
+                },
+                {
+                  "type": "MOVE",
+                  "range": "Close",
+                  "details": "Down river"
+                }
+              ],
+              "on_success": [
+                {
+                  "type": "DEAL_STRESS",
+                  "value": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "Patient Hunter",
+        "name": "Patient Hunter",
+        "type": "ENVIRONMENT_FEATURE",
+        "tags": [
+          "Action"
+        ],
+        "cost": {
+          "type": "fear",
+          "value": 1
+        },
+        "description": "Summon a Glass Snake.",
+        "effects": [
+          {
+            "type": "SUMMON_ADVERSARY",
+            "target": "Glass Snake",
+            "num_to_summon": 1,
+            "spotlight_summons": true
+          }
+        ]
+      }
+    ]
+  }
+}
