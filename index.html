@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daggerheart Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="manual-add-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="modal-close-button" class="modal-close">&times;</button>
+            <h3><span class="col-number">1</span> Add to Pool</h3>
+            <div class="json-input-box">
+                <label for="character-json">Paste Player Player JSON:</label>
+                <textarea id="character-json" rows="6" placeholder="Paste player JSON here..."></textarea>
+                <div class="button-row">
+                    <button id="add-character-button" class="add-button">Add Player to Pool</button>
+                </div>
+            </div>
+            <div class="json-input-box">
+                <label for="adversary-json">Paste Adversary JSON:</label>
+                <textarea id="adversary-json" rows="6" placeholder="Paste adversary JSON here..."></textarea>
+                <div class="button-row">
+                    <button id="add-adversary-button" class="add-button">Add Adversary to Pool</button>
+                </div>
+            </div>
+            <div class="json-input-box">
+                <label for="environment-json">Paste Environment JSON:</label>
+                <textarea id="environment-json" rows="6" placeholder="Paste environment JSON here..."></textarea>
+                <div class="button-row">
+                    <button id="add-environment-button" class="add-button">Add Environment to Pool</button>
+                </div>
+            </div>
+        </div> 
+    </div>
+    <div id="info-modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <button id="info-modal-close-button" class="modal-close">&times;</button>
+            <h3>Agent Information</h3>
+            <pre id="info-modal-content"></pre>
+        </div>
+    </div>
+    <header>
+        <h1>Josh's v2 Daggerheart Monte Carlo Simulator</h1>
+        <div class="sim-controls">
+            <button id="add-to-pool-button" class="action-button">Add to Pool (Manual)</button>
+            <label for="visualize-checkbox">
+                <input type="checkbox" id="visualize-checkbox">
+                Visualize Sim?
+            </label>
+            <button onclick="openBuilderModal()" style="padding:10px; background:#007bff; color:white; margin-right:10px;"> + Create Character</button>
+        </div>
+    </header>
+    
+    <div class="simulator-layout">
+        <div class="layout-column" id="column-1">
+            <div class="pool-container">
+                <div class="pool-header">
+                    <h4>Player Pool</h4>
+                    <div class_name="pool-filters">
+                        <select id="pc-pool-class-filter">
+                            <option value="all">All Classes</option>
+                            <option value="Bard">Bard</option>
+                            <option value="Druid">Druid</option>
+                            <option value="Guardian">Guardian</option>
+                            <option value="Ranger">Ranger</option>
+                            <option value="Rogue">Rogue</option>
+                            <option value="Seraph">Seraph</option>
+                            <option value="Sorcerer">Sorcerer</option>
+                            <option value="Warrior">Warrior</option>
+                            <option value="Wizard">Wizard</option>
+                        </select>
+                        <select id="pc-pool-level-filter">
+                            <option value="all">All Levels</option>
+                            <option value="1">Lvl 1</option>
+                            <option value="2">Lvl 2</option>
+                            <option value="3">Lvl 3</option>
+                            <option value="4">Lvl 4</option>
+                            <option value="5">Lvl 5</option>
+                            <option value="6">Lvl 6</option>
+                            <option value="7">Lvl 7</option>
+                            <option value="8">Lvl 8</option>
+                            <option value="9">Lvl 9</option>
+                            <option value="10">Lvl 10</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="player-pool-list" class="agent-list"></div>
+            </div>
+            <div class="pool-container">
+                <div class="pool-header">
+                    <h4>Survivor Pool</h4>
+                </div>
+                <div id="survivor-pool-list" class="agent-list"></div>
+            </div>
+        </div>
+    
+        <div class="layout-column" id="column-2">
+            <div class="pool-container">
+                <div class="pool-header">
+                    <h4>Adversary Pool</h4>
+                    <div class_name="pool-filters">
+                        <select id="adv-pool-tier-filter">
+                            <option value="all">All Tiers</option>
+                            <option value="1">Tier 1</option>
+                            <option value="2">Tier 2</option>
+                            <option value="3">Tier 3</option>
+                            <option value="4">Tier 4</option>
+                        </select>
+                        <select id="adv-pool-bp-filter">
+                            <option value="all">All BP Costs</option>
+                            <option value="1">1 BP</option>
+                            <option value="2">2 BP</option>
+                            <option value="3">3 BP</option>
+                            <option value="4">4 BP</option>
+                            <option value="5">5 BP</option>
+                            </select>
+                        <select id="adv-pool-type-filter">
+                            <option value="all">All Types</option>
+                            <option value="Bruiser">Bruiser</option>
+                            <option value="Horde">Horde</option>
+                            <option value="Leader">Leader</option>
+                            <option value="Minion">Minion</option>
+                            <option value="Ranged">Ranged</option>
+                            <option value="Skulk">Skulk</option>
+                            <option value="Social">Social</option>
+                            <option value="Solo">Solo</option>
+                            <option value="Standard">Standard</option>
+                            <option value="Support">Support</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="adversary-pool-list" class="agent-list"></div>
+            </div>
+            <div class="pool-container">
+                <div class="pool-header">
+                    <h4>Environment Pool</h4>
+                </div>
+                <div id="environment-pool-list" class="agent-list"></div>
+            </div>
+            <div class="pool-container">
+                <div class="pool-header">
+                    <h4>BP Adjustment Pool</h4>
+                </div>
+                <div id="bpAdjustment-pool-list" class="agent-list"></div>
+            </div>
+        </div>
+
+        <div class="layout-column" id="column-3">
+            <h3>Encounter Builder</h3>
+            <div class="pool-container">
+                <h4>Active Party</h4>
+                <div id="active-party-list" class="agent-list"></div>
+            </div>
+            <div class="pool-container">
+                <h4>Active Adversaries <span id="battlepoint-display">(Spent: 0 / Budget: 0)</span></h4>
+                <div id="active-adversary-list" class="agent-list">
+                </div>  
+            </div>
+            <div class="pool-container">
+                <div class="pool-header">
+                    <h4>Active Environment</h4>
+                </div>
+                <div id="active-environment" class="agent-list"></div>
+            </div>
+            <div class="pool-container">
+                <div class="pool-header">
+                    <h4>Active BP Adjustments</h4>
+                    </div>
+                    <div id="active-bp-adjustments-list" class="agent-list"></div>
+                </div>
+        </div>
+    </div>
+
+    <div class="output-area">
+        <div class="log-container full-width" id="log-container">
+            <div class="log-header">
+                <h3>Simulation Log:</h3>
+                <div class="controls-main">
+                    <button id="run-button" class="action-button">Run Simulation</button>
+                    <button id="run-multiple-button" class="action-button">Run 5 Sims</button>
+                    <button id="run-ten-button" class="action-button">Run 10 Sims</button>
+                    <button id="playback-button" class="action-button" disabled>Play Back Last Sim</button>
+                    <button id="export-log-button" class="action-button">Export Log</button>
+                </div>
+            </div>
+            <div id="log-output"></div>
+        </div>
+
+        <div class="visualizer-container hidden" id="visualizer-container">
+            <div class="visualizer-header">
+                <h3>Battle Map</h3>
+                <div class="map-controls">
+                    <label for="map-size-select">Map Size:</label>
+                    <select id="map-size-select">
+                        <option value="large">Large (30x30)</option>
+                        <option value="medium">Medium (20x20)</option>
+                        <option value="small">Small (15x15)</option>
+                    </select>
+                </div>
+            </div>
+            <div id="battlemap-grid">
+                </div>
+        </div>
+    </div>
+
+    <div id="builder-modal" style="display:none; position:fixed; top:2%; left:2%; width:96%; height:96%; background:#1a1a1a; color:#eee; padding:0; border:1px solid #444; z-index:1000; display:flex; flex-direction:column;">
+    
+    <div style="padding:15px; background:#222; border-bottom:1px solid #444; display:flex; justify-content:space-between; align-items:center;">
+        <h2 style="margin:0;">Character Builder</h2>
+        <div style="display:flex; align-items:center; gap:15px;">
+            <label style="cursor:pointer; display:flex; align-items:center; gap:8px; background:#333; padding:5px 10px; border-radius:4px;">
+                <input type="checkbox" id="builder-strict-mode" checked> 
+                <span><strong>Strict SRD Mode</strong></span>
+            </label>
+            <button onclick="closeBuilderModal()" style="padding:5px 15px; background:#c0392b; border:none; color:white; cursor:pointer;">Close</button>
+        </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr 1.2fr; gap:0; flex-grow:1; overflow:hidden;">
+        
+        <div style="padding:20px; overflow-y:auto; border-right:1px solid #333;">
+            <h3 style="border-bottom:1px solid #555; padding-bottom:5px;">1. Identity</h3>
+            <div style="display:grid; gap:10px;">
+                <label>Name <input type="text" id="builder-name" style="width:100%; box-sizing:border-box;"></label>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <label>Level <input type="number" id="builder-level" value="1" min="1" max="10" style="width:100%;"></label>
+                    <label>Class <select id="builder-class" style="width:100%;"></select></label>
+                </div>
+                <label>Subclass <select id="builder-subclass" style="width:100%;" disabled><option>Select Class First</option></select></label>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <label>Ancestry <select id="builder-ancestry" style="width:100%;"></select></label>
+                    <label>Community <select id="builder-community" style="width:100%;"></select></label>
+                </div>
+            </div>
+
+            <h3 style="border-bottom:1px solid #555; padding-bottom:5px; margin-top:20px;">2. Traits (Standard: 2, 1, 1, 0, 0, -1)</h3>
+            <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px;">
+                <label>Agility <input type="number" class="trait-input" id="trait-agi" value="0"></label>
+                <label>Strength <input type="number" class="trait-input" id="trait-str" value="0"></label>
+                <label>Finesse <input type="number" class="trait-input" id="trait-fin" value="0"></label>
+                <label>Instinct <input type="number" class="trait-input" id="trait-ins" value="0"></label>
+                <label>Presence <input type="number" class="trait-input" id="trait-pre" value="0"></label>
+                <label>Knowledge <input type="number" class="trait-input" id="trait-kno" value="0"></label>
+            </div>
+            <div id="trait-validation-msg" style="font-size:0.8em; color:#888; margin-top:5px;"></div>
+
+            <h3 style="border-bottom:1px solid #555; padding-bottom:5px; margin-top:20px;">3. Experiences</h3>
+            <div style="display:grid; gap:10px;">
+                <label>Experience 1 (+2) <input type="text" id="builder-exp-1" placeholder="e.g. 'Battle-Hardened Veteran'" style="width:100%;"></label>
+                <label>Experience 2 (+2) <input type="text" id="builder-exp-2" placeholder="e.g. 'Raised by Wolves'" style="width:100%;"></label>
+            </div>
+        </div>
+
+        <div style="padding:20px; overflow-y:auto; border-right:1px solid #333;">
+            <h3 style="border-bottom:1px solid #555; padding-bottom:5px;">4. Equipment</h3>
+            <label style="display:block; margin-bottom:10px;">Primary Weapon <select id="builder-weapon-1" style="width:100%;"></select></label>
+            <label style="display:block; margin-bottom:10px;">Secondary Weapon <select id="builder-weapon-2" style="width:100%;"></select></label>
+            <label style="display:block; margin-bottom:10px;">Armor <select id="builder-armor" style="width:100%;"></select></label>
+
+            <h3 style="border-bottom:1px solid #555; padding-bottom:5px; margin-top:20px;">5. Domain Cards</h3>
+            <div id="domain-filter-msg" style="font-size:0.8em; color:#aaa; margin-bottom:5px;">Select a Class to see valid domains.</div>
+            <div id="builder-cards-container" style="height:300px; overflow-y:auto; border:1px solid #444; padding:10px; background:#2a2a2a;">
+                </div>
+        </div>
+
+        <div style="padding:20px; overflow-y:auto; background:#252525; border-left:1px solid #333;">
+            <h3 style="border-bottom:1px solid #555; padding-bottom:5px; margin-top:0;">Character Sheet</h3>
+            <div id="builder-details-pane" style="line-height:1.4; font-size:0.9em; color:#ddd;">
+                <div style="color:#666; padding:20px; text-align:center;">Select options to see your character build.</div>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding:15px; background:#222; border-top:1px solid #444; text-align:right;">
+        <button onclick="saveBuilderCharacter()" style="padding:10px 30px; background:#27ae60; color:white; border:none; font-size:1.1em; cursor:pointer;">Create Character</button>
+    </div>
+</div>
+
+    
+    <script src="ui-controller.js"></script>
+    <script src="sim-core.js"></script>
+    <script src="character_builder.js"></script>
+    <script src="sim-engine-resolution.js"></script>
+    <script src="sim-engine-adversary.js"></script>
+    <script src="sim-engine-environment.js"></script>
+    <script src="sim-engine-logic.js"></script>
+    <script src="sim-engine-core.js"></script>
+    <script src="scripts/data-validation.js"></script>
+    
+    
+    
+</body>
+</html>

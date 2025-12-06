@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "fix-react2shell-next": "^1.0.13",
+    "npx": "^10.2.2"
+  }
+}
