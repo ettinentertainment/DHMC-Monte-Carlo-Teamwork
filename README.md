@@ -1,4 +1,4 @@
-Vercel preview location: https://dhmc-monte-carlo-teamwork-e-git-31f9ad-ettins-projects-831471cc.vercel.app/
+Vercel preview location: 
 
 Stack - Frontend: HTML & CSS, Backend: Javascript, Deployment: Github & Vercel
 
